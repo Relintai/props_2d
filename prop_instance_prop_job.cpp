@@ -207,7 +207,10 @@ void PropInstancePropJob::_reset() {
 
 	_prop_tiled_wall_datas.clear();
 
+#if MESH_DATA_RESOURCE_PRESENT
 	_prop_mesh_datas.clear();
+#endif
+
 	clear_collision_shapes();
 
 	set_build_phase_type(BUILD_PHASE_TYPE_PHYSICS_PROCESS);
@@ -296,7 +299,12 @@ void PropInstancePropJob::phase_prop() {
 	}
 
 	if (should_do()) {
-		if (_prop_mesh_datas.size() == 0 && _prop_tiled_wall_datas.size() == 0) {
+
+		if (
+			#if MESH_DATA_RESOURCE_PRESENT
+			_prop_mesh_datas.size() == 0 && 
+			#endif
+			_prop_tiled_wall_datas.size() == 0) {
 			//reset_meshes();
 			reset_stages();
 			set_complete(true); //So threadpool knows it's done

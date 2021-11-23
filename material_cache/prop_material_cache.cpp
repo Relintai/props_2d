@@ -22,9 +22,9 @@ SOFTWARE.
 
 #include "prop_material_cache.h"
 
-#include "../../props/props/prop_data.h"
-#include "../../props/props/prop_data_prop.h"
-#include "../../props/props/prop_data_tiled_wall.h"
+#include "../props/prop_data.h"
+#include "../props/prop_data_prop.h"
+#include "../props/prop_data_tiled_wall.h"
 #include "../singleton/prop_cache.h"
 #include "../tiled_wall/tiled_wall_data.h"
 
