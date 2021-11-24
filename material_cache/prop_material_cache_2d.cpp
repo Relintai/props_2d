@@ -54,44 +54,44 @@ SOFTWARE.
 
 #endif
 
-bool PropMaterialCache::get_initialized() {
+bool PropMaterialCache2D::get_initialized() {
 	return _initialized;
 }
-void PropMaterialCache::set_initialized(const bool value) {
+void PropMaterialCache2D::set_initialized(const bool value) {
 	_initialized = value;
 }
 
-bool PropMaterialCache::mutex_locked() {
+bool PropMaterialCache2D::mutex_locked() {
 	return _locked;
 }
-void PropMaterialCache::mutex_lock() {
+void PropMaterialCache2D::mutex_lock() {
 	_mutex.lock();
 }
-void PropMaterialCache::mutex_unlock() {
+void PropMaterialCache2D::mutex_unlock() {
 	_mutex.unlock();
 }
 
-int PropMaterialCache::get_ref_count() {
+int PropMaterialCache2D::get_ref_count() {
 	return _ref_count;
 }
-void PropMaterialCache::set_ref_count(const int value) {
+void PropMaterialCache2D::set_ref_count(const int value) {
 	_ref_count = value;
 }
-void PropMaterialCache::inc_ref_count() {
+void PropMaterialCache2D::inc_ref_count() {
 	_ref_count += 1;
 }
-void PropMaterialCache::dec_ref_count() {
+void PropMaterialCache2D::dec_ref_count() {
 	_ref_count -= 1;
 }
 
 //Materials
-Ref<Material> PropMaterialCache::material_get(const int index) {
+Ref<Material> PropMaterialCache2D::material_get(const int index) {
 	ERR_FAIL_INDEX_V(index, _materials.size(), Ref<Material>(NULL));
 
 	return _materials[index];
 }
 
-Ref<Material> PropMaterialCache::material_lod_get(const int index) {
+Ref<Material> PropMaterialCache2D::material_lod_get(const int index) {
 	ERR_FAIL_COND_V(_materials.size() == 0, Ref<Material>(NULL));
 
 	if (index < 0) {
@@ -105,35 +105,35 @@ Ref<Material> PropMaterialCache::material_lod_get(const int index) {
 	return _materials[index];
 }
 
-void PropMaterialCache::material_add(const Ref<Material> &value) {
+void PropMaterialCache2D::material_add(const Ref<Material> &value) {
 	ERR_FAIL_COND(!value.is_valid());
 
 	_materials.push_back(value);
 }
 
-void PropMaterialCache::material_set(const int index, const Ref<Material> &value) {
+void PropMaterialCache2D::material_set(const int index, const Ref<Material> &value) {
 	ERR_FAIL_INDEX(index, _materials.size());
 
 	_materials.set(index, value);
 }
 
-void PropMaterialCache::material_remove(const int index) {
+void PropMaterialCache2D::material_remove(const int index) {
 	_materials.remove(index);
 }
 
-int PropMaterialCache::material_get_num() const {
+int PropMaterialCache2D::material_get_num() const {
 	return _materials.size();
 }
 
-void PropMaterialCache::materials_clear() {
+void PropMaterialCache2D::materials_clear() {
 	_materials.clear();
 }
 
-Vector<Variant> PropMaterialCache::materials_get() {
+Vector<Variant> PropMaterialCache2D::materials_get() {
 	VARIANT_ARRAY_GET(_materials);
 }
 
-void PropMaterialCache::materials_set(const Vector<Variant> &materials) {
+void PropMaterialCache2D::materials_set(const Vector<Variant> &materials) {
 	_materials.clear();
 
 	for (int i = 0; i < materials.size(); i++) {
@@ -143,10 +143,10 @@ void PropMaterialCache::materials_set(const Vector<Variant> &materials) {
 	}
 }
 
-void PropMaterialCache::texture_add(const Ref<Texture> &texture) {
+void PropMaterialCache2D::texture_add(const Ref<Texture> &texture) {
 	_textures.push_back(texture);
 }
-void PropMaterialCache::texture_remove(const Ref<Texture> &texture) {
+void PropMaterialCache2D::texture_remove(const Ref<Texture> &texture) {
 	for (int i = 0; i < _textures.size(); ++i) {
 		if (_textures[i] == texture) {
 			_textures.remove(i);
@@ -154,42 +154,42 @@ void PropMaterialCache::texture_remove(const Ref<Texture> &texture) {
 		}
 	}
 }
-void PropMaterialCache::texture_remove_index(const int index) {
+void PropMaterialCache2D::texture_remove_index(const int index) {
 	ERR_FAIL_INDEX(index, _textures.size());
 
 	_textures.remove(index);
 }
-void PropMaterialCache::textures_clear() {
+void PropMaterialCache2D::textures_clear() {
 	_textures.clear();
 }
-int PropMaterialCache::texture_count() {
+int PropMaterialCache2D::texture_count() {
 	return _textures.size();
 }
-Ref<Texture> PropMaterialCache::texture_get(const int index) {
+Ref<Texture> PropMaterialCache2D::texture_get(const int index) {
 	ERR_FAIL_INDEX_V(index, _textures.size(), Ref<Texture>());
 
 	return _textures[index];
 }
-Ref<AtlasTexture> PropMaterialCache::texture_get_atlas(const int index) {
+Ref<AtlasTexture> PropMaterialCache2D::texture_get_atlas(const int index) {
 	ERR_FAIL_INDEX_V(index, _textures.size(), Ref<AtlasTexture>());
 
 	return texture_get_atlas_tex(_textures[index]);
 }
-Ref<AtlasTexture> PropMaterialCache::texture_get_atlas_tex(const Ref<Texture> &texture) {
+Ref<AtlasTexture> PropMaterialCache2D::texture_get_atlas_tex(const Ref<Texture> &texture) {
 	return Ref<AtlasTexture>();
 }
-Rect2 PropMaterialCache::texture_get_uv_rect(const Ref<Texture> &texture) {
+Rect2 PropMaterialCache2D::texture_get_uv_rect(const Ref<Texture> &texture) {
 	return Rect2(0, 0, 1, 1);
 }
 
-void PropMaterialCache::prop_add_textures(const Ref<PropData> &prop) {
+void PropMaterialCache2D::prop_add_textures(const Ref<PropData2D> &prop) {
 	if (!prop.is_valid()) {
 		return;
 	}
 
 	for (int i = 0; i < prop->get_prop_count(); ++i) {
 #if MESH_DATA_RESOURCE_PRESENT
-		Ref<PropDataMeshData> pdm = prop->get_prop(i);
+		Ref<PropData2DMeshData> pdm = prop->get_prop(i);
 
 		if (pdm.is_valid()) {
 			Ref<Texture> tex = pdm->get_texture();
@@ -203,34 +203,34 @@ void PropMaterialCache::prop_add_textures(const Ref<PropData> &prop) {
 		}
 #endif
 
-		Ref<PropDataTiledWall> pdtw = prop->get_prop(i);
+		Ref<PropDataTiledWall2D> pdtw = prop->get_prop(i);
 
 		if (pdtw.is_valid()) {
-			Ref<TiledWallData> twd = pdtw->get_data();
+			Ref<TiledWallData2D> twd = pdtw->get_data();
 
 			if (!twd.is_valid())
 				continue;
 
-			twd->setup_cache(Ref<PropMaterialCache>(this));
+			twd->setup_cache(Ref<PropMaterialCache2D>(this));
 
 			continue;
 		}
 
-		Ref<PropDataProp> pdp = prop->get_prop(i);
+		Ref<PropDataProp2D> pdp = prop->get_prop(i);
 
 		if (pdp.is_valid()) {
 			prop_add_textures(pdp->get_prop());
 		}
 	}
 }
-void PropMaterialCache::prop_remove_textures(const Ref<PropData> &prop) {
+void PropMaterialCache2D::prop_remove_textures(const Ref<PropData2D> &prop) {
 	if (!prop.is_valid()) {
 		return;
 	}
 
 	for (int i = 0; i < prop->get_prop_count(); ++i) {
 #if MESH_DATA_RESOURCE_PRESENT
-		Ref<PropDataMeshData> pdm = prop->get_prop(i);
+		Ref<PropData2DMeshData> pdm = prop->get_prop(i);
 
 		if (pdm.is_valid()) {
 			Ref<Texture> tex = pdm->get_texture();
@@ -242,10 +242,10 @@ void PropMaterialCache::prop_remove_textures(const Ref<PropData> &prop) {
 		}
 #endif
 
-		Ref<PropDataTiledWall> pdtw = prop->get_prop(i);
+		Ref<PropDataTiledWall2D> pdtw = prop->get_prop(i);
 
 		if (pdtw.is_valid()) {
-			Ref<TiledWallData> twd = pdtw->get_data();
+			Ref<TiledWallData2D> twd = pdtw->get_data();
 
 			if (!twd.is_valid())
 				continue;
@@ -269,7 +269,7 @@ void PropMaterialCache::prop_remove_textures(const Ref<PropData> &prop) {
 			continue;
 		}
 
-		Ref<PropDataProp> pdp = prop->get_prop(i);
+		Ref<PropDataProp2D> pdp = prop->get_prop(i);
 
 		if (pdp.is_valid()) {
 			prop_remove_textures(pdp);
@@ -277,14 +277,14 @@ void PropMaterialCache::prop_remove_textures(const Ref<PropData> &prop) {
 	}
 }
 
-void PropMaterialCache::refresh_rects() {
+void PropMaterialCache2D::refresh_rects() {
 	_initialized = true;
 }
 
-void PropMaterialCache::initial_setup_default() {
+void PropMaterialCache2D::initial_setup_default() {
 	//Note: call only on the main thread! Shader->duplicate() can crash if done from an another thread!
 
-	PropCache *pc = PropCache::get_singleton();
+	PropCache2D *pc = PropCache2D::get_singleton();
 
 	pc->ensure_materials_loaded();
 
@@ -300,64 +300,64 @@ void PropMaterialCache::initial_setup_default() {
 	}
 }
 
-void PropMaterialCache::setup_material_albedo(Ref<Texture> texture) {
+void PropMaterialCache2D::setup_material_albedo(Ref<Texture> texture) {
 	if (has_method("_setup_material_albedo"))
 		call("_setup_material_albedo", texture);
 }
 
-PropMaterialCache::PropMaterialCache() {
+PropMaterialCache2D::PropMaterialCache2D() {
 	_ref_count = 0;
 	_initialized = false;
 	_locked = false;
 }
 
-PropMaterialCache::~PropMaterialCache() {
+PropMaterialCache2D::~PropMaterialCache2D() {
 	_materials.clear();
 }
 
-void PropMaterialCache::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_initialized"), &PropMaterialCache::get_initialized);
-	ClassDB::bind_method(D_METHOD("set_initialized", "value"), &PropMaterialCache::set_initialized);
+void PropMaterialCache2D::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_initialized"), &PropMaterialCache2D::get_initialized);
+	ClassDB::bind_method(D_METHOD("set_initialized", "value"), &PropMaterialCache2D::set_initialized);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "initialized"), "set_initialized", "get_initialized");
 
-	ClassDB::bind_method(D_METHOD("mutex_locked"), &PropMaterialCache::mutex_locked);
-	ClassDB::bind_method(D_METHOD("mutex_lock"), &PropMaterialCache::mutex_lock);
-	ClassDB::bind_method(D_METHOD("mutex_unlock"), &PropMaterialCache::mutex_unlock);
+	ClassDB::bind_method(D_METHOD("mutex_locked"), &PropMaterialCache2D::mutex_locked);
+	ClassDB::bind_method(D_METHOD("mutex_lock"), &PropMaterialCache2D::mutex_lock);
+	ClassDB::bind_method(D_METHOD("mutex_unlock"), &PropMaterialCache2D::mutex_unlock);
 
-	ClassDB::bind_method(D_METHOD("get_ref_count"), &PropMaterialCache::get_ref_count);
-	ClassDB::bind_method(D_METHOD("set_ref_count", "value"), &PropMaterialCache::set_ref_count);
+	ClassDB::bind_method(D_METHOD("get_ref_count"), &PropMaterialCache2D::get_ref_count);
+	ClassDB::bind_method(D_METHOD("set_ref_count", "value"), &PropMaterialCache2D::set_ref_count);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "mat_ref_count"), "set_ref_count", "get_ref_count");
-	ClassDB::bind_method(D_METHOD("inc_ref_count"), &PropMaterialCache::inc_ref_count);
-	ClassDB::bind_method(D_METHOD("dec_ref_count"), &PropMaterialCache::dec_ref_count);
+	ClassDB::bind_method(D_METHOD("inc_ref_count"), &PropMaterialCache2D::inc_ref_count);
+	ClassDB::bind_method(D_METHOD("dec_ref_count"), &PropMaterialCache2D::dec_ref_count);
 
 	BIND_VMETHOD(MethodInfo("_setup_material_albedo", PropertyInfo(Variant::OBJECT, "texture", PROPERTY_HINT_RESOURCE_TYPE, "Texture")));
 
-	ClassDB::bind_method(D_METHOD("material_get", "index"), &PropMaterialCache::material_get);
-	ClassDB::bind_method(D_METHOD("material_lod_get", "index"), &PropMaterialCache::material_lod_get);
-	ClassDB::bind_method(D_METHOD("material_add", "value"), &PropMaterialCache::material_add);
-	ClassDB::bind_method(D_METHOD("material_set", "index", "value"), &PropMaterialCache::material_set);
-	ClassDB::bind_method(D_METHOD("material_remove", "index"), &PropMaterialCache::material_remove);
-	ClassDB::bind_method(D_METHOD("material_get_num"), &PropMaterialCache::material_get_num);
-	ClassDB::bind_method(D_METHOD("materials_clear"), &PropMaterialCache::materials_clear);
+	ClassDB::bind_method(D_METHOD("material_get", "index"), &PropMaterialCache2D::material_get);
+	ClassDB::bind_method(D_METHOD("material_lod_get", "index"), &PropMaterialCache2D::material_lod_get);
+	ClassDB::bind_method(D_METHOD("material_add", "value"), &PropMaterialCache2D::material_add);
+	ClassDB::bind_method(D_METHOD("material_set", "index", "value"), &PropMaterialCache2D::material_set);
+	ClassDB::bind_method(D_METHOD("material_remove", "index"), &PropMaterialCache2D::material_remove);
+	ClassDB::bind_method(D_METHOD("material_get_num"), &PropMaterialCache2D::material_get_num);
+	ClassDB::bind_method(D_METHOD("materials_clear"), &PropMaterialCache2D::materials_clear);
 
-	ClassDB::bind_method(D_METHOD("materials_get"), &PropMaterialCache::materials_get);
-	ClassDB::bind_method(D_METHOD("materials_set"), &PropMaterialCache::materials_set);
+	ClassDB::bind_method(D_METHOD("materials_get"), &PropMaterialCache2D::materials_get);
+	ClassDB::bind_method(D_METHOD("materials_set"), &PropMaterialCache2D::materials_set);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "materials", PROPERTY_HINT_NONE, "17/17:Material", PROPERTY_USAGE_DEFAULT, "Material"), "materials_set", "materials_get");
 
-	ClassDB::bind_method(D_METHOD("texture_add", "texture"), &PropMaterialCache::texture_add);
-	ClassDB::bind_method(D_METHOD("texture_remove", "texture"), &PropMaterialCache::texture_remove);
-	ClassDB::bind_method(D_METHOD("texture_remove_index", "index"), &PropMaterialCache::texture_remove_index);
-	ClassDB::bind_method(D_METHOD("textures_clear"), &PropMaterialCache::textures_clear);
-	ClassDB::bind_method(D_METHOD("texture_count"), &PropMaterialCache::texture_count);
-	ClassDB::bind_method(D_METHOD("texture_get", "index"), &PropMaterialCache::texture_get);
-	ClassDB::bind_method(D_METHOD("texture_get_atlas", "index"), &PropMaterialCache::texture_get_atlas);
-	ClassDB::bind_method(D_METHOD("texture_get_atlas_tex", "index"), &PropMaterialCache::texture_get_atlas_tex);
-	ClassDB::bind_method(D_METHOD("texture_get_uv_rect", "texture"), &PropMaterialCache::texture_get_uv_rect);
+	ClassDB::bind_method(D_METHOD("texture_add", "texture"), &PropMaterialCache2D::texture_add);
+	ClassDB::bind_method(D_METHOD("texture_remove", "texture"), &PropMaterialCache2D::texture_remove);
+	ClassDB::bind_method(D_METHOD("texture_remove_index", "index"), &PropMaterialCache2D::texture_remove_index);
+	ClassDB::bind_method(D_METHOD("textures_clear"), &PropMaterialCache2D::textures_clear);
+	ClassDB::bind_method(D_METHOD("texture_count"), &PropMaterialCache2D::texture_count);
+	ClassDB::bind_method(D_METHOD("texture_get", "index"), &PropMaterialCache2D::texture_get);
+	ClassDB::bind_method(D_METHOD("texture_get_atlas", "index"), &PropMaterialCache2D::texture_get_atlas);
+	ClassDB::bind_method(D_METHOD("texture_get_atlas_tex", "index"), &PropMaterialCache2D::texture_get_atlas_tex);
+	ClassDB::bind_method(D_METHOD("texture_get_uv_rect", "texture"), &PropMaterialCache2D::texture_get_uv_rect);
 
-	ClassDB::bind_method(D_METHOD("prop_add_textures", "prop"), &PropMaterialCache::prop_add_textures);
-	ClassDB::bind_method(D_METHOD("prop_remove_textures", "prop"), &PropMaterialCache::prop_remove_textures);
+	ClassDB::bind_method(D_METHOD("prop_add_textures", "prop"), &PropMaterialCache2D::prop_add_textures);
+	ClassDB::bind_method(D_METHOD("prop_remove_textures", "prop"), &PropMaterialCache2D::prop_remove_textures);
 
-	ClassDB::bind_method(D_METHOD("refresh_rects"), &PropMaterialCache::refresh_rects);
+	ClassDB::bind_method(D_METHOD("refresh_rects"), &PropMaterialCache2D::refresh_rects);
 
-	ClassDB::bind_method(D_METHOD("setup_material_albedo", "texture"), &PropMaterialCache::setup_material_albedo);
+	ClassDB::bind_method(D_METHOD("setup_material_albedo", "texture"), &PropMaterialCache2D::setup_material_albedo);
 }

@@ -35,15 +35,15 @@ SOFTWARE.
 #include "../../mesh_utils/fast_quadratic_mesh_simplifier.h"
 #endif
 
-class PropMesherJobStep : public Reference {
-	GDCLASS(PropMesherJobStep, Reference);
+class PropMesherJobStep2D : public Reference {
+	GDCLASS(PropMesherJobStep2D, Reference);
 
 public:
 	//todo add:
 	//type generate lighting,
 	//type skip (this would leave the mesh empty)
 	//type previous mesh (this would set the previous mesh's rid to the current lod level)
-	enum PropMesherJobStepType {
+	enum PropMesherJobStepType2D {
 		TYPE_NORMAL = 0,
 		TYPE_NORMAL_LOD,
 		TYPE_DROP_UV2,
@@ -55,8 +55,8 @@ public:
 
 	static const String BINDING_STRING_PROP_MESHER_JOB_STEP_TYPE;
 
-	PropMesherJobStepType get_job_type() const;
-	void set_job_type(const PropMesherJobStepType value);
+	PropMesherJobStepType2D get_job_type() const;
+	void set_job_type(const PropMesherJobStepType2D value);
 
 	int get_lod_index() const;
 	void set_lod_index(const int value);
@@ -75,13 +75,13 @@ public:
 		void set_simplification_agressiveness(const float value);
 	#endif
 
-	PropMesherJobStep();
-	~PropMesherJobStep();
+	PropMesherJobStep2D();
+	~PropMesherJobStep2D();
 
 protected:
 	static void _bind_methods();
 
-	PropMesherJobStepType _job_type;
+	PropMesherJobStepType2D _job_type;
 	int _lod_index;
 
 	#ifdef MESH_UTILS_PRESENT
@@ -92,6 +92,6 @@ protected:
 	#endif
 };
 
-VARIANT_ENUM_CAST(PropMesherJobStep::PropMesherJobStepType);
+VARIANT_ENUM_CAST(PropMesherJobStep2D::PropMesherJobStepType2D);
 
 #endif

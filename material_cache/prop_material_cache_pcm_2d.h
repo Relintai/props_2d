@@ -43,8 +43,8 @@ SOFTWARE.
 class TexturePacker;
 class PropData;
 
-class PropMaterialCachePCM : public PropMaterialCache {
-	GDCLASS(PropMaterialCachePCM, PropMaterialCache);
+class PropMaterialCachePCM2D : public PropMaterialCache2D {
+	GDCLASS(PropMaterialCachePCM2D, PropMaterialCache2D);
 
 public:
 	int get_texture_flags() const;
@@ -71,8 +71,8 @@ public:
 
 	void _setup_material_albedo(Ref<Texture> texture);
 
-	PropMaterialCachePCM();
-	~PropMaterialCachePCM();
+	PropMaterialCachePCM2D();
+	~PropMaterialCachePCM2D();
 
 protected:
 	static void _bind_methods();

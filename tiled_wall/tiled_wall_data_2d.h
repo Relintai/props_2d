@@ -47,11 +47,11 @@ SOFTWARE.
 #include "../../texture_packer/texture_packer.h"
 #endif
 
-class PropMaterialCache;
-class PropMesher;
+class PropMaterialCache2D;
+class PropMesher2D;
 
-class TiledWallData : public Resource {
-	GDCLASS(TiledWallData, Resource);
+class TiledWallData2D : public Resource {
+	GDCLASS(TiledWallData2D, Resource);
 
 public:
 	enum TiledWallTilingType {
@@ -106,15 +106,15 @@ public:
 	void add_textures_into(Ref<TexturePacker> texture_packer);
 #endif
 
-	void setup_cache(Ref<PropMaterialCache> cache);
-	void _setup_cache(Ref<PropMaterialCache> cache);
+	void setup_cache(Ref<PropMaterialCache2D> cache);
+	void _setup_cache(Ref<PropMaterialCache2D> cache);
 
-	void copy_from(const Ref<TiledWallData> &tiled_wall_data);
+	void copy_from(const Ref<TiledWallData2D> &tiled_wall_data);
 
 	//Ref<Shape> get_collider_shape();
 
-	TiledWallData();
-	~TiledWallData();
+	TiledWallData2D();
+	~TiledWallData2D();
 
 protected:
 	static void _bind_methods();
@@ -129,6 +129,6 @@ private:
 	Vector<Ref<Material>> _materials;
 };
 
-VARIANT_ENUM_CAST(TiledWallData::TiledWallTilingType);
+VARIANT_ENUM_CAST(TiledWallData2D::TiledWallTilingType);
 
 #endif

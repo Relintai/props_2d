@@ -25,47 +25,47 @@ SOFTWARE.
 #include "../prop_scene_instance_2d.h"
 #include "prop_data_2d.h"
 
-Ref<PackedScene> PropDataScene::get_scene() {
+Ref<PackedScene> PropDataScene2D::get_scene() {
 	return _scene;
 }
-void PropDataScene::set_scene(const Ref<PackedScene> &value) {
+void PropDataScene2D::set_scene(const Ref<PackedScene> &value) {
 	_scene = value;
 }
 
-bool PropDataScene::get_snap_to_mesh() {
+bool PropDataScene2D::get_snap_to_mesh() {
 	return _snap_to_mesh;
 }
-void PropDataScene::set_snap_to_mesh(bool value) {
+void PropDataScene2D::set_snap_to_mesh(bool value) {
 	_snap_to_mesh = value;
 }
 
-Vector3 PropDataScene::get_snap_axis() {
+Vector3 PropDataScene2D::get_snap_axis() {
 	return _snap_axis;
 }
-void PropDataScene::set_snap_axis(Vector3 value) {
+void PropDataScene2D::set_snap_axis(Vector3 value) {
 	_snap_axis = value;
 }
 
-bool PropDataScene::_processor_handles(Node *node) {
-	PropSceneInstance *i = Object::cast_to<PropSceneInstance>(node);
+bool PropDataScene2D::_processor_handles(Node *node) {
+	PropSceneInstance2D *i = Object::cast_to<PropSceneInstance2D>(node);
 
 	return i;
 }
 
-void PropDataScene::_processor_process(Ref<PropData> prop_data, Node *node, const Transform &transform) {
-	PropSceneInstance *i = Object::cast_to<PropSceneInstance>(node);
+void PropDataScene2D::_processor_process(Ref<PropData2D> prop_data, Node *node, const Transform &transform) {
+	PropSceneInstance2D *i = Object::cast_to<PropSceneInstance2D>(node);
 
 	ERR_FAIL_COND(!i);
 
-	Ref<PropDataScene> l;
+	Ref<PropDataScene2D> l;
 	l.instance();
 	l->set_scene(i->get_scene());
 	l->set_transform(transform * i->get_transform());
 	prop_data->add_prop(l);
 }
 
-Node *PropDataScene::_processor_get_node_for(const Transform &transform) {
-	PropSceneInstance *i = memnew(PropSceneInstance);
+Node *PropDataScene2D::_processor_get_node_for(const Transform &transform) {
+	PropSceneInstance2D *i = memnew(PropSceneInstance2D);
 
 	i->set_scene(get_scene());
 	i->set_transform(get_transform());
@@ -73,25 +73,25 @@ Node *PropDataScene::_processor_get_node_for(const Transform &transform) {
 	return i;
 }
 
-PropDataScene::PropDataScene() {
+PropDataScene2D::PropDataScene2D() {
 	_snap_to_mesh = true;
 	_snap_axis = Vector3(0, 1, 0);
 }
-PropDataScene::~PropDataScene() {
+PropDataScene2D::~PropDataScene2D() {
 	if (_scene.is_valid())
 		_scene.unref();
 }
 
-void PropDataScene::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_scene"), &PropDataScene::get_scene);
-	ClassDB::bind_method(D_METHOD("set_scene", "value"), &PropDataScene::set_scene);
+void PropDataScene2D::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_scene"), &PropDataScene2D::get_scene);
+	ClassDB::bind_method(D_METHOD("set_scene", "value"), &PropDataScene2D::set_scene);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "scene", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"), "set_scene", "get_scene");
 
-	ClassDB::bind_method(D_METHOD("get_snap_to_mesh"), &PropDataScene::get_snap_to_mesh);
-	ClassDB::bind_method(D_METHOD("set_snap_to_mesh", "value"), &PropDataScene::set_snap_to_mesh);
+	ClassDB::bind_method(D_METHOD("get_snap_to_mesh"), &PropDataScene2D::get_snap_to_mesh);
+	ClassDB::bind_method(D_METHOD("set_snap_to_mesh", "value"), &PropDataScene2D::set_snap_to_mesh);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "snap_to_mesh"), "set_snap_to_mesh", "get_snap_to_mesh");
 
-	ClassDB::bind_method(D_METHOD("get_snap_axis"), &PropDataScene::get_snap_axis);
-	ClassDB::bind_method(D_METHOD("set_snap_axis", "value"), &PropDataScene::set_snap_axis);
+	ClassDB::bind_method(D_METHOD("get_snap_axis"), &PropDataScene2D::get_snap_axis);
+	ClassDB::bind_method(D_METHOD("set_snap_axis", "value"), &PropDataScene2D::set_snap_axis);
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "snap_axis"), "set_snap_axis", "get_snap_axis");
 }

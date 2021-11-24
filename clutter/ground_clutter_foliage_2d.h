@@ -35,8 +35,8 @@ SOFTWARE.
 
 #include "scene/resources/texture.h"
 
-class GroundClutterFoliage : public GroundClutter {
-	GDCLASS(GroundClutterFoliage, GroundClutter);
+class GroundClutterFoliage2D : public GroundClutter2D {
+	GDCLASS(GroundClutterFoliage2D, GroundClutter2D);
 
 public:
 	int get_texture_count() const;
@@ -44,8 +44,8 @@ public:
 	void remove_texture(const int index);
 	void add_texture(Ref<Texture> texture);
 
-	GroundClutterFoliage();
-	~GroundClutterFoliage();
+	GroundClutterFoliage2D();
+	~GroundClutterFoliage2D();
 
 private:
 	static void _bind_methods();

@@ -39,10 +39,10 @@ SOFTWARE.
 #include "scene/resources/material.h"
 #include "core/os/mutex.h"
 
-class PropData;
+class PropData2D;
 
-class PropMaterialCache : public Resource {
-	GDCLASS(PropMaterialCache, Resource)
+class PropMaterialCache2D : public Resource {
+	GDCLASS(PropMaterialCache2D, Resource)
 
 public:
 	bool get_initialized();
@@ -78,8 +78,8 @@ public:
 	virtual Ref<AtlasTexture> texture_get_atlas_tex(const Ref<Texture> &texture);
 	virtual Rect2 texture_get_uv_rect(const Ref<Texture> &texture);
 
-	void prop_add_textures(const Ref<PropData> &prop);
-	void prop_remove_textures(const Ref<PropData> &prop);
+	void prop_add_textures(const Ref<PropData2D> &prop);
+	void prop_remove_textures(const Ref<PropData2D> &prop);
 
 	virtual void refresh_rects();
 
@@ -87,8 +87,8 @@ public:
 
 	void setup_material_albedo(Ref<Texture> texture);
 
-	PropMaterialCache();
-	~PropMaterialCache();
+	PropMaterialCache2D();
+	~PropMaterialCache2D();
 
 protected:
 	static void _bind_methods();

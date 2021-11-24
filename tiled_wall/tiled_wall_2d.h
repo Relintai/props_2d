@@ -38,12 +38,12 @@ SOFTWARE.
 
 #include "core/math/vector3.h"
 
-class TiledWallData;
-class PropMaterialCache;
-class PropMesher;
+class TiledWallData2D;
+class PropMaterialCache2D;
+class PropMesher2D;
 
-class TiledWall : public GeometryInstance {
-	GDCLASS(TiledWall, GeometryInstance);
+class TiledWall2D : public GeometryInstance {
+	GDCLASS(TiledWall2D, GeometryInstance);
 
 public:
 	int get_width() const;
@@ -52,8 +52,8 @@ public:
 	int get_heigth() const;
 	void set_heigth(const int value);
 
-	Ref<TiledWallData> get_data();
-	void set_data(const Ref<TiledWallData> &data);
+	Ref<TiledWallData2D> get_data();
+	void set_data(const Ref<TiledWallData2D> &data);
 
 	bool get_collision() const;
 	void set_collision(const int value);
@@ -75,8 +75,8 @@ public:
 	void create_colliders();
 	void free_colliders();
 
-	TiledWall();
-	~TiledWall();
+	TiledWall2D();
+	~TiledWall2D();
 
 protected:
 	void _notification(int p_what);
@@ -90,9 +90,9 @@ private:
 	uint32_t _collision_layer;
 	uint32_t _collision_mask;
 
-	Ref<TiledWallData> _data;
-	Ref<PropMaterialCache> _cache;
-	Ref<PropMesher> _mesher;
+	Ref<TiledWallData2D> _data;
+	Ref<PropMaterialCache2D> _cache;
+	Ref<PropMesher2D> _mesher;
 	AABB _aabb;
 
 	RID _mesh_rid;

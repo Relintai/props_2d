@@ -1,9 +1,9 @@
 #include "prop_ess_entity_2d.h"
 
-PropESSEntity::PropESSEntity() {
+PropESSEntity2D::PropESSEntity2D() {
 }
-PropESSEntity::~PropESSEntity() {
+PropESSEntity2D::~PropESSEntity2D() {
 }
 
-void PropESSEntity::_bind_methods() {
+void PropESSEntity2D::_bind_methods() {
 }

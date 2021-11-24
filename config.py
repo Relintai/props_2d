@@ -10,29 +10,29 @@ def configure(env):
 
 def get_doc_classes():
     return [
-        "PropDataEntry",
-        "PropDataLight",
-        "PropDataProp",
-        "PropDataScene",
-        "PropDataPortal",
-        "PropDataTiledWall",
-        "PropData",
+        "PropDataEntry2D",
+        "PropDataLight2D",
+        "PropDataProp2D",
+        "PropDataScene2D",
+        "PropDataPortal2D",
+        "PropDataTiledWall2D",
+        "PropData2D",
         
-        "TiledWall",
-        "TiledWallData",
+        "TiledWall2D",
+        "TiledWallData2D",
 
-        "PropDataProcessor",
+        "PropDataProcessor2D",
 
-        "GroundClutterFoliage",
-        "GroundClutter",
+        "GroundClutterFoliage2D",
+        "GroundClutter2D",
 
-        "PropESSEntity",
-        "PropInstance",
-        "PropMeshUtils",
+        "PropESSEntity2D",
+        "PropInstance2D",
+        "PropMeshUtils2D",
 
-        "PropSceneInstance",
+        "PropSceneInstance2D",
 
-        "PropUtils",
+        "PropUtils2D",
     ]
 
 def get_doc_path():

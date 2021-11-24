@@ -47,14 +47,14 @@ SOFTWARE.
 
 #include "../props/prop_data_2d.h"
 
-class PropMaterialCache;
-class TiledWallData;
+class PropMaterialCache2D;
+class TiledWallData2D;
 
-class PropCache : public Object {
-	GDCLASS(PropCache, Object);
+class PropCache2D : public Object {
+	GDCLASS(PropCache2D, Object);
 
 public:
-	static PropCache *get_singleton();
+	static PropCache2D *get_singleton();
 
 	StringName get_default_prop_material_cache_class();
 	void set_default_prop_material_cache_class(const StringName &cls_name);
@@ -91,32 +91,32 @@ public:
 	Vector<Variant> materials_get();
 	void materials_set(const Vector<Variant> &materials);
 
-	Ref<PropMaterialCache> material_cache_get(const Ref<PropData> &prop);
-	void material_cache_unref(const Ref<PropData> &prop);
+	Ref<PropMaterialCache2D> material_cache_get(const Ref<PropData2D> &prop);
+	void material_cache_unref(const Ref<PropData2D> &prop);
 
-	Ref<PropMaterialCache> tiled_wall_material_cache_get(const Ref<TiledWallData> &twd);
-	void tiled_wall_material_cache_unref(const Ref<TiledWallData> &twd);
+	Ref<PropMaterialCache2D> tiled_wall_material_cache_get(const Ref<TiledWallData2D> &twd);
+	void tiled_wall_material_cache_unref(const Ref<TiledWallData2D> &twd);
 
-	Ref<PropMaterialCache> material_cache_custom_key_get(const uint64_t key);
+	Ref<PropMaterialCache2D> material_cache_custom_key_get(const uint64_t key);
 	void material_cache_custom_key_unref(const uint64_t key);
 
 	Ref<Resource> load_resource(const String &path, const String &type_hint = "");
 
 private:
-	static PropCache *_instance;
+	static PropCache2D *_instance;
 
 public:
-	PropCache();
-	~PropCache();
+	PropCache2D();
+	~PropCache2D();
 
 protected:
 	static void _bind_methods();
 
 	StringName _default_prop_material_cache_class;
 
-	Map<uint64_t, Ref<PropMaterialCache>> _material_cache;
-	Map<uint64_t, Ref<PropMaterialCache>> _tiled_wall_material_cache;
-	Map<uint64_t, Ref<PropMaterialCache>> _custom_keyed_material_cache;
+	Map<uint64_t, Ref<PropMaterialCache2D>> _material_cache;
+	Map<uint64_t, Ref<PropMaterialCache2D>> _tiled_wall_material_cache;
+	Map<uint64_t, Ref<PropMaterialCache2D>> _custom_keyed_material_cache;
 
 	Mutex _material_cache_mutex;
 	Mutex _tiled_wall_material_cache_mutex;

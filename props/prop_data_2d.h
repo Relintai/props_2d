@@ -46,8 +46,8 @@ SOFTWARE.
 #include "../../texture_packer/texture_packer.h"
 #endif
 
-class PropData : public Resource {
-	GDCLASS(PropData, Resource);
+class PropData2D : public Resource {
+	GDCLASS(PropData2D, Resource);
 
 public:
 	int get_id() const;
@@ -59,9 +59,9 @@ public:
 	Vector3 get_snap_axis() const;
 	void set_snap_axis(const Vector3 &value);
 
-	Ref<PropDataEntry> get_prop(const int index) const;
-	void set_prop(const int index, const Ref<PropDataEntry> prop);
-	void add_prop(const Ref<PropDataEntry> prop);
+	Ref<PropDataEntry2D> get_prop(const int index) const;
+	void set_prop(const int index, const Ref<PropDataEntry2D> prop);
+	void add_prop(const Ref<PropDataEntry2D> prop);
 	void remove_prop(const int index);
 
 	int get_prop_count() const;
@@ -79,10 +79,10 @@ public:
 	PoolVector3Array get_room_bounds();
 	void set_room_bounds(const PoolVector3Array &bounds);
 
-	void copy_from(const Ref<PropData> &prop_data);
+	void copy_from(const Ref<PropData2D> &prop_data);
 
-	PropData();
-	~PropData();
+	PropData2D();
+	~PropData2D();
 
 protected:
 	static void _bind_methods();
@@ -92,7 +92,7 @@ private:
 	bool _snap_to_mesh;
 	Vector3 _snap_axis;
 
-	Vector<Ref<PropDataEntry>> _props;
+	Vector<Ref<PropDataEntry2D>> _props;
 
 	bool _is_room;
 	PoolVector3Array _room_bounds;

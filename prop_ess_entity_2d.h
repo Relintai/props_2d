@@ -35,13 +35,13 @@ SOFTWARE.
 
 #include "core/math/vector3.h"
 
-class PropESSEntity : public Spatial {
-	GDCLASS(PropESSEntity, Spatial);
+class PropESSEntity2D : public Spatial {
+	GDCLASS(PropESSEntity2D, Spatial);
 	OBJ_CATEGORY("Props");
 
 public:
-	PropESSEntity();
-	~PropESSEntity();
+	PropESSEntity2D();
+	~PropESSEntity2D();
 
 protected:
 	static void _bind_methods();

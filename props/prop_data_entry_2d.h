@@ -33,12 +33,12 @@ SOFTWARE.
 
 #include "core/math/transform.h"
 
-class PropData;
-class PropMesher;
+class PropData2D;
+class PropMesher2D;
 class TexturePacker;
 
-class PropDataEntry : public Resource {
-	GDCLASS(PropDataEntry, Resource);
+class PropDataEntry2D : public Resource {
+	GDCLASS(PropDataEntry2D, Resource);
 
 public:
 	Transform get_transform() const;
@@ -49,17 +49,17 @@ public:
 #endif
 
 	bool processor_handles(Node *node);
-	void processor_process(Ref<PropData> prop_data, Node *node, const Transform &transform);
+	void processor_process(Ref<PropData2D> prop_data, Node *node, const Transform &transform);
 	Node *processor_get_node_for(const Transform &transform);
 	bool processor_evaluate_children();
 
 	virtual bool _processor_handles(Node *node);
-	virtual void _processor_process(Ref<PropData> prop_data, Node *node, const Transform &transform);
+	virtual void _processor_process(Ref<PropData2D> prop_data, Node *node, const Transform &transform);
 	virtual Node *_processor_get_node_for(const Transform &transform);
 	virtual bool _processor_evaluate_children();
 	
-	PropDataEntry();
-	~PropDataEntry();
+	PropDataEntry2D();
+	~PropDataEntry2D();
 
 protected:
 	static void _bind_methods();

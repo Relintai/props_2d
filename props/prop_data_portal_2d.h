@@ -27,8 +27,8 @@ SOFTWARE.
 
 #include "prop_data_entry_2d.h"
 
-class PropDataPortal : public PropDataEntry {
-	GDCLASS(PropDataPortal, PropDataEntry);
+class PropDataPortal2D : public PropDataEntry2D {
+	GDCLASS(PropDataPortal2D, PropDataEntry2D);
 
 public:
 	bool get_is_active() const;
@@ -47,11 +47,11 @@ public:
 	void set_points(const PoolVector<Vector2> &p_points);
 
 	bool _processor_handles(Node *node);
-	void _processor_process(Ref<PropData> prop_data, Node *node, const Transform &transform);
+	void _processor_process(Ref<PropData2D> prop_data, Node *node, const Transform &transform);
 	Node *_processor_get_node_for(const Transform &transform);
 
-	PropDataPortal();
-	~PropDataPortal();
+	PropDataPortal2D();
+	~PropDataPortal2D();
 
 protected:
 	static void _bind_methods();

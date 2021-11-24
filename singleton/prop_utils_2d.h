@@ -39,21 +39,21 @@ SOFTWARE.
 
 #include "scene/main/node.h"
 
-class PropData;
-class PropDataEntry;
+class PropData2D;
+class PropDataEntry2D;
 
 #if VERSION_MINOR >= 4
 class Room;
 #endif
 
-class PropUtils : public Object {
-	GDCLASS(PropUtils, Object);
+class PropUtils2D : public Object {
+	GDCLASS(PropUtils2D, Object);
 
 public:
-	static PropUtils *get_singleton();
+	static PropUtils2D *get_singleton();
 
-	Ref<PropData> convert_tree(Node *root);
-	void _convert_tree(Ref<PropData> prop_data, Node *node, const Transform &transform);
+	Ref<PropData2D> convert_tree(Node *root);
+	void _convert_tree(Ref<PropData2D> prop_data, Node *node, const Transform &transform);
 
 #if VERSION_MINOR >= 4
 	bool generate_room_points_node(Node *node);
@@ -62,27 +62,27 @@ public:
 	bool is_plane_unique(const PoolVector<Plane> &planes, const Plane &p);
 #endif
 
-	static int add_processor(const Ref<PropDataEntry> &processor);
-	static Ref<PropDataEntry> get_processor(const int index);
+	static int add_processor(const Ref<PropDataEntry2D> &processor);
+	static Ref<PropDataEntry2D> get_processor(const int index);
 	static void swap_processors(const int index1, const int index2);
 	static void remove_processor(const int index);
 	static int get_processor_count();
 
-	PropUtils();
-	~PropUtils();
+	PropUtils2D();
+	~PropUtils2D();
 
 protected:
 	static void _bind_methods();
 
 private:
-	int _add_processor_bind(const Ref<PropDataEntry> &processor);
-	Ref<PropDataEntry> _get_processor_bind(const int index);
+	int _add_processor_bind(const Ref<PropDataEntry2D> &processor);
+	Ref<PropDataEntry2D> _get_processor_bind(const int index);
 	void _swap_processors_bind(const int index1, const int index2);
 	void _remove_processor_bind(const int index);
 	int _get_processor_count_bind();
 
-	static Vector<Ref<PropDataEntry>> _processors;
-	static PropUtils *_instance;
+	static Vector<Ref<PropDataEntry2D>> _processors;
+	static PropUtils2D *_instance;
 };
 
 #endif

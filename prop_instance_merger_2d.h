@@ -43,8 +43,8 @@ SOFTWARE.
 
 class MeshDataInstance;
 
-class PropInstanceMerger : public PropInstance {
-	GDCLASS(PropInstanceMerger, PropInstance);
+class PropInstanceMerger2D : public PropInstance2D {
+	GDCLASS(PropInstanceMerger2D, PropInstance2D);
 
 public:
 	static const float LOD_CHECK_INTERVAL;
@@ -64,8 +64,8 @@ public:
 	float get_lod_reduction_distance_squared();
 	void set_lod_reduction_distance_squared(const float dist);
 
-	Ref<PropInstanceJob> get_job();
-	void set_job(const Ref<PropInstanceJob> &job);
+	Ref<PropInstanceJob2D> get_job();
+	void set_job(const Ref<PropInstanceJob2D> &job);
 
 	///Materials
 	Ref<Material> material_get(const int index);
@@ -120,13 +120,13 @@ public:
 	virtual void _build();
 	virtual void _build_finished();
 
-	void _prop_preprocess(Transform tarnsform, const Ref<PropData> &prop);
+	void _prop_preprocess(Transform tarnsform, const Ref<PropData2D> &prop);
 
 	void collision_layer_changed();
 	void collision_mask_changed();
 
-	PropInstanceMerger();
-	~PropInstanceMerger();
+	PropInstanceMerger2D();
+	~PropInstanceMerger2D();
 
 protected:
 	void _notification(int p_what);
@@ -158,7 +158,7 @@ private:
 
 	Transform _last_transform;
 
-	Ref<PropInstancePropJob> _job;
+	Ref<PropInstancePropJob2D> _job;
 
 	Vector<Ref<Material>> _materials;
 	Vector<MeshEntry> _meshes;

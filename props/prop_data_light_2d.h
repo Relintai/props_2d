@@ -33,8 +33,8 @@ SOFTWARE.
 
 #include "prop_data_entry_2d.h"
 
-class PropDataLight : public PropDataEntry {
-	GDCLASS(PropDataLight, PropDataEntry);
+class PropDataLight2D : public PropDataEntry2D {
+	GDCLASS(PropDataLight2D, PropDataEntry2D);
 
 public:
 	Color get_light_color() const;
@@ -44,11 +44,11 @@ public:
 	void set_light_size(const int value);
 
 	bool _processor_handles(Node *node);
-	void _processor_process(Ref<PropData> prop_data, Node *node, const Transform &transform);
+	void _processor_process(Ref<PropData2D> prop_data, Node *node, const Transform &transform);
 	Node *_processor_get_node_for(const Transform &transform);
 
-	PropDataLight();
-	~PropDataLight();
+	PropDataLight2D();
+	~PropDataLight2D();
 
 protected:
 	static void _bind_methods();

@@ -28,16 +28,16 @@ SOFTWARE.
 
 #include "core/version.h"
 
-class PropEditorPlugin : public EditorPlugin {
+class PropEditorPlugin2D : public EditorPlugin {
 
-	GDCLASS(PropEditorPlugin, EditorPlugin);
+	GDCLASS(PropEditorPlugin2D, EditorPlugin);
 	EditorNode *editor;
 
 protected:
 	static void _bind_methods();
 
 public:
-	virtual String get_name() const { return "PropEditorPlugin"; }
+	virtual String get_name() const { return "PropEditorPlugin2D"; }
 	bool has_main_screen() const { return false; }
 	virtual void edit(Object *p_object) {}
 	virtual bool handles(Object *p_object) const { return false; }
@@ -53,8 +53,8 @@ public:
 	void _convert_selected_scene_to_prop_data(Variant param);
 	void _quick_convert_button_pressed();
 
-	PropEditorPlugin(EditorNode *p_node);
-	~PropEditorPlugin();
+	PropEditorPlugin2D(EditorNode *p_node);
+	~PropEditorPlugin2D();
 };
 
 #endif

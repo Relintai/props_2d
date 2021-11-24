@@ -42,8 +42,8 @@ SOFTWARE.
 class VoxelChunk;
 class VoxelMesher;
 
-class GroundClutter : public Resource {
-	GDCLASS(GroundClutter, Resource);
+class GroundClutter2D : public Resource {
+	GDCLASS(GroundClutter2D, Resource);
 
 public:
 #ifdef VOXELMAN_PRESENT
@@ -56,8 +56,8 @@ public:
 	void add_textures_to(Ref<TexturePacker> packer);
 #endif
 
-	GroundClutter();
-	~GroundClutter();
+	GroundClutter2D();
+	~GroundClutter2D();
 
 private:
 	static void _bind_methods();

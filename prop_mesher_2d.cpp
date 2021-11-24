@@ -28,9 +28,9 @@ SOFTWARE.
 #include "material_cache/prop_material_cache_2d.h"
 #include "tiled_wall/tiled_wall_data_2d.h"
 
-const String PropMesher::BINDING_STRING_BUILD_FLAGS = "Use Lighting,Use AO,Use RAO,Bake Lights";
+const String PropMesher2D::BINDING_STRING_BUILD_FLAGS = "Use Lighting,Use AO,Use RAO,Bake Lights";
 
-bool PropMesher::Vertex::operator==(const Vertex &p_vertex) const {
+bool PropMesher2D::Vertex::operator==(const Vertex &p_vertex) const {
 	if (vertex != p_vertex.vertex)
 		return false;
 
@@ -65,7 +65,7 @@ bool PropMesher::Vertex::operator==(const Vertex &p_vertex) const {
 	return true;
 }
 
-uint32_t PropMesher::VertexHasher::hash(const Vertex &p_vtx) {
+uint32_t PropMesher2D::VertexHasher::hash(const Vertex &p_vtx) {
 	uint32_t h = hash_djb2_buffer((const uint8_t *)&p_vtx.vertex, sizeof(real_t) * 3);
 	h = hash_djb2_buffer((const uint8_t *)&p_vtx.normal, sizeof(real_t) * 3, h);
 	h = hash_djb2_buffer((const uint8_t *)&p_vtx.binormal, sizeof(real_t) * 3, h);
@@ -78,90 +78,90 @@ uint32_t PropMesher::VertexHasher::hash(const Vertex &p_vtx) {
 	return h;
 }
 
-int PropMesher::get_channel_index_type() const {
+int PropMesher2D::get_channel_index_type() const {
 	return _channel_index_type;
 }
-void PropMesher::set_channel_index_type(const int value) {
+void PropMesher2D::set_channel_index_type(const int value) {
 	_channel_index_type = value;
 }
 
-int PropMesher::get_channel_index_isolevel() const {
+int PropMesher2D::get_channel_index_isolevel() const {
 	return _channel_index_isolevel;
 }
-void PropMesher::set_channel_index_isolevel(const int value) {
+void PropMesher2D::set_channel_index_isolevel(const int value) {
 	_channel_index_isolevel = value;
 }
 
-int PropMesher::get_mesher_index() const {
+int PropMesher2D::get_mesher_index() const {
 	return _mesher_index;
 }
-void PropMesher::set_mesher_index(const int value) {
+void PropMesher2D::set_mesher_index(const int value) {
 	_mesher_index = value;
 }
 
-int PropMesher::get_format() const {
+int PropMesher2D::get_format() const {
 	return _format;
 }
-void PropMesher::set_format(const int value) {
+void PropMesher2D::set_format(const int value) {
 	_format = value;
 }
 
-int PropMesher::get_texture_scale() const {
+int PropMesher2D::get_texture_scale() const {
 	return _texture_scale;
 }
-void PropMesher::set_texture_scale(const int value) {
+void PropMesher2D::set_texture_scale(const int value) {
 	_texture_scale = value;
 }
 
-Ref<Material> PropMesher::get_material() {
+Ref<Material> PropMesher2D::get_material() {
 	return _material;
 }
-void PropMesher::set_material(const Ref<Material> &material) {
+void PropMesher2D::set_material(const Ref<Material> &material) {
 	_material = material;
 }
 
-float PropMesher::get_ao_strength() const {
+float PropMesher2D::get_ao_strength() const {
 	return _ao_strength;
 }
-void PropMesher::set_ao_strength(float value) {
+void PropMesher2D::set_ao_strength(float value) {
 	_ao_strength = value;
 }
 
-float PropMesher::get_base_light_value() const {
+float PropMesher2D::get_base_light_value() const {
 	return _base_light_value;
 }
-void PropMesher::set_base_light_value(float value) {
+void PropMesher2D::set_base_light_value(float value) {
 	_base_light_value = value;
 }
 
-float PropMesher::get_voxel_scale() const {
+float PropMesher2D::get_voxel_scale() const {
 	return _voxel_scale;
 }
-void PropMesher::set_voxel_scale(const float voxel_scale) {
+void PropMesher2D::set_voxel_scale(const float voxel_scale) {
 	_voxel_scale = voxel_scale;
 }
 
-Rect2 PropMesher::get_uv_margin() const {
+Rect2 PropMesher2D::get_uv_margin() const {
 	return _uv_margin;
 }
-void PropMesher::set_uv_margin(const Rect2 margin) {
+void PropMesher2D::set_uv_margin(const Rect2 margin) {
 	_uv_margin = margin;
 }
 
-_FORCE_INLINE_ int PropMesher::get_build_flags() const {
+_FORCE_INLINE_ int PropMesher2D::get_build_flags() const {
 	return _build_flags;
 }
-_FORCE_INLINE_ void PropMesher::set_build_flags(const int flags) {
+_FORCE_INLINE_ void PropMesher2D::set_build_flags(const int flags) {
 	_build_flags = flags;
 
-	if ((_build_flags & PropMesher::BUILD_FLAG_USE_LIGHTING) != 0) {
+	if ((_build_flags & PropMesher2D::BUILD_FLAG_USE_LIGHTING) != 0) {
 		_format |= VisualServer::ARRAY_FORMAT_COLOR;
 	} else {
 		_format ^= VisualServer::ARRAY_FORMAT_COLOR;
 	}
 }
 
-Array PropMesher::build_mesh() {
+Array PropMesher2D::build_mesh() {
 	Array a;
 	a.resize(VisualServer::ARRAY_MAX);
 
@@ -305,7 +305,7 @@ Array PropMesher::build_mesh() {
 	return a;
 }
 
-void PropMesher::build_mesh_into(RID mesh) {
+void PropMesher2D::build_mesh_into(RID mesh) {
 	ERR_FAIL_COND(mesh == RID());
 
 	VS::get_singleton()->mesh_clear(mesh);
@@ -323,7 +323,7 @@ void PropMesher::build_mesh_into(RID mesh) {
 		VS::get_singleton()->mesh_surface_set_material(mesh, 0, _material->get_rid());
 }
 
-void PropMesher::generate_normals(bool p_flip) {
+void PropMesher2D::generate_normals(bool p_flip) {
 	_format = _format | VisualServer::ARRAY_FORMAT_NORMAL;
 
 	for (int i = 0; i < _indices.size(); i += 3) {
@@ -355,7 +355,7 @@ void PropMesher::generate_normals(bool p_flip) {
 	}
 }
 
-void PropMesher::remove_doubles() {
+void PropMesher2D::remove_doubles() {
 	if (_vertices.size() == 0)
 		return;
 
@@ -401,7 +401,7 @@ void PropMesher::remove_doubles() {
 }
 
 //lot faster that normal remove_doubles, but false positives can happen curtesy of hash collisions
-void PropMesher::remove_doubles_hashed() {
+void PropMesher2D::remove_doubles_hashed() {
 	if (_vertices.size() == 0)
 		return;
 
@@ -453,7 +453,7 @@ void PropMesher::remove_doubles_hashed() {
 	//print_error("after " + String::num(_vertices.size()) + " " + String::num(duration.count()));
 }
 
-void PropMesher::reset() {
+void PropMesher2D::reset() {
 	_vertices.resize(0);
 	_indices.resize(0);
 
@@ -466,7 +466,7 @@ void PropMesher::reset() {
 	_last_tangent = Plane();
 }
 
-void PropMesher::add_tiled_wall_simple(const int width, const int height, const Transform &transform, const Ref<TiledWallData> &tiled_wall_data, Ref<PropMaterialCache> cache) {
+void PropMesher2D::add_tiled_wall_simple(const int width, const int height, const Transform &transform, const Ref<TiledWallData2D> &tiled_wall_data, Ref<PropMaterialCache2D> cache) {
 	ERR_FAIL_COND(!tiled_wall_data.is_valid());
 	ERR_FAIL_COND(!cache.is_valid());
 	ERR_FAIL_COND(width < 0);
@@ -503,11 +503,11 @@ void PropMesher::add_tiled_wall_simple(const int width, const int height, const 
 		normal_rects.push_back(Rect2(0, 0, 1, 1));
 	}
 
-	TiledWallData::TiledWallTilingType tiling_type = tiled_wall_data->get_tiling_type();
+	TiledWallData2D::TiledWallTilingType tiling_type = tiled_wall_data->get_tiling_type();
 
 	//todo implement flavour!
 
-	if (tiling_type == TiledWallData::TILED_WALL_TILING_TYPE_NONE) {
+	if (tiling_type == TiledWallData2D::TILED_WALL_TILING_TYPE_NONE) {
 		Rect2 r = normal_rects[0];
 
 		if (flavour_rects.size() == 0) {
@@ -529,7 +529,7 @@ void PropMesher::add_tiled_wall_simple(const int width, const int height, const 
 				}
 			}
 		}
-	} else if (tiling_type == TiledWallData::TILED_WALL_TILING_TYPE_HORIZONTAL) {
+	} else if (tiling_type == TiledWallData2D::TILED_WALL_TILING_TYPE_HORIZONTAL) {
 		Rect2 r;
 
 		if (flavour_rects.size() == 0) {
@@ -555,7 +555,7 @@ void PropMesher::add_tiled_wall_simple(const int width, const int height, const 
 				}
 			}
 		}
-	} else if (tiling_type == TiledWallData::TILED_WALL_TILING_TYPE_VERTICAL) {
+	} else if (tiling_type == TiledWallData2D::TILED_WALL_TILING_TYPE_VERTICAL) {
 		Rect2 r;
 
 		if (flavour_rects.size() == 0) {
@@ -581,7 +581,7 @@ void PropMesher::add_tiled_wall_simple(const int width, const int height, const 
 				}
 			}
 		}
-	} else if (tiling_type == TiledWallData::TILED_WALL_TILING_TYPE_BOTH) {
+	} else if (tiling_type == TiledWallData2D::TILED_WALL_TILING_TYPE_BOTH) {
 		Rect2 r;
 
 		if (flavour_rects.size() == 0) {
@@ -610,7 +610,7 @@ void PropMesher::add_tiled_wall_simple(const int width, const int height, const 
 	}
 }
 
-void PropMesher::add_tiled_wall_mesh_rect_simple(const int x, const int y, const Transform &transform, const Rect2 &texture_rect) {
+void PropMesher2D::add_tiled_wall_mesh_rect_simple(const int x, const int y, const Transform &transform, const Rect2 &texture_rect) {
 	int vc = get_vertex_count();
 
 	//x + 1, y
@@ -641,7 +641,7 @@ void PropMesher::add_tiled_wall_mesh_rect_simple(const int x, const int y, const
 	add_indices(vc + 0);
 }
 
-_FORCE_INLINE_ Vector2 PropMesher::transform_uv(const Vector2 &uv, const Rect2 &rect) const {
+_FORCE_INLINE_ Vector2 PropMesher2D::transform_uv(const Vector2 &uv, const Rect2 &rect) const {
 	Vector2 ruv = uv;
 
 	ruv.x *= rect.size.x;
@@ -653,13 +653,13 @@ _FORCE_INLINE_ Vector2 PropMesher::transform_uv(const Vector2 &uv, const Rect2 &
 }
 
 #ifdef MESH_DATA_RESOURCE_PRESENT
-void PropMesher::add_mesh_data_resource(Ref<MeshDataResource> mesh, const Vector3 position, const Vector3 rotation, const Vector3 scale, const Rect2 uv_rect) {
+void PropMesher2D::add_mesh_data_resource(Ref<MeshDataResource> mesh, const Vector3 position, const Vector3 rotation, const Vector3 scale, const Rect2 uv_rect) {
 	Transform transform = Transform(Basis(rotation).scaled(scale), position);
 
 	add_mesh_data_resource_transform(mesh, transform, uv_rect);
 }
 
-void PropMesher::add_mesh_data_resource_transform(Ref<MeshDataResource> mesh, const Transform transform, const Rect2 uv_rect) {
+void PropMesher2D::add_mesh_data_resource_transform(Ref<MeshDataResource> mesh, const Transform transform, const Rect2 uv_rect) {
 	if (mesh->get_array().size() == 0)
 		return;
 
@@ -703,7 +703,7 @@ void PropMesher::add_mesh_data_resource_transform(Ref<MeshDataResource> mesh, co
 	}
 }
 
-void PropMesher::add_mesh_data_resource_transform_colored(Ref<MeshDataResource> mesh, const Transform transform, const PoolColorArray &colors, const Rect2 uv_rect) {
+void PropMesher2D::add_mesh_data_resource_transform_colored(Ref<MeshDataResource> mesh, const Transform transform, const PoolColorArray &colors, const Rect2 uv_rect) {
 	if (mesh->get_array().size() == 0)
 		return;
 
@@ -748,7 +748,7 @@ void PropMesher::add_mesh_data_resource_transform_colored(Ref<MeshDataResource> 
 #endif
 
 //Data Management functions
-void PropMesher::generate_ao() {
+void PropMesher2D::generate_ao() {
 	/*
 	ERR_FAIL_COND(!_chunk.is_valid());
 
@@ -787,7 +787,7 @@ void PropMesher::generate_ao() {
 	}*/
 }
 
-float PropMesher::get_random_ao(const Vector3 &position) {
+float PropMesher2D::get_random_ao(const Vector3 &position) {
 	float val = _noise->get_noise_3d(position.x, position.y, position.z);
 
 	val *= _rao_scale_factor;
@@ -801,12 +801,12 @@ float PropMesher::get_random_ao(const Vector3 &position) {
 	return val;
 }
 
-Color PropMesher::get_light_color_at(const Vector3 &position, const Vector3 &normal) {
+Color PropMesher2D::get_light_color_at(const Vector3 &position, const Vector3 &normal) {
 	Vector3 v_lightDiffuse;
 
 	//calculate the lights value
 	for (int i = 0; i < _lights.size(); ++i) {
-		Ref<PropLight> light = _lights.get(i);
+		Ref<PropLight2D> light = _lights.get(i);
 
 		Vector3 lightDir = light->get_position() - position;
 
@@ -843,10 +843,10 @@ Color PropMesher::get_light_color_at(const Vector3 &position, const Vector3 &nor
 	return Color(v_lightDiffuse.x, v_lightDiffuse.y, v_lightDiffuse.z);
 }
 
-void PropMesher::add_mesher(const Ref<PropMesher> &mesher) {
+void PropMesher2D::add_mesher(const Ref<PropMesher2D> &mesher) {
 	call("_add_mesher", mesher);
 }
-void PropMesher::_add_mesher(const Ref<PropMesher> &mesher) {
+void PropMesher2D::_add_mesher(const Ref<PropMesher2D> &mesher) {
 	int orig_size = _vertices.size();
 
 	_vertices.append_array(mesher->_vertices);
@@ -864,14 +864,14 @@ void PropMesher::_add_mesher(const Ref<PropMesher> &mesher) {
 	}
 }
 
-void PropMesher::add_light(const Ref<PropLight> &light) {
+void PropMesher2D::add_light(const Ref<PropLight2D> &light) {
 	_lights.push_back(light);
 }
-void PropMesher::clear_lights() {
+void PropMesher2D::clear_lights() {
 	_lights.clear();
 }
 
-PoolVector<Vector3> PropMesher::build_collider() const {
+PoolVector<Vector3> PropMesher2D::build_collider() const {
 	PoolVector<Vector3> face_points;
 
 	if (_vertices.size() == 0)
@@ -901,13 +901,13 @@ PoolVector<Vector3> PropMesher::build_collider() const {
 	return face_points;
 }
 
-void PropMesher::bake_colors() {
-	if ((get_build_flags() & PropMesher::BUILD_FLAG_USE_LIGHTING) == 0) {
+void PropMesher2D::bake_colors() {
+	if ((get_build_flags() & PropMesher2D::BUILD_FLAG_USE_LIGHTING) == 0) {
 		return;
 	}
 
-	bool rao = (get_build_flags() & PropMesher::BUILD_FLAG_USE_RAO) != 0;
-	bool lights = (get_build_flags() & PropMesher::BUILD_FLAG_BAKE_LIGHTS) != 0;
+	bool rao = (get_build_flags() & PropMesher2D::BUILD_FLAG_USE_RAO) != 0;
+	bool lights = (get_build_flags() & PropMesher2D::BUILD_FLAG_BAKE_LIGHTS) != 0;
 
 	if (rao && lights) {
 		bake_colors_lights_rao();
@@ -925,7 +925,7 @@ void PropMesher::bake_colors() {
 	}
 }
 
-void PropMesher::bake_colors_rao() {
+void PropMesher2D::bake_colors_rao() {
 	for (int i = 0; i < _vertices.size(); ++i) {
 		Vertex vertex = _vertices[i];
 		Vector3 vert = vertex.vertex;
@@ -949,7 +949,7 @@ void PropMesher::bake_colors_rao() {
 		_vertices.set(i, vertex);
 	}
 }
-void PropMesher::bake_colors_lights_rao() {
+void PropMesher2D::bake_colors_lights_rao() {
 	for (int i = 0; i < _vertices.size(); ++i) {
 		Vertex vertex = _vertices[i];
 		Vector3 vert = vertex.vertex;
@@ -977,7 +977,7 @@ void PropMesher::bake_colors_lights_rao() {
 		_vertices.set(i, vertex);
 	}
 }
-void PropMesher::bake_colors_lights() {
+void PropMesher2D::bake_colors_lights() {
 	for (int i = 0; i < _vertices.size(); ++i) {
 		Vertex vertex = _vertices[i];
 		Vector3 vert = vertex.vertex;
@@ -1001,7 +1001,7 @@ void PropMesher::bake_colors_lights() {
 }
 
 #ifdef TERRAMAN_PRESENT
-void PropMesher::bake_lights(MeshInstance *node, Vector<Ref<TerraLight>> &lights) {
+void PropMesher2D::bake_lights(MeshInstance *node, Vector<Ref<TerraLight>> &lights) {
 	ERR_FAIL_COND(node == NULL);
 
 	Color darkColor(0, 0, 0, 1);
@@ -1089,7 +1089,7 @@ void PropMesher::bake_lights(MeshInstance *node, Vector<Ref<TerraLight>> &lights
 }
 #endif
 
-PoolVector<Vector3> PropMesher::get_vertices() const {
+PoolVector<Vector3> PropMesher2D::get_vertices() const {
 	PoolVector<Vector3> arr;
 
 	arr.resize(_vertices.size());
@@ -1100,7 +1100,7 @@ PoolVector<Vector3> PropMesher::get_vertices() const {
 	return arr;
 }
 
-void PropMesher::set_vertices(const PoolVector<Vector3> &values) {
+void PropMesher2D::set_vertices(const PoolVector<Vector3> &values) {
 	ERR_FAIL_COND(values.size() != _vertices.size());
 
 	for (int i = 0; i < _vertices.size(); ++i) {
@@ -1112,11 +1112,11 @@ void PropMesher::set_vertices(const PoolVector<Vector3> &values) {
 	}
 }
 
-int PropMesher::get_vertex_count() const {
+int PropMesher2D::get_vertex_count() const {
 	return _vertices.size();
 }
 
-void PropMesher::add_vertex(const Vector3 &vertex) {
+void PropMesher2D::add_vertex(const Vector3 &vertex) {
 	Vertex vtx;
 	vtx.vertex = vertex;
 	vtx.color = _last_color;
@@ -1132,15 +1132,15 @@ void PropMesher::add_vertex(const Vector3 &vertex) {
 	_vertices.push_back(vtx);
 }
 
-Vector3 PropMesher::get_vertex(const int idx) const {
+Vector3 PropMesher2D::get_vertex(const int idx) const {
 	return _vertices.get(idx).vertex;
 }
 
-void PropMesher::remove_vertex(const int idx) {
+void PropMesher2D::remove_vertex(const int idx) {
 	_vertices.remove(idx);
 }
 
-PoolVector<Vector3> PropMesher::get_normals() const {
+PoolVector<Vector3> PropMesher2D::get_normals() const {
 	PoolVector<Vector3> arr;
 
 	arr.resize(_vertices.size());
@@ -1151,7 +1151,7 @@ PoolVector<Vector3> PropMesher::get_normals() const {
 	return arr;
 }
 
-void PropMesher::set_normals(const PoolVector<Vector3> &values) {
+void PropMesher2D::set_normals(const PoolVector<Vector3> &values) {
 	ERR_FAIL_COND(values.size() != _vertices.size());
 
 	for (int i = 0; i < _vertices.size(); ++i) {
@@ -1163,15 +1163,15 @@ void PropMesher::set_normals(const PoolVector<Vector3> &values) {
 	}
 }
 
-void PropMesher::add_normal(const Vector3 &normal) {
+void PropMesher2D::add_normal(const Vector3 &normal) {
 	_last_normal = normal;
 }
 
-Vector3 PropMesher::get_normal(int idx) const {
+Vector3 PropMesher2D::get_normal(int idx) const {
 	return _vertices.get(idx).normal;
 }
 
-PoolVector<Color> PropMesher::get_colors() const {
+PoolVector<Color> PropMesher2D::get_colors() const {
 	PoolVector<Color> arr;
 
 	arr.resize(_vertices.size());
@@ -1182,7 +1182,7 @@ PoolVector<Color> PropMesher::get_colors() const {
 	return arr;
 }
 
-void PropMesher::set_colors(const PoolVector<Color> &values) {
+void PropMesher2D::set_colors(const PoolVector<Color> &values) {
 	ERR_FAIL_COND(values.size() != _vertices.size());
 
 	for (int i = 0; i < _vertices.size(); ++i) {
@@ -1194,15 +1194,15 @@ void PropMesher::set_colors(const PoolVector<Color> &values) {
 	}
 }
 
-void PropMesher::add_color(const Color &color) {
+void PropMesher2D::add_color(const Color &color) {
 	_last_color = color;
 }
 
-Color PropMesher::get_color(const int idx) const {
+Color PropMesher2D::get_color(const int idx) const {
 	return _vertices.get(idx).color;
 }
 
-PoolVector<Vector2> PropMesher::get_uvs() const {
+PoolVector<Vector2> PropMesher2D::get_uvs() const {
 	PoolVector<Vector2> arr;
 
 	arr.resize(_vertices.size());
@@ -1213,7 +1213,7 @@ PoolVector<Vector2> PropMesher::get_uvs() const {
 	return arr;
 }
 
-void PropMesher::set_uvs(const PoolVector<Vector2> &values) {
+void PropMesher2D::set_uvs(const PoolVector<Vector2> &values) {
 	ERR_FAIL_COND(values.size() != _vertices.size());
 
 	for (int i = 0; i < _vertices.size(); ++i) {
@@ -1225,15 +1225,15 @@ void PropMesher::set_uvs(const PoolVector<Vector2> &values) {
 	}
 }
 
-void PropMesher::add_uv(const Vector2 &uv) {
+void PropMesher2D::add_uv(const Vector2 &uv) {
 	_last_uv = uv;
 }
 
-Vector2 PropMesher::get_uv(const int idx) const {
+Vector2 PropMesher2D::get_uv(const int idx) const {
 	return _vertices.get(idx).uv;
 }
 
-PoolVector<Vector2> PropMesher::get_uv2s() const {
+PoolVector<Vector2> PropMesher2D::get_uv2s() const {
 	PoolVector<Vector2> arr;
 
 	arr.resize(_vertices.size());
@@ -1244,7 +1244,7 @@ PoolVector<Vector2> PropMesher::get_uv2s() const {
 	return arr;
 }
 
-void PropMesher::set_uv2s(const PoolVector<Vector2> &values) {
+void PropMesher2D::set_uv2s(const PoolVector<Vector2> &values) {
 	ERR_FAIL_COND(values.size() != _vertices.size());
 
 	for (int i = 0; i < _vertices.size(); ++i) {
@@ -1256,39 +1256,39 @@ void PropMesher::set_uv2s(const PoolVector<Vector2> &values) {
 	}
 }
 
-void PropMesher::add_uv2(const Vector2 &uv) {
+void PropMesher2D::add_uv2(const Vector2 &uv) {
 	_last_uv2 = uv;
 }
 
-Vector2 PropMesher::get_uv2(const int idx) const {
+Vector2 PropMesher2D::get_uv2(const int idx) const {
 	return _vertices.get(idx).uv2;
 }
 
-PoolVector<int> PropMesher::get_indices() const {
+PoolVector<int> PropMesher2D::get_indices() const {
 	return _indices;
 }
 
-void PropMesher::set_indices(const PoolVector<int> &values) {
+void PropMesher2D::set_indices(const PoolVector<int> &values) {
 	_indices = values;
 }
 
-int PropMesher::get_indices_count() const {
+int PropMesher2D::get_indices_count() const {
 	return _indices.size();
 }
 
-void PropMesher::add_indices(const int index) {
+void PropMesher2D::add_indices(const int index) {
 	_indices.push_back(index);
 }
 
-int PropMesher::get_index(const int idx) const {
+int PropMesher2D::get_index(const int idx) const {
 	return _indices.get(idx);
 }
 
-void PropMesher::remove_index(const int idx) {
+void PropMesher2D::remove_index(const int idx) {
 	_indices.remove(idx);
 }
 
-PropMesher::PropMesher() {
+PropMesher2D::PropMesher2D() {
 	_mesher_index = 0;
 	_voxel_scale = 1;
 	_ao_strength = 0.25;
@@ -1313,120 +1313,120 @@ PropMesher::PropMesher() {
 	_rao_seed = 2134;
 }
 
-PropMesher::~PropMesher() {
+PropMesher2D::~PropMesher2D() {
 }
 
-void PropMesher::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_channel_index_type"), &PropMesher::get_channel_index_type);
-	ClassDB::bind_method(D_METHOD("set_channel_index_type", "value"), &PropMesher::set_channel_index_type);
+void PropMesher2D::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_channel_index_type"), &PropMesher2D::get_channel_index_type);
+	ClassDB::bind_method(D_METHOD("set_channel_index_type", "value"), &PropMesher2D::set_channel_index_type);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "channel_index_type"), "set_channel_index_type", "get_channel_index_type");
 
-	ClassDB::bind_method(D_METHOD("get_channel_index_isolevel"), &PropMesher::get_channel_index_isolevel);
-	ClassDB::bind_method(D_METHOD("set_channel_index_isolevel", "value"), &PropMesher::set_channel_index_isolevel);
+	ClassDB::bind_method(D_METHOD("get_channel_index_isolevel"), &PropMesher2D::get_channel_index_isolevel);
+	ClassDB::bind_method(D_METHOD("set_channel_index_isolevel", "value"), &PropMesher2D::set_channel_index_isolevel);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "channel_index_isolevel"), "set_channel_index_isolevel", "get_channel_index_isolevel");
 
-	ClassDB::bind_method(D_METHOD("get_mesher_index"), &PropMesher::get_mesher_index);
-	ClassDB::bind_method(D_METHOD("set_mesher_index", "value"), &PropMesher::set_mesher_index);
+	ClassDB::bind_method(D_METHOD("get_mesher_index"), &PropMesher2D::get_mesher_index);
+	ClassDB::bind_method(D_METHOD("set_mesher_index", "value"), &PropMesher2D::set_mesher_index);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "mesher_index"), "set_mesher_index", "get_mesher_index");
 
-	ClassDB::bind_method(D_METHOD("get_format"), &PropMesher::get_format);
-	ClassDB::bind_method(D_METHOD("set_format", "value"), &PropMesher::set_format);
+	ClassDB::bind_method(D_METHOD("get_format"), &PropMesher2D::get_format);
+	ClassDB::bind_method(D_METHOD("set_format", "value"), &PropMesher2D::set_format);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "format"), "set_format", "get_format");
 
-	ClassDB::bind_method(D_METHOD("get_texture_scale"), &PropMesher::get_texture_scale);
-	ClassDB::bind_method(D_METHOD("set_texture_scale", "value"), &PropMesher::set_texture_scale);
+	ClassDB::bind_method(D_METHOD("get_texture_scale"), &PropMesher2D::get_texture_scale);
+	ClassDB::bind_method(D_METHOD("set_texture_scale", "value"), &PropMesher2D::set_texture_scale);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "texture_scale"), "set_texture_scale", "get_texture_scale");
 
-	ClassDB::bind_method(D_METHOD("get_material"), &PropMesher::get_material);
-	ClassDB::bind_method(D_METHOD("set_material", "value"), &PropMesher::set_material);
+	ClassDB::bind_method(D_METHOD("get_material"), &PropMesher2D::get_material);
+	ClassDB::bind_method(D_METHOD("set_material", "value"), &PropMesher2D::set_material);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "material", PROPERTY_HINT_RESOURCE_TYPE, "Material"), "set_material", "get_material");
 
-	ClassDB::bind_method(D_METHOD("get_voxel_scale"), &PropMesher::get_voxel_scale);
-	ClassDB::bind_method(D_METHOD("set_voxel_scale", "value"), &PropMesher::set_voxel_scale);
+	ClassDB::bind_method(D_METHOD("get_voxel_scale"), &PropMesher2D::get_voxel_scale);
+	ClassDB::bind_method(D_METHOD("set_voxel_scale", "value"), &PropMesher2D::set_voxel_scale);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "voxel_scale"), "set_voxel_scale", "get_voxel_scale");
 
-	ClassDB::bind_method(D_METHOD("get_ao_strength"), &PropMesher::get_ao_strength);
-	ClassDB::bind_method(D_METHOD("set_ao_strength", "value"), &PropMesher::set_ao_strength);
+	ClassDB::bind_method(D_METHOD("get_ao_strength"), &PropMesher2D::get_ao_strength);
+	ClassDB::bind_method(D_METHOD("set_ao_strength", "value"), &PropMesher2D::set_ao_strength);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "ao_strength"), "set_ao_strength", "get_ao_strength");
 
-	ClassDB::bind_method(D_METHOD("get_base_light_value"), &PropMesher::get_base_light_value);
-	ClassDB::bind_method(D_METHOD("set_base_light_value", "value"), &PropMesher::set_base_light_value);
+	ClassDB::bind_method(D_METHOD("get_base_light_value"), &PropMesher2D::get_base_light_value);
+	ClassDB::bind_method(D_METHOD("set_base_light_value", "value"), &PropMesher2D::set_base_light_value);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "base_light_value"), "set_base_light_value", "get_base_light_value");
 
-	ClassDB::bind_method(D_METHOD("get_uv_margin"), &PropMesher::get_uv_margin);
-	ClassDB::bind_method(D_METHOD("set_uv_margin", "value"), &PropMesher::set_uv_margin);
+	ClassDB::bind_method(D_METHOD("get_uv_margin"), &PropMesher2D::get_uv_margin);
+	ClassDB::bind_method(D_METHOD("set_uv_margin", "value"), &PropMesher2D::set_uv_margin);
 	ADD_PROPERTY(PropertyInfo(Variant::RECT2, "uv_margin"), "set_uv_margin", "get_uv_margin");
 
-	ClassDB::bind_method(D_METHOD("get_build_flags"), &PropMesher::get_build_flags);
-	ClassDB::bind_method(D_METHOD("set_build_flags", "value"), &PropMesher::set_build_flags);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "build_flags", PROPERTY_HINT_FLAGS, PropMesher::BINDING_STRING_BUILD_FLAGS), "set_build_flags", "get_build_flags");
+	ClassDB::bind_method(D_METHOD("get_build_flags"), &PropMesher2D::get_build_flags);
+	ClassDB::bind_method(D_METHOD("set_build_flags", "value"), &PropMesher2D::set_build_flags);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "build_flags", PROPERTY_HINT_FLAGS, PropMesher2D::BINDING_STRING_BUILD_FLAGS), "set_build_flags", "get_build_flags");
 
-	ClassDB::bind_method(D_METHOD("add_tiled_wall_simple", "width", "height", "transform", "tiled_wall_data", "cache"), &PropMesher::add_tiled_wall_simple);
-	ClassDB::bind_method(D_METHOD("add_tiled_wall_mesh_rect_simple", "x", "y", "transform", "texture_rect"), &PropMesher::add_tiled_wall_mesh_rect_simple);
-	ClassDB::bind_method(D_METHOD("transform_uv", "uv", "rect"), &PropMesher::transform_uv);
+	ClassDB::bind_method(D_METHOD("add_tiled_wall_simple", "width", "height", "transform", "tiled_wall_data", "cache"), &PropMesher2D::add_tiled_wall_simple);
+	ClassDB::bind_method(D_METHOD("add_tiled_wall_mesh_rect_simple", "x", "y", "transform", "texture_rect"), &PropMesher2D::add_tiled_wall_mesh_rect_simple);
+	ClassDB::bind_method(D_METHOD("transform_uv", "uv", "rect"), &PropMesher2D::transform_uv);
 
 #ifdef MESH_DATA_RESOURCE_PRESENT
-	ClassDB::bind_method(D_METHOD("add_mesh_data_resource", "mesh", "position", "rotation", "scale", "uv_rect"), &PropMesher::add_mesh_data_resource, DEFVAL(Rect2(0, 0, 1, 1)), DEFVAL(Vector3(1.0, 1.0, 1.0)), DEFVAL(Vector3()), DEFVAL(Vector3()));
-	ClassDB::bind_method(D_METHOD("add_mesh_data_resource_transform", "mesh", "transform", "uv_rect"), &PropMesher::add_mesh_data_resource_transform, DEFVAL(Rect2(0, 0, 1, 1)));
-	ClassDB::bind_method(D_METHOD("add_mesh_data_resource_transform_colored", "mesh", "transform", "colors", "uv_rect"), &PropMesher::add_mesh_data_resource_transform_colored, DEFVAL(Rect2(0, 0, 1, 1)));
+	ClassDB::bind_method(D_METHOD("add_mesh_data_resource", "mesh", "position", "rotation", "scale", "uv_rect"), &PropMesher2D::add_mesh_data_resource, DEFVAL(Rect2(0, 0, 1, 1)), DEFVAL(Vector3(1.0, 1.0, 1.0)), DEFVAL(Vector3()), DEFVAL(Vector3()));
+	ClassDB::bind_method(D_METHOD("add_mesh_data_resource_transform", "mesh", "transform", "uv_rect"), &PropMesher2D::add_mesh_data_resource_transform, DEFVAL(Rect2(0, 0, 1, 1)));
+	ClassDB::bind_method(D_METHOD("add_mesh_data_resource_transform_colored", "mesh", "transform", "colors", "uv_rect"), &PropMesher2D::add_mesh_data_resource_transform_colored, DEFVAL(Rect2(0, 0, 1, 1)));
 #endif
 
-	ClassDB::bind_method(D_METHOD("generate_ao"), &PropMesher::generate_ao);
-	ClassDB::bind_method(D_METHOD("get_random_ao", "position"), &PropMesher::get_random_ao);
+	ClassDB::bind_method(D_METHOD("generate_ao"), &PropMesher2D::generate_ao);
+	ClassDB::bind_method(D_METHOD("get_random_ao", "position"), &PropMesher2D::get_random_ao);
 
-	BIND_VMETHOD(MethodInfo("_add_mesher", PropertyInfo(Variant::OBJECT, "mesher", PROPERTY_HINT_RESOURCE_TYPE, "PropMesher")));
-	ClassDB::bind_method(D_METHOD("add_mesher", "mesher"), &PropMesher::add_mesher);
-	ClassDB::bind_method(D_METHOD("_add_mesher", "mesher"), &PropMesher::_add_mesher);
+	BIND_VMETHOD(MethodInfo("_add_mesher", PropertyInfo(Variant::OBJECT, "mesher", PROPERTY_HINT_RESOURCE_TYPE, "PropMesher2D")));
+	ClassDB::bind_method(D_METHOD("add_mesher", "mesher"), &PropMesher2D::add_mesher);
+	ClassDB::bind_method(D_METHOD("_add_mesher", "mesher"), &PropMesher2D::_add_mesher);
 
-	ClassDB::bind_method(D_METHOD("add_light", "light"), &PropMesher::add_light);
-	ClassDB::bind_method(D_METHOD("clear_lights"), &PropMesher::clear_lights);
+	ClassDB::bind_method(D_METHOD("add_light", "light"), &PropMesher2D::add_light);
+	ClassDB::bind_method(D_METHOD("clear_lights"), &PropMesher2D::clear_lights);
 
-	ClassDB::bind_method(D_METHOD("get_vertices"), &PropMesher::get_vertices);
-	ClassDB::bind_method(D_METHOD("set_vertices", "values"), &PropMesher::set_vertices);
-	ClassDB::bind_method(D_METHOD("get_vertex_count"), &PropMesher::get_vertex_count);
-	ClassDB::bind_method(D_METHOD("get_vertex", "idx"), &PropMesher::get_vertex);
-	ClassDB::bind_method(D_METHOD("remove_vertex", "idx"), &PropMesher::remove_vertex);
-	ClassDB::bind_method(D_METHOD("add_vertex", "vertex"), &PropMesher::add_vertex);
+	ClassDB::bind_method(D_METHOD("get_vertices"), &PropMesher2D::get_vertices);
+	ClassDB::bind_method(D_METHOD("set_vertices", "values"), &PropMesher2D::set_vertices);
+	ClassDB::bind_method(D_METHOD("get_vertex_count"), &PropMesher2D::get_vertex_count);
+	ClassDB::bind_method(D_METHOD("get_vertex", "idx"), &PropMesher2D::get_vertex);
+	ClassDB::bind_method(D_METHOD("remove_vertex", "idx"), &PropMesher2D::remove_vertex);
+	ClassDB::bind_method(D_METHOD("add_vertex", "vertex"), &PropMesher2D::add_vertex);
 
-	ClassDB::bind_method(D_METHOD("get_normals"), &PropMesher::get_normals);
-	ClassDB::bind_method(D_METHOD("set_normals", "values"), &PropMesher::set_normals);
-	ClassDB::bind_method(D_METHOD("get_normal", "idx"), &PropMesher::get_normal);
-	ClassDB::bind_method(D_METHOD("add_normal", "normal"), &PropMesher::add_normal);
+	ClassDB::bind_method(D_METHOD("get_normals"), &PropMesher2D::get_normals);
+	ClassDB::bind_method(D_METHOD("set_normals", "values"), &PropMesher2D::set_normals);
+	ClassDB::bind_method(D_METHOD("get_normal", "idx"), &PropMesher2D::get_normal);
+	ClassDB::bind_method(D_METHOD("add_normal", "normal"), &PropMesher2D::add_normal);
 
-	ClassDB::bind_method(D_METHOD("get_colors"), &PropMesher::get_colors);
-	ClassDB::bind_method(D_METHOD("set_colors", "values"), &PropMesher::set_colors);
-	ClassDB::bind_method(D_METHOD("get_color", "idx"), &PropMesher::get_color);
-	ClassDB::bind_method(D_METHOD("add_color", "color"), &PropMesher::add_color);
+	ClassDB::bind_method(D_METHOD("get_colors"), &PropMesher2D::get_colors);
+	ClassDB::bind_method(D_METHOD("set_colors", "values"), &PropMesher2D::set_colors);
+	ClassDB::bind_method(D_METHOD("get_color", "idx"), &PropMesher2D::get_color);
+	ClassDB::bind_method(D_METHOD("add_color", "color"), &PropMesher2D::add_color);
 
-	ClassDB::bind_method(D_METHOD("get_uvs"), &PropMesher::get_uvs);
-	ClassDB::bind_method(D_METHOD("set_uvs", "values"), &PropMesher::set_uvs);
-	ClassDB::bind_method(D_METHOD("get_uv", "idx"), &PropMesher::get_uv);
-	ClassDB::bind_method(D_METHOD("add_uv", "uv"), &PropMesher::add_uv);
+	ClassDB::bind_method(D_METHOD("get_uvs"), &PropMesher2D::get_uvs);
+	ClassDB::bind_method(D_METHOD("set_uvs", "values"), &PropMesher2D::set_uvs);
+	ClassDB::bind_method(D_METHOD("get_uv", "idx"), &PropMesher2D::get_uv);
+	ClassDB::bind_method(D_METHOD("add_uv", "uv"), &PropMesher2D::add_uv);
 
-	ClassDB::bind_method(D_METHOD("get_uv2s"), &PropMesher::get_uv2s);
-	ClassDB::bind_method(D_METHOD("set_uv2s", "values"), &PropMesher::set_uv2s);
-	ClassDB::bind_method(D_METHOD("get_uv2", "idx"), &PropMesher::get_uv2);
-	ClassDB::bind_method(D_METHOD("add_uv2", "uv"), &PropMesher::add_uv2);
+	ClassDB::bind_method(D_METHOD("get_uv2s"), &PropMesher2D::get_uv2s);
+	ClassDB::bind_method(D_METHOD("set_uv2s", "values"), &PropMesher2D::set_uv2s);
+	ClassDB::bind_method(D_METHOD("get_uv2", "idx"), &PropMesher2D::get_uv2);
+	ClassDB::bind_method(D_METHOD("add_uv2", "uv"), &PropMesher2D::add_uv2);
 
-	ClassDB::bind_method(D_METHOD("get_indices"), &PropMesher::get_indices);
-	ClassDB::bind_method(D_METHOD("set_indices", "values"), &PropMesher::set_indices);
-	ClassDB::bind_method(D_METHOD("get_indices_count"), &PropMesher::get_indices_count);
-	ClassDB::bind_method(D_METHOD("get_index", "idx"), &PropMesher::get_index);
-	ClassDB::bind_method(D_METHOD("remove_index", "idx"), &PropMesher::remove_index);
-	ClassDB::bind_method(D_METHOD("add_indices", "indice"), &PropMesher::add_indices);
+	ClassDB::bind_method(D_METHOD("get_indices"), &PropMesher2D::get_indices);
+	ClassDB::bind_method(D_METHOD("set_indices", "values"), &PropMesher2D::set_indices);
+	ClassDB::bind_method(D_METHOD("get_indices_count"), &PropMesher2D::get_indices_count);
+	ClassDB::bind_method(D_METHOD("get_index", "idx"), &PropMesher2D::get_index);
+	ClassDB::bind_method(D_METHOD("remove_index", "idx"), &PropMesher2D::remove_index);
+	ClassDB::bind_method(D_METHOD("add_indices", "indice"), &PropMesher2D::add_indices);
 
-	ClassDB::bind_method(D_METHOD("reset"), &PropMesher::reset);
+	ClassDB::bind_method(D_METHOD("reset"), &PropMesher2D::reset);
 
-	//ClassDB::bind_method(D_METHOD("calculate_vertex_ambient_occlusion", "meshinstance_path", "radius", "intensity", "sampleCount"), &PropMesher::calculate_vertex_ambient_occlusion_path);
+	//ClassDB::bind_method(D_METHOD("calculate_vertex_ambient_occlusion", "meshinstance_path", "radius", "intensity", "sampleCount"), &PropMesher2D::calculate_vertex_ambient_occlusion_path);
 
-	ClassDB::bind_method(D_METHOD("build_mesh"), &PropMesher::build_mesh);
-	ClassDB::bind_method(D_METHOD("build_mesh_into", "mesh_rid"), &PropMesher::build_mesh_into);
-	ClassDB::bind_method(D_METHOD("build_collider"), &PropMesher::build_collider);
+	ClassDB::bind_method(D_METHOD("build_mesh"), &PropMesher2D::build_mesh);
+	ClassDB::bind_method(D_METHOD("build_mesh_into", "mesh_rid"), &PropMesher2D::build_mesh_into);
+	ClassDB::bind_method(D_METHOD("build_collider"), &PropMesher2D::build_collider);
 
-	ClassDB::bind_method(D_METHOD("bake_colors"), &PropMesher::bake_colors);
+	ClassDB::bind_method(D_METHOD("bake_colors"), &PropMesher2D::bake_colors);
 
-	ClassDB::bind_method(D_METHOD("generate_normals", "flip"), &PropMesher::generate_normals, DEFVAL(false));
+	ClassDB::bind_method(D_METHOD("generate_normals", "flip"), &PropMesher2D::generate_normals, DEFVAL(false));
 
-	ClassDB::bind_method(D_METHOD("remove_doubles"), &PropMesher::remove_doubles);
-	ClassDB::bind_method(D_METHOD("remove_doubles_hashed"), &PropMesher::remove_doubles_hashed);
+	ClassDB::bind_method(D_METHOD("remove_doubles"), &PropMesher2D::remove_doubles);
+	ClassDB::bind_method(D_METHOD("remove_doubles_hashed"), &PropMesher2D::remove_doubles_hashed);
 }

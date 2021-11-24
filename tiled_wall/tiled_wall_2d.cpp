@@ -25,30 +25,30 @@
 #include "core/core_string_names.h"
 #include "tiled_wall_data_2d.h"
 
-int TiledWall::get_width() const {
+int TiledWall2D::get_width() const {
 	return _width;
 }
-void TiledWall::set_width(const int value) {
+void TiledWall2D::set_width(const int value) {
 	_width = value;
 
 	clear_mesh();
 	generate_mesh();
 }
 
-int TiledWall::get_heigth() const {
+int TiledWall2D::get_heigth() const {
 	return _height;
 }
-void TiledWall::set_heigth(const int value) {
+void TiledWall2D::set_heigth(const int value) {
 	_height = value;
 
 	clear_mesh();
 	generate_mesh();
 }
 
-Ref<TiledWallData> TiledWall::get_data() {
+Ref<TiledWallData2D> TiledWall2D::get_data() {
 	return _data;
 }
-void TiledWall::set_data(const Ref<TiledWallData> &data) {
+void TiledWall2D::set_data(const Ref<TiledWallData2D> &data) {
 	if (_data.is_valid()) {
 		_data->disconnect(CoreStringNames::get_singleton()->changed, this, "refresh");
 	}
@@ -62,10 +62,10 @@ void TiledWall::set_data(const Ref<TiledWallData> &data) {
 	call_deferred("refresh");
 }
 
-bool TiledWall::get_collision() const {
+bool TiledWall2D::get_collision() const {
 	return _collision;
 }
-void TiledWall::set_collision(const int value) {
+void TiledWall2D::set_collision(const int value) {
 	_collision = value;
 
 	/*
@@ -80,11 +80,11 @@ void TiledWall::set_collision(const int value) {
 	}*/
 }
 
-uint32_t TiledWall::get_collision_layer() const {
+uint32_t TiledWall2D::get_collision_layer() const {
 	return _collision_layer;
 }
 
-void TiledWall::set_collision_layer(uint32_t p_layer) {
+void TiledWall2D::set_collision_layer(uint32_t p_layer) {
 	_collision_layer = p_layer;
 
 	if (_physics_body_rid != RID()) {
@@ -92,11 +92,11 @@ void TiledWall::set_collision_layer(uint32_t p_layer) {
 	}
 }
 
-uint32_t TiledWall::get_collision_mask() const {
+uint32_t TiledWall2D::get_collision_mask() const {
 	return _collision_mask;
 }
 
-void TiledWall::set_collision_mask(uint32_t p_mask) {
+void TiledWall2D::set_collision_mask(uint32_t p_mask) {
 	_collision_mask = p_mask;
 
 	if (_physics_body_rid != RID()) {
@@ -104,11 +104,11 @@ void TiledWall::set_collision_mask(uint32_t p_mask) {
 	}
 }
 
-AABB TiledWall::get_aabb() const {
+AABB TiledWall2D::get_aabb() const {
 	return AABB();
 }
 
-PoolVector<Face3> TiledWall::get_faces(uint32_t p_usage_flags) const {
+PoolVector<Face3> TiledWall2D::get_faces(uint32_t p_usage_flags) const {
 	PoolVector<Face3> faces;
 
 	if (_mesh_array.size() != Mesh::ARRAY_MAX) {
@@ -138,7 +138,7 @@ PoolVector<Face3> TiledWall::get_faces(uint32_t p_usage_flags) const {
 	return faces;
 }
 
-void TiledWall::refresh() {
+void TiledWall2D::refresh() {
 	if (!is_inside_tree()) {
 		return;
 	}
@@ -163,14 +163,14 @@ void TiledWall::refresh() {
 		VS::get_singleton()->instance_set_base(get_instance(), _mesh_rid);
 	}
 
-	Ref<PropMaterialCache> old_cache;
+	Ref<PropMaterialCache2D> old_cache;
 
 	old_cache = _cache;
 
-	_cache = PropCache::get_singleton()->tiled_wall_material_cache_get(_data);
+	_cache = PropCache2D::get_singleton()->tiled_wall_material_cache_get(_data);
 
 	if (old_cache.is_valid() && old_cache != _cache) {
-		PropCache::get_singleton()->tiled_wall_material_cache_unref(old_cache);
+		PropCache2D::get_singleton()->tiled_wall_material_cache_unref(old_cache);
 	}
 
 	if (!_cache->get_initialized()) {
@@ -192,7 +192,7 @@ void TiledWall::refresh() {
 	generate_mesh();
 }
 
-void TiledWall::generate_mesh() {
+void TiledWall2D::generate_mesh() {
 	if (!_data.is_valid()) {
 		return;
 	}
@@ -234,7 +234,7 @@ void TiledWall::generate_mesh() {
 	_aabb.size = Vector3(_width, _height, 0);
 }
 
-void TiledWall::clear_mesh() {
+void TiledWall2D::clear_mesh() {
 	_mesher->reset();
 	_aabb = AABB();
 	_mesh_array.clear();
@@ -249,7 +249,7 @@ void TiledWall::clear_mesh() {
 	}
 }
 
-void TiledWall::free_mesh() {
+void TiledWall2D::free_mesh() {
 	if (_mesh_rid != RID()) {
 		VS::get_singleton()->instance_set_base(get_instance(), RID());
 		VS::get_singleton()->free(_mesh_rid);
@@ -257,7 +257,7 @@ void TiledWall::free_mesh() {
 	}
 }
 
-void TiledWall::create_colliders() {
+void TiledWall2D::create_colliders() {
 	if (!is_inside_tree()) {
 		return;
 	}
@@ -272,7 +272,7 @@ void TiledWall::create_colliders() {
 	PhysicsServer::get_singleton()->body_add_shape(_physics_body_rid, _physics_shape_rid);
 }
 
-void TiledWall::free_colliders() {
+void TiledWall2D::free_colliders() {
 	if (_physics_shape_rid != RID()) {
 		PhysicsServer::get_singleton()->free(_physics_shape_rid);
 
@@ -280,7 +280,7 @@ void TiledWall::free_colliders() {
 	}
 }
 
-TiledWall::TiledWall() {
+TiledWall2D::TiledWall2D() {
 	_width = 1;
 	_height = 1;
 	_collision = true;
@@ -296,7 +296,7 @@ TiledWall::TiledWall() {
 
 	_mesher.instance();
 }
-TiledWall::~TiledWall() {
+TiledWall2D::~TiledWall2D() {
 	_data.unref();
 	_cache.unref();
 	_mesher.unref();
@@ -309,7 +309,7 @@ TiledWall::~TiledWall() {
 	free_colliders();
 }
 
-void TiledWall::_notification(int p_what) {
+void TiledWall2D::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_WORLD: {
 			Transform t = get_global_transform();
@@ -341,38 +341,38 @@ void TiledWall::_notification(int p_what) {
 	}
 }
 
-void TiledWall::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_width"), &TiledWall::get_width);
-	ClassDB::bind_method(D_METHOD("set_width", "value"), &TiledWall::set_width);
+void TiledWall2D::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_width"), &TiledWall2D::get_width);
+	ClassDB::bind_method(D_METHOD("set_width", "value"), &TiledWall2D::set_width);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "width"), "set_width", "get_width");
 
-	ClassDB::bind_method(D_METHOD("get_heigth"), &TiledWall::get_heigth);
-	ClassDB::bind_method(D_METHOD("set_heigth", "value"), &TiledWall::set_heigth);
+	ClassDB::bind_method(D_METHOD("get_heigth"), &TiledWall2D::get_heigth);
+	ClassDB::bind_method(D_METHOD("set_heigth", "value"), &TiledWall2D::set_heigth);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "heigth"), "set_heigth", "get_heigth");
 
-	ClassDB::bind_method(D_METHOD("get_data"), &TiledWall::get_data);
-	ClassDB::bind_method(D_METHOD("set_data", "value"), &TiledWall::set_data);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "TiledWallData"), "set_data", "get_data");
+	ClassDB::bind_method(D_METHOD("get_data"), &TiledWall2D::get_data);
+	ClassDB::bind_method(D_METHOD("set_data", "value"), &TiledWall2D::set_data);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "TiledWallData2D"), "set_data", "get_data");
 
-	ClassDB::bind_method(D_METHOD("get_collision"), &TiledWall::get_collision);
-	ClassDB::bind_method(D_METHOD("set_collision", "value"), &TiledWall::set_collision);
+	ClassDB::bind_method(D_METHOD("get_collision"), &TiledWall2D::get_collision);
+	ClassDB::bind_method(D_METHOD("set_collision", "value"), &TiledWall2D::set_collision);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "collision"), "set_collision", "get_collision");
 
-	ClassDB::bind_method(D_METHOD("get_collision_layer"), &TiledWall::get_collision_layer);
-	ClassDB::bind_method(D_METHOD("set_collision_layer", "value"), &TiledWall::set_collision_layer);
+	ClassDB::bind_method(D_METHOD("get_collision_layer"), &TiledWall2D::get_collision_layer);
+	ClassDB::bind_method(D_METHOD("set_collision_layer", "value"), &TiledWall2D::set_collision_layer);
 
-	ClassDB::bind_method(D_METHOD("get_collision_mask"), &TiledWall::get_collision_mask);
-	ClassDB::bind_method(D_METHOD("set_collision_mask", "value"), &TiledWall::set_collision_mask);
+	ClassDB::bind_method(D_METHOD("get_collision_mask"), &TiledWall2D::get_collision_mask);
+	ClassDB::bind_method(D_METHOD("set_collision_mask", "value"), &TiledWall2D::set_collision_mask);
 
 	ADD_GROUP("Collision", "collision_");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "collision_layer", PROPERTY_HINT_LAYERS_3D_PHYSICS), "set_collision_layer", "get_collision_layer");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "collision_mask", PROPERTY_HINT_LAYERS_3D_PHYSICS), "set_collision_mask", "get_collision_mask");
 
-	ClassDB::bind_method(D_METHOD("refresh"), &TiledWall::refresh);
-	ClassDB::bind_method(D_METHOD("generate_mesh"), &TiledWall::generate_mesh);
-	ClassDB::bind_method(D_METHOD("clear_mesh"), &TiledWall::clear_mesh);
-	ClassDB::bind_method(D_METHOD("free_mesh"), &TiledWall::free_mesh);
+	ClassDB::bind_method(D_METHOD("refresh"), &TiledWall2D::refresh);
+	ClassDB::bind_method(D_METHOD("generate_mesh"), &TiledWall2D::generate_mesh);
+	ClassDB::bind_method(D_METHOD("clear_mesh"), &TiledWall2D::clear_mesh);
+	ClassDB::bind_method(D_METHOD("free_mesh"), &TiledWall2D::free_mesh);
 
-	ClassDB::bind_method(D_METHOD("create_colliders"), &TiledWall::create_colliders);
-	ClassDB::bind_method(D_METHOD("free_colliders"), &TiledWall::free_colliders);
+	ClassDB::bind_method(D_METHOD("create_colliders"), &TiledWall2D::create_colliders);
+	ClassDB::bind_method(D_METHOD("free_colliders"), &TiledWall2D::free_colliders);
 }
