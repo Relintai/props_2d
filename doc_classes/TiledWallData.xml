@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="TiledWallData" inherits="Resource" version="3.5">
+<class name="TiledWall2DData" inherits="Resource" version="3.5">
 	<brief_description>
 	</brief_description>
 	<description>
@@ -9,7 +9,7 @@
 	<methods>
 		<method name="_setup_cache" qualifiers="virtual">
 			<return type="void" />
-			<argument index="0" name="cache" type="PropMaterialCache" />
+			<argument index="0" name="cache" type="Prop2DMaterialCache" />
 			<description>
 			</description>
 		</method>
@@ -33,7 +33,7 @@
 		</method>
 		<method name="copy_from">
 			<return type="void" />
-			<argument index="0" name="prop_data" type="TiledWallData" />
+			<argument index="0" name="prop_data" type="TiledWall2DData" />
 			<description>
 			</description>
 		</method>
@@ -116,7 +116,7 @@
 		</method>
 		<method name="setup_cache">
 			<return type="void" />
-			<argument index="0" name="cache" type="PropMaterialCache" />
+			<argument index="0" name="cache" type="Prop2DMaterialCache" />
 			<description>
 			</description>
 		</method>
@@ -130,17 +130,17 @@
 		</member>
 		<member name="textures" type="Array" setter="set_textures" getter="get_textures" default="[  ]">
 		</member>
-		<member name="tiling_type" type="int" setter="set_tiling_type" getter="get_tiling_type" enum="TiledWallData.TiledWallTilingType" default="0">
+		<member name="tiling_type" type="int" setter="set_tiling_type" getter="get_tiling_type" enum="TiledWall2DData.TiledWall2DTilingType" default="0">
 		</member>
 	</members>
 	<constants>
-		<constant name="TILED_WALL_TILING_TYPE_NONE" value="0" enum="TiledWallTilingType">
+		<constant name="TILED_WALL_TILING_TYPE_NONE" value="0" enum="TiledWall2DTilingType">
 		</constant>
-		<constant name="TILED_WALL_TILING_TYPE_HORIZONTAL" value="1" enum="TiledWallTilingType">
+		<constant name="TILED_WALL_TILING_TYPE_HORIZONTAL" value="1" enum="TiledWall2DTilingType">
 		</constant>
-		<constant name="TILED_WALL_TILING_TYPE_VERTICAL" value="2" enum="TiledWallTilingType">
+		<constant name="TILED_WALL_TILING_TYPE_VERTICAL" value="2" enum="TiledWall2DTilingType">
 		</constant>
-		<constant name="TILED_WALL_TILING_TYPE_BOTH" value="3" enum="TiledWallTilingType">
+		<constant name="TILED_WALL_TILING_TYPE_BOTH" value="3" enum="TiledWall2DTilingType">
 		</constant>
 	</constants>
 </class>

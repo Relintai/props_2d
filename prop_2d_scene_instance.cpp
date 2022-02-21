@@ -8,10 +8,10 @@
 #include "core/engine.h"
 #endif
 
-Ref<PackedScene> PropSceneInstance::get_scene() {
+Ref<PackedScene> Prop2DSceneInstance::get_scene() {
 	return _scene;
 }
-void PropSceneInstance::set_scene(const Ref<PackedScene> &data) {
+void Prop2DSceneInstance::set_scene(const Ref<PackedScene> &data) {
 	if (_scene == data)
 		return;
 
@@ -20,21 +20,21 @@ void PropSceneInstance::set_scene(const Ref<PackedScene> &data) {
 	build();
 }
 
-bool PropSceneInstance::get_snap_to_mesh() const {
+bool Prop2DSceneInstance::get_snap_to_mesh() const {
 	return _snap_to_mesh;
 }
-void PropSceneInstance::set_snap_to_mesh(const bool value) {
+void Prop2DSceneInstance::set_snap_to_mesh(const bool value) {
 	_snap_to_mesh = value;
 }
 
-Vector3 PropSceneInstance::get_snap_axis() const {
+Vector3 Prop2DSceneInstance::get_snap_axis() const {
 	return _snap_axis;
 }
-void PropSceneInstance::set_snap_axis(const Vector3 &value) {
+void Prop2DSceneInstance::set_snap_axis(const Vector3 &value) {
 	_snap_axis = value;
 }
 
-void PropSceneInstance::build() {
+void Prop2DSceneInstance::build() {
 	if (!is_inside_tree()) {
 		return;
 	}
@@ -59,15 +59,15 @@ void PropSceneInstance::build() {
 	//	n->set_owner(get_tree()->get_edited_scene_root());
 }
 
-PropSceneInstance::PropSceneInstance() {
+Prop2DSceneInstance::Prop2DSceneInstance() {
 	_snap_to_mesh = false;
 	_snap_axis = Vector3(0, -1, 0);
 }
-PropSceneInstance::~PropSceneInstance() {
+Prop2DSceneInstance::~Prop2DSceneInstance() {
 	_scene.unref();
 }
 
-void PropSceneInstance::_notification(int p_what) {
+void Prop2DSceneInstance::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE: {
 			build();
@@ -75,18 +75,18 @@ void PropSceneInstance::_notification(int p_what) {
 	}
 }
 
-void PropSceneInstance::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_scene"), &PropSceneInstance::get_scene);
-	ClassDB::bind_method(D_METHOD("set_scene", "value"), &PropSceneInstance::set_scene);
+void Prop2DSceneInstance::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_scene"), &Prop2DSceneInstance::get_scene);
+	ClassDB::bind_method(D_METHOD("set_scene", "value"), &Prop2DSceneInstance::set_scene);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "scene", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"), "set_scene", "get_scene");
 
-	ClassDB::bind_method(D_METHOD("get_snap_to_mesh"), &PropSceneInstance::get_snap_to_mesh);
-	ClassDB::bind_method(D_METHOD("set_snap_to_mesh", "value"), &PropSceneInstance::set_snap_to_mesh);
+	ClassDB::bind_method(D_METHOD("get_snap_to_mesh"), &Prop2DSceneInstance::get_snap_to_mesh);
+	ClassDB::bind_method(D_METHOD("set_snap_to_mesh", "value"), &Prop2DSceneInstance::set_snap_to_mesh);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "snap_to_mesh"), "set_snap_to_mesh", "get_snap_to_mesh");
 
-	ClassDB::bind_method(D_METHOD("get_snap_axis"), &PropSceneInstance::get_snap_axis);
-	ClassDB::bind_method(D_METHOD("set_snap_axis", "value"), &PropSceneInstance::set_snap_axis);
+	ClassDB::bind_method(D_METHOD("get_snap_axis"), &Prop2DSceneInstance::get_snap_axis);
+	ClassDB::bind_method(D_METHOD("set_snap_axis", "value"), &Prop2DSceneInstance::set_snap_axis);
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "snap_axis"), "set_snap_axis", "get_snap_axis");
 
-	ClassDB::bind_method(D_METHOD("build"), &PropSceneInstance::build);
+	ClassDB::bind_method(D_METHOD("build"), &Prop2DSceneInstance::build);
 }

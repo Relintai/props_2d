@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="TiledWall" inherits="GeometryInstance" version="3.5">
+<class name="TiledWall2D" inherits="GeometryInstance" version="3.5">
 	<brief_description>
 	</brief_description>
 	<description>
@@ -45,7 +45,7 @@
 		</member>
 		<member name="collision_mask" type="int" setter="set_collision_mask" getter="get_collision_mask" default="1">
 		</member>
-		<member name="data" type="TiledWallData" setter="set_data" getter="get_data">
+		<member name="data" type="TiledWall2DData" setter="set_data" getter="get_data">
 		</member>
 		<member name="heigth" type="int" setter="set_heigth" getter="get_heigth" default="1">
 		</member>

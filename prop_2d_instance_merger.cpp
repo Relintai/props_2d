@@ -67,12 +67,12 @@ typedef class RenderingServer VS;
 
 #include "scene/resources/box_shape.h"
 
-const float PropInstanceMerger::LOD_CHECK_INTERVAL = 2;
+const float Prop2DInstanceMerger::LOD_CHECK_INTERVAL = 2;
 
-bool PropInstanceMerger::get_building() {
+bool Prop2DInstanceMerger::get_building() {
 	return _building;
 }
-void PropInstanceMerger::set_building(const bool value) {
+void Prop2DInstanceMerger::set_building(const bool value) {
 	_building = value;
 
 	set_physics_process_internal(_building);
@@ -82,10 +82,10 @@ void PropInstanceMerger::set_building(const bool value) {
 	}
 }
 
-int PropInstanceMerger::get_lod_level() {
+int Prop2DInstanceMerger::get_lod_level() {
 	return _lod_level;
 }
-void PropInstanceMerger::set_lod_level(const int value) {
+void Prop2DInstanceMerger::set_lod_level(const int value) {
 	_lod_level = value;
 
 	if (_lod_level < 0) {
@@ -95,33 +95,33 @@ void PropInstanceMerger::set_lod_level(const int value) {
 	apply_lod_level();
 }
 
-bool PropInstanceMerger::get_auto_lod() {
+bool Prop2DInstanceMerger::get_auto_lod() {
 	return _auto_lod;
 }
-void PropInstanceMerger::set_auto_lod(const bool value) {
+void Prop2DInstanceMerger::set_auto_lod(const bool value) {
 	_auto_lod = value;
 
 	check_auto_lod();
 }
 
-float PropInstanceMerger::get_first_lod_distance_squared() {
+float Prop2DInstanceMerger::get_first_lod_distance_squared() {
 	return _first_lod_distance_squared;
 }
-void PropInstanceMerger::set_first_lod_distance_squared(const float dist) {
+void Prop2DInstanceMerger::set_first_lod_distance_squared(const float dist) {
 	_first_lod_distance_squared = dist;
 }
 
-float PropInstanceMerger::get_lod_reduction_distance_squared() {
+float Prop2DInstanceMerger::get_lod_reduction_distance_squared() {
 	return _lod_reduction_distance_squared;
 }
-void PropInstanceMerger::set_lod_reduction_distance_squared(const float dist) {
+void Prop2DInstanceMerger::set_lod_reduction_distance_squared(const float dist) {
 	_lod_reduction_distance_squared = dist;
 }
 
-Ref<PropInstanceJob> PropInstanceMerger::get_job() {
+Ref<Prop2DInstanceJob> Prop2DInstanceMerger::get_job() {
 	return _job;
 }
-void PropInstanceMerger::set_job(const Ref<PropInstanceJob> &job) {
+void Prop2DInstanceMerger::set_job(const Ref<Prop2DInstanceJob> &job) {
 	_job = job;
 
 	if (_job.is_valid() && is_inside_tree()) {
@@ -130,31 +130,31 @@ void PropInstanceMerger::set_job(const Ref<PropInstanceJob> &job) {
 }
 
 //Materials
-Ref<Material> PropInstanceMerger::material_get(const int index) {
+Ref<Material> Prop2DInstanceMerger::material_get(const int index) {
 	ERR_FAIL_INDEX_V(index, _materials.size(), Ref<Material>(NULL));
 
 	return _materials[index];
 }
 
-void PropInstanceMerger::material_add(const Ref<Material> &value) {
+void Prop2DInstanceMerger::material_add(const Ref<Material> &value) {
 	ERR_FAIL_COND(!value.is_valid());
 
 	_materials.push_back(value);
 }
 
-int PropInstanceMerger::material_get_num() const {
+int Prop2DInstanceMerger::material_get_num() const {
 	return _materials.size();
 }
 
-void PropInstanceMerger::materials_clear() {
+void Prop2DInstanceMerger::materials_clear() {
 	_materials.clear();
 }
 
-Vector<Variant> PropInstanceMerger::materials_get() {
+Vector<Variant> Prop2DInstanceMerger::materials_get() {
 	VARIANT_ARRAY_GET(_materials);
 }
 
-void PropInstanceMerger::materials_set(const Vector<Variant> &materials) {
+void Prop2DInstanceMerger::materials_set(const Vector<Variant> &materials) {
 	_materials.clear();
 
 	for (int i = 0; i < materials.size(); i++) {
@@ -165,19 +165,19 @@ void PropInstanceMerger::materials_set(const Vector<Variant> &materials) {
 }
 
 //Meshes
-RID PropInstanceMerger::mesh_get(const int index) {
+RID Prop2DInstanceMerger::mesh_get(const int index) {
 	ERR_FAIL_INDEX_V(index, _meshes.size(), RID());
 
 	return _meshes[index].mesh;
 }
 
-RID PropInstanceMerger::mesh_instance_get(const int index) {
+RID Prop2DInstanceMerger::mesh_instance_get(const int index) {
 	ERR_FAIL_INDEX_V(index, _meshes.size(), RID());
 
 	return _meshes[index].mesh_instance;
 }
 
-void PropInstanceMerger::mesh_add(const RID mesh_instance, const RID mesh) {
+void Prop2DInstanceMerger::mesh_add(const RID mesh_instance, const RID mesh) {
 	MeshEntry e;
 	e.mesh = mesh;
 	e.mesh_instance = mesh_instance;
@@ -185,15 +185,15 @@ void PropInstanceMerger::mesh_add(const RID mesh_instance, const RID mesh) {
 	_meshes.push_back(e);
 }
 
-int PropInstanceMerger::mesh_get_num() const {
+int Prop2DInstanceMerger::mesh_get_num() const {
 	return _meshes.size();
 }
 
-void PropInstanceMerger::meshes_clear() {
+void Prop2DInstanceMerger::meshes_clear() {
 	_meshes.clear();
 }
 
-void PropInstanceMerger::meshes_create(const int num) {
+void Prop2DInstanceMerger::meshes_create(const int num) {
 	free_meshes();
 
 	for (int i = 0; i < num; ++i) {
@@ -220,7 +220,7 @@ void PropInstanceMerger::meshes_create(const int num) {
 	apply_lod_level();
 }
 
-Vector<Variant> PropInstanceMerger::meshes_get() {
+Vector<Variant> Prop2DInstanceMerger::meshes_get() {
 	Vector<Variant> r;
 	for (int i = 0; i < _meshes.size(); i++) {
 		Array a;
@@ -233,7 +233,7 @@ Vector<Variant> PropInstanceMerger::meshes_get() {
 	return r;
 }
 
-void PropInstanceMerger::meshes_set(const Vector<Variant> &meshs) {
+void Prop2DInstanceMerger::meshes_set(const Vector<Variant> &meshs) {
 	_meshes.clear();
 
 	for (int i = 0; i < _meshes.size(); i++) {
@@ -251,31 +251,31 @@ void PropInstanceMerger::meshes_set(const Vector<Variant> &meshs) {
 
 //Collider
 
-Transform PropInstanceMerger::collider_local_transform_get(const int index) {
+Transform Prop2DInstanceMerger::collider_local_transform_get(const int index) {
 	ERR_FAIL_INDEX_V(index, _colliders.size(), Transform());
 
 	return _colliders[index].transform;
 }
 
-RID PropInstanceMerger::collider_body_get(const int index) {
+RID Prop2DInstanceMerger::collider_body_get(const int index) {
 	ERR_FAIL_INDEX_V(index, _colliders.size(), RID());
 
 	return _colliders[index].body;
 }
 
-Ref<Shape> PropInstanceMerger::collider_shape_get(const int index) {
+Ref<Shape> Prop2DInstanceMerger::collider_shape_get(const int index) {
 	ERR_FAIL_INDEX_V(index, _colliders.size(), Ref<Shape>());
 
 	return _colliders[index].shape;
 }
 
-RID PropInstanceMerger::collider_shape_rid_get(const int index) {
+RID Prop2DInstanceMerger::collider_shape_rid_get(const int index) {
 	ERR_FAIL_INDEX_V(index, _colliders.size(), RID());
 
 	return _colliders[index].shape_rid;
 }
 
-int PropInstanceMerger::collider_add(const Transform &local_transform, const Ref<Shape> &shape, const RID &shape_rid, const RID &body, const bool owns_shape) {
+int Prop2DInstanceMerger::collider_add(const Transform &local_transform, const Ref<Shape> &shape, const RID &shape_rid, const RID &body, const bool owns_shape) {
 	ERR_FAIL_COND_V(!shape.is_valid() && shape_rid == RID(), 0);
 
 	int index = _colliders.size();
@@ -292,15 +292,15 @@ int PropInstanceMerger::collider_add(const Transform &local_transform, const Ref
 	return index;
 }
 
-int PropInstanceMerger::collider_get_num() const {
+int Prop2DInstanceMerger::collider_get_num() const {
 	return _colliders.size();
 }
 
-void PropInstanceMerger::colliders_clear() {
+void Prop2DInstanceMerger::colliders_clear() {
 	_colliders.clear();
 }
 
-Vector<Variant> PropInstanceMerger::colliders_get() {
+Vector<Variant> Prop2DInstanceMerger::colliders_get() {
 	Vector<Variant> r;
 	for (int i = 0; i < _colliders.size(); i++) {
 		r.push_back(_colliders[i].body);
@@ -308,7 +308,7 @@ Vector<Variant> PropInstanceMerger::colliders_get() {
 	return r;
 }
 
-void PropInstanceMerger::colliders_set(const Vector<Variant> &colliders) {
+void Prop2DInstanceMerger::colliders_set(const Vector<Variant> &colliders) {
 	_colliders.clear();
 
 	for (int i = 0; i < colliders.size(); i++) {
@@ -321,7 +321,7 @@ void PropInstanceMerger::colliders_set(const Vector<Variant> &colliders) {
 	}
 }
 
-void PropInstanceMerger::check_auto_lod() {
+void Prop2DInstanceMerger::check_auto_lod() {
 	if (!_auto_lod) {
 		_auto_lod_on = false;
 		return;
@@ -341,7 +341,7 @@ void PropInstanceMerger::check_auto_lod() {
 	set_process_internal(true);
 }
 
-void PropInstanceMerger::apply_lod_level() {
+void Prop2DInstanceMerger::apply_lod_level() {
 	if (_meshes.size() == 0) {
 		return;
 	}
@@ -381,7 +381,7 @@ void PropInstanceMerger::apply_lod_level() {
 	vs->instance_set_visible(mi, true);
 }
 
-void PropInstanceMerger::debug_mesh_allocate() {
+void Prop2DInstanceMerger::debug_mesh_allocate() {
 	if (_debug_mesh_rid == RID()) {
 		_debug_mesh_rid = VisualServer::get_singleton()->mesh_create();
 	}
@@ -397,7 +397,7 @@ void PropInstanceMerger::debug_mesh_allocate() {
 		VS::get_singleton()->instance_set_visible(_debug_mesh_instance, true);
 	}
 }
-void PropInstanceMerger::debug_mesh_free() {
+void Prop2DInstanceMerger::debug_mesh_free() {
 	if (_debug_mesh_instance != RID()) {
 		VisualServer::get_singleton()->free(_debug_mesh_instance);
 	}
@@ -406,25 +406,25 @@ void PropInstanceMerger::debug_mesh_free() {
 		VisualServer::get_singleton()->free(_debug_mesh_rid);
 	}
 }
-bool PropInstanceMerger::debug_mesh_has() {
+bool Prop2DInstanceMerger::debug_mesh_has() {
 	return _debug_mesh_rid != RID();
 }
-void PropInstanceMerger::debug_mesh_clear() {
+void Prop2DInstanceMerger::debug_mesh_clear() {
 	if (_debug_mesh_rid != RID()) {
 		VisualServer::get_singleton()->mesh_clear(_debug_mesh_rid);
 	}
 }
-void PropInstanceMerger::debug_mesh_array_clear() {
+void Prop2DInstanceMerger::debug_mesh_array_clear() {
 	_debug_mesh_array.resize(0);
 }
-void PropInstanceMerger::debug_mesh_add_vertices_to(const PoolVector3Array &arr) {
+void Prop2DInstanceMerger::debug_mesh_add_vertices_to(const PoolVector3Array &arr) {
 	_debug_mesh_array.append_array(arr);
 
 	if (_debug_mesh_array.size() % 2 == 1) {
 		_debug_mesh_array.append(_debug_mesh_array[_debug_mesh_array.size() - 1]);
 	}
 }
-void PropInstanceMerger::debug_mesh_send() {
+void Prop2DInstanceMerger::debug_mesh_send() {
 	debug_mesh_allocate();
 	debug_mesh_clear();
 
@@ -446,7 +446,7 @@ void PropInstanceMerger::debug_mesh_send() {
 	debug_mesh_array_clear();
 }
 
-void PropInstanceMerger::draw_debug_mdr_colliders() {
+void Prop2DInstanceMerger::draw_debug_mdr_colliders() {
 	if (!debug_mesh_has()) {
 		debug_mesh_allocate();
 	}
@@ -466,7 +466,7 @@ void PropInstanceMerger::draw_debug_mdr_colliders() {
 	debug_mesh_send();
 }
 
-void PropInstanceMerger::free_meshes() {
+void Prop2DInstanceMerger::free_meshes() {
 	RID rid;
 
 	for (int i = 0; i < _meshes.size(); ++i) {
@@ -485,7 +485,7 @@ void PropInstanceMerger::free_meshes() {
 	}
 }
 
-void PropInstanceMerger::free_colliders() {
+void Prop2DInstanceMerger::free_colliders() {
 	for (int i = 0; i < _colliders.size(); ++i) {
 		ColliderBody &e = _colliders.write[i];
 
@@ -500,10 +500,10 @@ void PropInstanceMerger::free_colliders() {
 	}
 }
 
-void PropInstanceMerger::_init_materials() {
+void Prop2DInstanceMerger::_init_materials() {
 }
 
-void PropInstanceMerger::_build() {
+void Prop2DInstanceMerger::_build() {
 	if (_building) {
 		return;
 	}
@@ -546,7 +546,7 @@ void PropInstanceMerger::_build() {
 	_job->set_complete(false);
 	_job->set_cancelled(false);
 
-	Ref<PropMaterialCache> cache = PropCache::get_singleton()->material_cache_get(_prop_data);
+	Ref<Prop2DMaterialCache> cache = Prop2DCache::get_singleton()->material_cache_get(_prop_data);
 
 	if (cache->material_get_num() == 0) {
 		//lock it!
@@ -579,7 +579,7 @@ Don't submit here, as it starts in physics process mode
 */
 }
 
-void PropInstanceMerger::_build_finished() {
+void Prop2DInstanceMerger::_build_finished() {
 	set_building(false);
 
 	apply_lod_level();
@@ -592,22 +592,22 @@ void PropInstanceMerger::_build_finished() {
 	}
 }
 
-void PropInstanceMerger::_prop_preprocess(Transform transform, const Ref<PropData> &prop) {
+void Prop2DInstanceMerger::_prop_preprocess(Transform transform, const Ref<Prop2DData> &prop) {
 	ERR_FAIL_COND(!prop.is_valid());
 
 	int count = prop->get_prop_count();
 	for (int i = 0; i < count; ++i) {
-		Ref<PropDataEntry> e = prop->get_prop(i);
+		Ref<Prop2DDataEntry> e = prop->get_prop(i);
 
 		if (!e.is_valid())
 			continue;
 
 		Transform t = transform * e->get_transform();
 
-		Ref<PropDataProp> prop_entry_data = e;
+		Ref<Prop2DDataProp2D> prop_entry_data = e;
 
 		if (prop_entry_data.is_valid()) {
-			Ref<PropData> p = prop_entry_data->get_prop();
+			Ref<Prop2DData> p = prop_entry_data->get_prop();
 
 			if (!p.is_valid())
 				continue;
@@ -617,7 +617,7 @@ void PropInstanceMerger::_prop_preprocess(Transform transform, const Ref<PropDat
 			continue;
 		}
 
-		Ref<PropDataTiledWall> tiled_wall_data = e;
+		Ref<Prop2DDataTiledWall2D> tiled_wall_data = e;
 
 		if (tiled_wall_data.is_valid()) {
 			_job->add_tiled_wall(tiled_wall_data, t);
@@ -641,7 +641,7 @@ void PropInstanceMerger::_prop_preprocess(Transform transform, const Ref<PropDat
 			continue;
 		}
 
-		Ref<PropDataScene> scene_data = e;
+		Ref<Prop2DDataScene> scene_data = e;
 
 		if (scene_data.is_valid()) {
 			Ref<PackedScene> sc = scene_data->get_scene();
@@ -663,11 +663,11 @@ void PropInstanceMerger::_prop_preprocess(Transform transform, const Ref<PropDat
 		}
 
 		//Will create a Terralight node, and prop
-		//PropDataLight could use standard godot light nodes
-		Ref<PropDataLight> light_data = e;
+		//Prop2DDataLight could use standard godot light nodes
+		Ref<Prop2DDataLight> light_data = e;
 
 		if (light_data.is_valid()) {
-			Ref<PropLight> light;
+			Ref<Prop2DLight> light;
 			light.instance();
 
 			Vector3 v = t.xform(Vector3());
@@ -682,7 +682,7 @@ void PropInstanceMerger::_prop_preprocess(Transform transform, const Ref<PropDat
 		}
 
 #if MESH_DATA_RESOURCE_PRESENT
-		Ref<Prop2DDataMeshData> mesh_data = e;
+		Ref<Prop2D2DDataMeshData> mesh_data = e;
 
 		if (mesh_data.is_valid()) {
 			Ref<MeshDataResource> mdr = mesh_data->get_mesh();
@@ -700,7 +700,7 @@ void PropInstanceMerger::_prop_preprocess(Transform transform, const Ref<PropDat
 	}
 }
 
-void PropInstanceMerger::collision_layer_changed() {
+void Prop2DInstanceMerger::collision_layer_changed() {
 	for (int i = 0; i < _colliders.size(); ++i) {
 		const ColliderBody &c = _colliders[i];
 
@@ -709,7 +709,7 @@ void PropInstanceMerger::collision_layer_changed() {
 		}
 	}
 }
-void PropInstanceMerger::collision_mask_changed() {
+void Prop2DInstanceMerger::collision_mask_changed() {
 	for (int i = 0; i < _colliders.size(); ++i) {
 		const ColliderBody &c = _colliders[i];
 
@@ -719,26 +719,26 @@ void PropInstanceMerger::collision_mask_changed() {
 	}
 }
 
-void PropInstanceMerger::_create_job() {
-	_job = Ref<PropInstancePropJob>(memnew(PropInstancePropJob()));
+void Prop2DInstanceMerger::_create_job() {
+	_job = Ref<Prop2DInstanceProp2DJob>(memnew(Prop2DInstanceProp2DJob()));
 	_job->set_prop_instace(this);
 
-	Ref<PropMesherJobStep> js;
+	Ref<Prop2DMesherJobStep> js;
 
 	js.instance();
-	js->set_job_type(PropMesherJobStep::TYPE_NORMAL);
+	js->set_job_type(Prop2DMesherJobStep::TYPE_NORMAL);
 	_job->add_jobs_step(js);
 
 	js.instance();
-	js->set_job_type(PropMesherJobStep::TYPE_MERGE_VERTS);
+	js->set_job_type(Prop2DMesherJobStep::TYPE_MERGE_VERTS);
 	_job->add_jobs_step(js);
 
 	js.instance();
-	js->set_job_type(PropMesherJobStep::TYPE_BAKE_TEXTURE);
+	js->set_job_type(Prop2DMesherJobStep::TYPE_BAKE_TEXTURE);
 	_job->add_jobs_step(js);
 }
 
-PropInstanceMerger::PropInstanceMerger() {
+Prop2DInstanceMerger::Prop2DInstanceMerger() {
 	_build_queued = false;
 	_auto_lod = true;
 	_auto_lod_on = false;
@@ -755,7 +755,7 @@ PropInstanceMerger::PropInstanceMerger() {
 	_lod_reduction_distance_squared = 600;
 }
 
-PropInstanceMerger::~PropInstanceMerger() {
+Prop2DInstanceMerger::~Prop2DInstanceMerger() {
 	_job.unref();
 
 	_prop_data.unref();
@@ -768,7 +768,7 @@ PropInstanceMerger::~PropInstanceMerger() {
 	colliders_clear();
 }
 
-void PropInstanceMerger::_notification(int p_what) {
+void Prop2DInstanceMerger::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_POSTINITIALIZE: {
 			call("_create_job");
@@ -805,10 +805,10 @@ void PropInstanceMerger::_notification(int p_what) {
 					return;
 				}
 
-				if (_job->get_build_phase_type() == PropInstanceJob::BUILD_PHASE_TYPE_PHYSICS_PROCESS) {
+				if (_job->get_build_phase_type() == Prop2DInstanceJob::BUILD_PHASE_TYPE_PHYSICS_PROCESS) {
 					_job->physics_process(get_physics_process_delta_time());
 
-					if (_job->get_build_phase_type() == PropInstanceJob::BUILD_PHASE_TYPE_NORMAL) {
+					if (_job->get_build_phase_type() == Prop2DInstanceJob::BUILD_PHASE_TYPE_NORMAL) {
 #if THREAD_POOL_PRESENT
 						ThreadPool::get_singleton()->add_job(_job);
 #else
@@ -826,10 +826,10 @@ void PropInstanceMerger::_notification(int p_what) {
 					return;
 				}
 
-				if (_job->get_build_phase_type() == PropInstanceJob::BUILD_PHASE_TYPE_PROCESS) {
+				if (_job->get_build_phase_type() == Prop2DInstanceJob::BUILD_PHASE_TYPE_PROCESS) {
 					_job->process(get_process_delta_time());
 
-					if (_job->get_build_phase_type() == PropInstanceJob::BUILD_PHASE_TYPE_NORMAL) {
+					if (_job->get_build_phase_type() == Prop2DInstanceJob::BUILD_PHASE_TYPE_NORMAL) {
 #if THREAD_POOL_PRESENT
 						ThreadPool::get_singleton()->add_job(_job);
 #else
@@ -931,75 +931,75 @@ void PropInstanceMerger::_notification(int p_what) {
 	}
 }
 
-void PropInstanceMerger::_bind_methods() {
+void Prop2DInstanceMerger::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_create_job"));
-	ClassDB::bind_method(D_METHOD("_create_job"), &PropInstanceMerger::_create_job);
+	ClassDB::bind_method(D_METHOD("_create_job"), &Prop2DInstanceMerger::_create_job);
 
-	ClassDB::bind_method(D_METHOD("get_job"), &PropInstanceMerger::get_job);
-	ClassDB::bind_method(D_METHOD("set_job", "value"), &PropInstanceMerger::set_job);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "job", PROPERTY_HINT_RESOURCE_TYPE, "PropInstanceJob", 0), "set_job", "get_job");
+	ClassDB::bind_method(D_METHOD("get_job"), &Prop2DInstanceMerger::get_job);
+	ClassDB::bind_method(D_METHOD("set_job", "value"), &Prop2DInstanceMerger::set_job);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "job", PROPERTY_HINT_RESOURCE_TYPE, "Prop2DInstanceJob", 0), "set_job", "get_job");
 
-	ClassDB::bind_method(D_METHOD("get_lod_level"), &PropInstanceMerger::get_lod_level);
-	ClassDB::bind_method(D_METHOD("set_lod_level", "value"), &PropInstanceMerger::set_lod_level);
+	ClassDB::bind_method(D_METHOD("get_lod_level"), &Prop2DInstanceMerger::get_lod_level);
+	ClassDB::bind_method(D_METHOD("set_lod_level", "value"), &Prop2DInstanceMerger::set_lod_level);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "lod_level"), "set_lod_level", "get_lod_level");
 
-	ClassDB::bind_method(D_METHOD("get_auto_lod"), &PropInstanceMerger::get_auto_lod);
-	ClassDB::bind_method(D_METHOD("set_auto_lod", "value"), &PropInstanceMerger::set_auto_lod);
+	ClassDB::bind_method(D_METHOD("get_auto_lod"), &Prop2DInstanceMerger::get_auto_lod);
+	ClassDB::bind_method(D_METHOD("set_auto_lod", "value"), &Prop2DInstanceMerger::set_auto_lod);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "auto_lod"), "set_auto_lod", "get_auto_lod");
 
-	ClassDB::bind_method(D_METHOD("get_first_lod_distance_squared"), &PropInstanceMerger::get_first_lod_distance_squared);
-	ClassDB::bind_method(D_METHOD("set_first_lod_distance_squared", "value"), &PropInstanceMerger::set_first_lod_distance_squared);
+	ClassDB::bind_method(D_METHOD("get_first_lod_distance_squared"), &Prop2DInstanceMerger::get_first_lod_distance_squared);
+	ClassDB::bind_method(D_METHOD("set_first_lod_distance_squared", "value"), &Prop2DInstanceMerger::set_first_lod_distance_squared);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "first_lod_distance_squared"), "set_first_lod_distance_squared", "get_first_lod_distance_squared");
 
-	ClassDB::bind_method(D_METHOD("get_lod_reduction_distance_squared"), &PropInstanceMerger::get_lod_reduction_distance_squared);
-	ClassDB::bind_method(D_METHOD("set_lod_reduction_distance_squared", "value"), &PropInstanceMerger::set_lod_reduction_distance_squared);
+	ClassDB::bind_method(D_METHOD("get_lod_reduction_distance_squared"), &Prop2DInstanceMerger::get_lod_reduction_distance_squared);
+	ClassDB::bind_method(D_METHOD("set_lod_reduction_distance_squared", "value"), &Prop2DInstanceMerger::set_lod_reduction_distance_squared);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "lod_reduction_distance_squared"), "set_lod_reduction_distance_squared", "get_lod_reduction_distance_squared");
 
 	///Materials
-	ClassDB::bind_method(D_METHOD("material_get", "index"), &PropInstanceMerger::material_get);
-	ClassDB::bind_method(D_METHOD("material_add", "value"), &PropInstanceMerger::material_add);
-	ClassDB::bind_method(D_METHOD("material_get_num"), &PropInstanceMerger::material_get_num);
-	ClassDB::bind_method(D_METHOD("materials_clear"), &PropInstanceMerger::materials_clear);
+	ClassDB::bind_method(D_METHOD("material_get", "index"), &Prop2DInstanceMerger::material_get);
+	ClassDB::bind_method(D_METHOD("material_add", "value"), &Prop2DInstanceMerger::material_add);
+	ClassDB::bind_method(D_METHOD("material_get_num"), &Prop2DInstanceMerger::material_get_num);
+	ClassDB::bind_method(D_METHOD("materials_clear"), &Prop2DInstanceMerger::materials_clear);
 
-	ClassDB::bind_method(D_METHOD("materials_get"), &PropInstanceMerger::materials_get);
-	ClassDB::bind_method(D_METHOD("materials_set"), &PropInstanceMerger::materials_set);
+	ClassDB::bind_method(D_METHOD("materials_get"), &Prop2DInstanceMerger::materials_get);
+	ClassDB::bind_method(D_METHOD("materials_set"), &Prop2DInstanceMerger::materials_set);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "materials", PROPERTY_HINT_NONE, "17/17:Material", PROPERTY_USAGE_DEFAULT, "Material"), "materials_set", "materials_get");
 
 	//Meshes
-	ClassDB::bind_method(D_METHOD("mesh_get", "index"), &PropInstanceMerger::mesh_get);
-	ClassDB::bind_method(D_METHOD("mesh_instance_get", "index"), &PropInstanceMerger::mesh_instance_get);
-	ClassDB::bind_method(D_METHOD("mesh_add", "mesh_instance", "mesh"), &PropInstanceMerger::mesh_add);
-	ClassDB::bind_method(D_METHOD("mesh_get_num"), &PropInstanceMerger::mesh_get_num);
-	ClassDB::bind_method(D_METHOD("meshes_clear"), &PropInstanceMerger::meshes_clear);
+	ClassDB::bind_method(D_METHOD("mesh_get", "index"), &Prop2DInstanceMerger::mesh_get);
+	ClassDB::bind_method(D_METHOD("mesh_instance_get", "index"), &Prop2DInstanceMerger::mesh_instance_get);
+	ClassDB::bind_method(D_METHOD("mesh_add", "mesh_instance", "mesh"), &Prop2DInstanceMerger::mesh_add);
+	ClassDB::bind_method(D_METHOD("mesh_get_num"), &Prop2DInstanceMerger::mesh_get_num);
+	ClassDB::bind_method(D_METHOD("meshes_clear"), &Prop2DInstanceMerger::meshes_clear);
 
-	ClassDB::bind_method(D_METHOD("meshes_get"), &PropInstanceMerger::meshes_get);
-	ClassDB::bind_method(D_METHOD("meshes_set"), &PropInstanceMerger::meshes_set);
+	ClassDB::bind_method(D_METHOD("meshes_get"), &Prop2DInstanceMerger::meshes_get);
+	ClassDB::bind_method(D_METHOD("meshes_set"), &Prop2DInstanceMerger::meshes_set);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "meshes", PROPERTY_HINT_NONE, "", 0), "meshes_set", "meshes_get");
 
 	//Colliders
-	ClassDB::bind_method(D_METHOD("collider_local_transform_get", "index"), &PropInstanceMerger::collider_local_transform_get);
-	ClassDB::bind_method(D_METHOD("collider_body_get", "index"), &PropInstanceMerger::collider_body_get);
-	ClassDB::bind_method(D_METHOD("collider_shape_get", "index"), &PropInstanceMerger::collider_shape_get);
-	ClassDB::bind_method(D_METHOD("collider_shape_rid_get", "index"), &PropInstanceMerger::collider_shape_rid_get);
-	ClassDB::bind_method(D_METHOD("collider_add", "local_transform", "shape", "shape_rid", "body"), &PropInstanceMerger::collider_add);
-	ClassDB::bind_method(D_METHOD("collider_get_num"), &PropInstanceMerger::collider_get_num);
-	ClassDB::bind_method(D_METHOD("colliders_clear"), &PropInstanceMerger::colliders_clear);
-	ClassDB::bind_method(D_METHOD("meshes_create", "num"), &PropInstanceMerger::meshes_create);
+	ClassDB::bind_method(D_METHOD("collider_local_transform_get", "index"), &Prop2DInstanceMerger::collider_local_transform_get);
+	ClassDB::bind_method(D_METHOD("collider_body_get", "index"), &Prop2DInstanceMerger::collider_body_get);
+	ClassDB::bind_method(D_METHOD("collider_shape_get", "index"), &Prop2DInstanceMerger::collider_shape_get);
+	ClassDB::bind_method(D_METHOD("collider_shape_rid_get", "index"), &Prop2DInstanceMerger::collider_shape_rid_get);
+	ClassDB::bind_method(D_METHOD("collider_add", "local_transform", "shape", "shape_rid", "body"), &Prop2DInstanceMerger::collider_add);
+	ClassDB::bind_method(D_METHOD("collider_get_num"), &Prop2DInstanceMerger::collider_get_num);
+	ClassDB::bind_method(D_METHOD("colliders_clear"), &Prop2DInstanceMerger::colliders_clear);
+	ClassDB::bind_method(D_METHOD("meshes_create", "num"), &Prop2DInstanceMerger::meshes_create);
 
 	//Colliders
-	ClassDB::bind_method(D_METHOD("debug_mesh_allocate"), &PropInstanceMerger::debug_mesh_allocate);
-	ClassDB::bind_method(D_METHOD("debug_mesh_free"), &PropInstanceMerger::debug_mesh_free);
-	ClassDB::bind_method(D_METHOD("debug_mesh_has"), &PropInstanceMerger::debug_mesh_has);
-	ClassDB::bind_method(D_METHOD("debug_mesh_clear"), &PropInstanceMerger::debug_mesh_clear);
-	ClassDB::bind_method(D_METHOD("debug_mesh_array_clear"), &PropInstanceMerger::debug_mesh_array_clear);
-	ClassDB::bind_method(D_METHOD("debug_mesh_add_vertices_to", "arr"), &PropInstanceMerger::debug_mesh_add_vertices_to);
-	ClassDB::bind_method(D_METHOD("debug_mesh_send"), &PropInstanceMerger::debug_mesh_send);
-	ClassDB::bind_method(D_METHOD("draw_debug_mdr_colliders"), &PropInstanceMerger::draw_debug_mdr_colliders);
+	ClassDB::bind_method(D_METHOD("debug_mesh_allocate"), &Prop2DInstanceMerger::debug_mesh_allocate);
+	ClassDB::bind_method(D_METHOD("debug_mesh_free"), &Prop2DInstanceMerger::debug_mesh_free);
+	ClassDB::bind_method(D_METHOD("debug_mesh_has"), &Prop2DInstanceMerger::debug_mesh_has);
+	ClassDB::bind_method(D_METHOD("debug_mesh_clear"), &Prop2DInstanceMerger::debug_mesh_clear);
+	ClassDB::bind_method(D_METHOD("debug_mesh_array_clear"), &Prop2DInstanceMerger::debug_mesh_array_clear);
+	ClassDB::bind_method(D_METHOD("debug_mesh_add_vertices_to", "arr"), &Prop2DInstanceMerger::debug_mesh_add_vertices_to);
+	ClassDB::bind_method(D_METHOD("debug_mesh_send"), &Prop2DInstanceMerger::debug_mesh_send);
+	ClassDB::bind_method(D_METHOD("draw_debug_mdr_colliders"), &Prop2DInstanceMerger::draw_debug_mdr_colliders);
 
-	ClassDB::bind_method(D_METHOD("check_auto_lod"), &PropInstanceMerger::check_auto_lod);
-	ClassDB::bind_method(D_METHOD("apply_lod_level"), &PropInstanceMerger::apply_lod_level);
+	ClassDB::bind_method(D_METHOD("check_auto_lod"), &Prop2DInstanceMerger::check_auto_lod);
+	ClassDB::bind_method(D_METHOD("apply_lod_level"), &Prop2DInstanceMerger::apply_lod_level);
 
 	//---
-	ClassDB::bind_method(D_METHOD("free_meshes"), &PropInstanceMerger::free_meshes);
-	ClassDB::bind_method(D_METHOD("free_colliders"), &PropInstanceMerger::free_colliders);
+	ClassDB::bind_method(D_METHOD("free_meshes"), &Prop2DInstanceMerger::free_meshes);
+	ClassDB::bind_method(D_METHOD("free_colliders"), &Prop2DInstanceMerger::free_colliders);
 }

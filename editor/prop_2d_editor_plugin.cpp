@@ -41,7 +41,7 @@ SOFTWARE.
 #define DISCONNECT(sig, obj, target_method_class, method) disconnect(sig, callable_mp(obj, &target_method_class::method))
 #endif
 
-void PropEditorPlugin::convert_active_scene_to_prop_data() {
+void Prop2DEditorPlugin::convert_active_scene_to_prop_data() {
 	SceneTree *st = SceneTree::get_singleton();
 
 	if (st) {
@@ -55,17 +55,17 @@ void PropEditorPlugin::convert_active_scene_to_prop_data() {
 		}
 	}
 }
-void PropEditorPlugin::convert_selected_scene_to_prop_data() {
+void Prop2DEditorPlugin::convert_selected_scene_to_prop_data() {
 }
 
-void PropEditorPlugin::convert_scene(Node *root, const String &path) {
-	Ref<PropData> data = PropUtils::get_singleton()->convert_tree(root);
+void Prop2DEditorPlugin::convert_scene(Node *root, const String &path) {
+	Ref<Prop2DData> data = Prop2DUtils::get_singleton()->convert_tree(root);
 
 	ERR_FAIL_COND(!data.is_valid());
 
 	ResourceLoader l;
 	if (l.exists(path)) {
-		Ref<PropData> res = l.load(path, "PropData");
+		Ref<Prop2DData> res = l.load(path, "Prop2DData");
 
 		ERR_FAIL_COND(!res.is_valid());
 
@@ -81,7 +81,7 @@ void PropEditorPlugin::convert_scene(Node *root, const String &path) {
 	}
 }
 
-void PropEditorPlugin::find_room_points(Variant param) {
+void Prop2DEditorPlugin::find_room_points(Variant param) {
 #if VERSION_MINOR >= 4
 	SceneTree *st = SceneTree::get_singleton();
 
@@ -89,31 +89,31 @@ void PropEditorPlugin::find_room_points(Variant param) {
 		Node *scene = st->get_edited_scene_root();
 
 		if (scene) {
-			PropUtils::get_singleton()->generate_room_points_node(scene);
+			Prop2DUtils::get_singleton()->generate_room_points_node(scene);
 		}
 	}
 #endif
 }
 
-void PropEditorPlugin::_quick_convert_button_pressed() {
+void Prop2DEditorPlugin::_quick_convert_button_pressed() {
 	convert_active_scene_to_prop_data();
 }
 
-void PropEditorPlugin::_convert_active_scene_to_prop_data(Variant param) {
+void Prop2DEditorPlugin::_convert_active_scene_to_prop_data(Variant param) {
 	convert_active_scene_to_prop_data();
 }
-void PropEditorPlugin::_convert_selected_scene_to_prop_data(Variant param) {
+void Prop2DEditorPlugin::_convert_selected_scene_to_prop_data(Variant param) {
 	convert_selected_scene_to_prop_data();
 }
 
-PropEditorPlugin::PropEditorPlugin(EditorNode *p_node) {
+Prop2DEditorPlugin::Prop2DEditorPlugin(EditorNode *p_node) {
 	editor = p_node;
 
 #if VERSION_MAJOR < 4
-	editor->add_tool_menu_item("Convert active scene to PropData", this, "convert_active_scene_to_prop_data");
-	editor->add_tool_menu_item("Convert selected scene(s) to PropData", this, "convert_selected_scene_to_prop_data");
+	editor->add_tool_menu_item("Convert active scene to Prop2DData", this, "convert_active_scene_to_prop_data");
+	editor->add_tool_menu_item("Convert selected scene(s) to Prop2DData", this, "convert_selected_scene_to_prop_data");
 #if VERSION_MINOR >= 4
-	editor->add_tool_menu_item("(Prop) Find room points.", this, "find_room_points");
+	editor->add_tool_menu_item("(Prop2D) Find room points.", this, "find_room_points");
 #endif
 #else
 #endif
@@ -126,21 +126,21 @@ PropEditorPlugin::PropEditorPlugin(EditorNode *p_node) {
 	container->add_child(b);
 	b->set_flat(true);
 
-	b->CONNECT("pressed", this, PropEditorPlugin, _quick_convert_button_pressed);
-	b->set_text("To Prop");
-	b->set_shortcut(ED_SHORTCUT("spatial_editor/quick_prop_convert", "Quick convert scene to PropData.", KEY_MASK_ALT + KEY_U));
+	b->CONNECT("pressed", this, Prop2DEditorPlugin, _quick_convert_button_pressed);
+	b->set_text("To Prop2D");
+	b->set_shortcut(ED_SHORTCUT("spatial_editor/quick_prop_convert", "Quick convert scene to Prop2DData.", KEY_MASK_ALT + KEY_U));
 
 	add_control_to_container(EditorPlugin::CONTAINER_SPATIAL_EDITOR_MENU, container);
 }
 
-PropEditorPlugin::~PropEditorPlugin() {
+Prop2DEditorPlugin::~Prop2DEditorPlugin() {
 }
 
-void PropEditorPlugin::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("convert_active_scene_to_prop_data"), &PropEditorPlugin::_convert_active_scene_to_prop_data);
-	ClassDB::bind_method(D_METHOD("convert_selected_scene_to_prop_data"), &PropEditorPlugin::_convert_active_scene_to_prop_data);
+void Prop2DEditorPlugin::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("convert_active_scene_to_prop_data"), &Prop2DEditorPlugin::_convert_active_scene_to_prop_data);
+	ClassDB::bind_method(D_METHOD("convert_selected_scene_to_prop_data"), &Prop2DEditorPlugin::_convert_active_scene_to_prop_data);
 
-	ClassDB::bind_method(D_METHOD("find_room_points"), &PropEditorPlugin::find_room_points);
+	ClassDB::bind_method(D_METHOD("find_room_points"), &Prop2DEditorPlugin::find_room_points);
 
-	ClassDB::bind_method(D_METHOD("_quick_convert_button_pressed"), &PropEditorPlugin::_quick_convert_button_pressed);
+	ClassDB::bind_method(D_METHOD("_quick_convert_button_pressed"), &Prop2DEditorPlugin::_quick_convert_button_pressed);
 }

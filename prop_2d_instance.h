@@ -39,12 +39,12 @@ SOFTWARE.
 
 #include "props/prop_2d_data.h"
 
-class PropInstance : public Spatial {
-	GDCLASS(PropInstance, Spatial);
+class Prop2DInstance : public Spatial {
+	GDCLASS(Prop2DInstance, Spatial);
 
 public:
-	Ref<PropData> get_prop_data();
-	void set_prop_data(const Ref<PropData> &data);
+	Ref<Prop2DData> get_prop_data();
+	void set_prop_data(const Ref<Prop2DData> &data);
 
 	Ref<Material> get_material();
 	void set_material(const Ref<Material> &material);
@@ -68,18 +68,18 @@ public:
 	virtual void _build();
 	virtual void _build_finished();
 
-	void prop_preprocess(Transform tarnsform, const Ref<PropData> &prop);
-	virtual void _prop_preprocess(Transform tarnsform, const Ref<PropData> &prop);
+	void prop_preprocess(Transform tarnsform, const Ref<Prop2DData> &prop);
+	virtual void _prop_preprocess(Transform tarnsform, const Ref<Prop2DData> &prop);
 
-	PropInstance();
-	~PropInstance();
+	Prop2DInstance();
+	~Prop2DInstance();
 
 protected:
 	void _notification(int p_what);
 	static void _bind_methods();
 
 protected:
-	Ref<PropData> _prop_data;
+	Ref<Prop2DData> _prop_data;
 	Ref<Material> _material;
 
 	uint32_t _collision_layer;

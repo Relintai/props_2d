@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="PropMesher" inherits="Reference" version="3.5">
+<class name="Prop2DMesher" inherits="Reference" version="3.5">
 	<brief_description>
 	</brief_description>
 	<description>
@@ -9,7 +9,7 @@
 	<methods>
 		<method name="_add_mesher" qualifiers="virtual">
 			<return type="void" />
-			<argument index="0" name="mesher" type="PropMesher" />
+			<argument index="0" name="mesher" type="Prop2DMesher" />
 			<description>
 			</description>
 		</method>
@@ -27,7 +27,7 @@
 		</method>
 		<method name="add_light">
 			<return type="void" />
-			<argument index="0" name="light" type="PropLight" />
+			<argument index="0" name="light" type="Prop2DLight" />
 			<description>
 			</description>
 		</method>
@@ -60,7 +60,7 @@
 		</method>
 		<method name="add_mesher">
 			<return type="void" />
-			<argument index="0" name="mesher" type="PropMesher" />
+			<argument index="0" name="mesher" type="Prop2DMesher" />
 			<description>
 			</description>
 		</method>
@@ -84,8 +84,8 @@
 			<argument index="0" name="width" type="int" />
 			<argument index="1" name="height" type="int" />
 			<argument index="2" name="transform" type="Transform" />
-			<argument index="3" name="tiled_wall_data" type="TiledWallData" />
-			<argument index="4" name="cache" type="PropMaterialCache" />
+			<argument index="3" name="tiled_wall_data" type="TiledWall2DData" />
+			<argument index="4" name="cache" type="Prop2DMaterialCache" />
 			<description>
 			</description>
 		</method>

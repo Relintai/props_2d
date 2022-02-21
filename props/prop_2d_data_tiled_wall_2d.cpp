@@ -27,46 +27,46 @@ SOFTWARE.
 
 #include "prop_2d_data.h"
 
-int PropDataTiledWall::get_width() const {
+int Prop2DDataTiledWall2D::get_width() const {
 	return _width;
 }
-void PropDataTiledWall::set_width(const int value) {
+void Prop2DDataTiledWall2D::set_width(const int value) {
 	_width = value;
 }
 
-int PropDataTiledWall::get_heigth() const {
+int Prop2DDataTiledWall2D::get_heigth() const {
 	return _height;
 }
-void PropDataTiledWall::set_heigth(const int value) {
+void Prop2DDataTiledWall2D::set_heigth(const int value) {
 	_height = value;
 }
 
-Ref<TiledWallData> PropDataTiledWall::get_data() {
+Ref<TiledWall2DData> Prop2DDataTiledWall2D::get_data() {
 	return _data;
 }
-void PropDataTiledWall::set_data(const Ref<TiledWallData> &data) {
+void Prop2DDataTiledWall2D::set_data(const Ref<TiledWall2DData> &data) {
 	_data = data;
 }
 
-bool PropDataTiledWall::get_collision() const {
+bool Prop2DDataTiledWall2D::get_collision() const {
 	return _collision;
 }
-void PropDataTiledWall::set_collision(const int value) {
+void Prop2DDataTiledWall2D::set_collision(const int value) {
 	_collision = value;
 }
 
-bool PropDataTiledWall::_processor_handles(Node *node) {
-	TiledWall *t = Object::cast_to<TiledWall>(node);
+bool Prop2DDataTiledWall2D::_processor_handles(Node *node) {
+	TiledWall2D *t = Object::cast_to<TiledWall2D>(node);
 
 	return t;
 }
 
-void PropDataTiledWall::_processor_process(Ref<PropData> prop_data, Node *node, const Transform &transform) {
-	TiledWall *t = Object::cast_to<TiledWall>(node);
+void Prop2DDataTiledWall2D::_processor_process(Ref<Prop2DData> prop_data, Node *node, const Transform &transform) {
+	TiledWall2D *t = Object::cast_to<TiledWall2D>(node);
 
 	ERR_FAIL_COND(!t);
 
-	Ref<PropDataTiledWall> tw;
+	Ref<Prop2DDataTiledWall2D> tw;
 	tw.instance();
 
 	tw->set_width(t->get_width());
@@ -77,8 +77,8 @@ void PropDataTiledWall::_processor_process(Ref<PropData> prop_data, Node *node, 
 	prop_data->add_prop(tw);
 }
 
-Node *PropDataTiledWall::_processor_get_node_for(const Transform &transform) {
-	TiledWall *t = memnew(TiledWall);
+Node *Prop2DDataTiledWall2D::_processor_get_node_for(const Transform &transform) {
+	TiledWall2D *t = memnew(TiledWall2D);
 
 	t->set_width(get_width());
 	t->set_heigth(get_heigth());
@@ -89,29 +89,29 @@ Node *PropDataTiledWall::_processor_get_node_for(const Transform &transform) {
 	return t;
 }
 
-PropDataTiledWall::PropDataTiledWall() {
+Prop2DDataTiledWall2D::Prop2DDataTiledWall2D() {
 	_width = 1;
 	_height = 1;
 	_collision = true;
 }
-PropDataTiledWall::~PropDataTiledWall() {
+Prop2DDataTiledWall2D::~Prop2DDataTiledWall2D() {
 	_data.unref();
 }
 
-void PropDataTiledWall::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_width"), &PropDataTiledWall::get_width);
-	ClassDB::bind_method(D_METHOD("set_width", "value"), &PropDataTiledWall::set_width);
+void Prop2DDataTiledWall2D::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_width"), &Prop2DDataTiledWall2D::get_width);
+	ClassDB::bind_method(D_METHOD("set_width", "value"), &Prop2DDataTiledWall2D::set_width);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "width"), "set_width", "get_width");
 
-	ClassDB::bind_method(D_METHOD("get_heigth"), &PropDataTiledWall::get_heigth);
-	ClassDB::bind_method(D_METHOD("set_heigth", "value"), &PropDataTiledWall::set_heigth);
+	ClassDB::bind_method(D_METHOD("get_heigth"), &Prop2DDataTiledWall2D::get_heigth);
+	ClassDB::bind_method(D_METHOD("set_heigth", "value"), &Prop2DDataTiledWall2D::set_heigth);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "heigth"), "set_heigth", "get_heigth");
 
-	ClassDB::bind_method(D_METHOD("get_data"), &PropDataTiledWall::get_data);
-	ClassDB::bind_method(D_METHOD("set_data", "value"), &PropDataTiledWall::set_data);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "TiledWallData"), "set_data", "get_data");
+	ClassDB::bind_method(D_METHOD("get_data"), &Prop2DDataTiledWall2D::get_data);
+	ClassDB::bind_method(D_METHOD("set_data", "value"), &Prop2DDataTiledWall2D::set_data);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "TiledWall2DData"), "set_data", "get_data");
 
-	ClassDB::bind_method(D_METHOD("get_collision"), &PropDataTiledWall::get_collision);
-	ClassDB::bind_method(D_METHOD("set_collision", "value"), &PropDataTiledWall::set_collision);
+	ClassDB::bind_method(D_METHOD("get_collision"), &Prop2DDataTiledWall2D::get_collision);
+	ClassDB::bind_method(D_METHOD("set_collision", "value"), &Prop2DDataTiledWall2D::set_collision);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "collision"), "set_collision", "get_collision");
 }

@@ -22,54 +22,54 @@ SOFTWARE.
 
 #include "prop_2d_mesher_job_step.h"
 
-const String PropMesherJobStep::BINDING_STRING_PROP_2D_MESHER_JOB_STEP_TYPE = "Normal,Normal LOD,Drop UV2,Merge Verts,Bake Texture,Simplify Mesh";
+const String Prop2DMesherJobStep::BINDING_STRING_PROP_2D_MESHER_JOB_STEP_TYPE = "Normal,Normal LOD,Drop UV2,Merge Verts,Bake Texture,Simplify Mesh";
 
-PropMesherJobStep::PropMesherJobStepType PropMesherJobStep::get_job_type() const {
+Prop2DMesherJobStep::Prop2DMesherJobStepType Prop2DMesherJobStep::get_job_type() const {
 	return _job_type;
 }
-void PropMesherJobStep::set_job_type(const PropMesherJobStep::PropMesherJobStepType value) {
+void Prop2DMesherJobStep::set_job_type(const Prop2DMesherJobStep::Prop2DMesherJobStepType value) {
 	_job_type = value;
 }
 
-int PropMesherJobStep::get_lod_index() const {
+int Prop2DMesherJobStep::get_lod_index() const {
 	return _lod_index;
 }
-void PropMesherJobStep::set_lod_index(const int value) {
+void Prop2DMesherJobStep::set_lod_index(const int value) {
 	_lod_index = value;
 }
 
 #ifdef MESH_UTILS_PRESENT
-Ref<FastQuadraticMeshSimplifier> PropMesherJobStep::get_fqms() {
+Ref<FastQuadraticMeshSimplifier> Prop2DMesherJobStep::get_fqms() {
 	return _fqms;
 }
-void PropMesherJobStep::set_fqms(const Ref<FastQuadraticMeshSimplifier> &val) {
+void Prop2DMesherJobStep::set_fqms(const Ref<FastQuadraticMeshSimplifier> &val) {
 	_fqms = val;
 }
 
-float PropMesherJobStep::get_simplification_step_ratio() const {
+float Prop2DMesherJobStep::get_simplification_step_ratio() const {
 	return _simplification_step_ratio;
 }
-void PropMesherJobStep::set_simplification_step_ratio(const float value) {
+void Prop2DMesherJobStep::set_simplification_step_ratio(const float value) {
 	_simplification_step_ratio = value;
 }
 
-int PropMesherJobStep::get_simplification_steps() const {
+int Prop2DMesherJobStep::get_simplification_steps() const {
 	return _simplification_steps;
 }
-void PropMesherJobStep::set_simplification_steps(const int value) {
+void Prop2DMesherJobStep::set_simplification_steps(const int value) {
 	_simplification_steps = value;
 }
 
-float PropMesherJobStep::get_simplification_agressiveness() const {
+float Prop2DMesherJobStep::get_simplification_agressiveness() const {
 	return _simplification_agressiveness;
 }
-void PropMesherJobStep::set_simplification_agressiveness(const float value) {
+void Prop2DMesherJobStep::set_simplification_agressiveness(const float value) {
 	_simplification_agressiveness = value;
 }
 
 #endif
 
-PropMesherJobStep::PropMesherJobStep() {
+Prop2DMesherJobStep::Prop2DMesherJobStep() {
 	_job_type = TYPE_NORMAL;
 	_lod_index = 0;
 
@@ -80,36 +80,36 @@ PropMesherJobStep::PropMesherJobStep() {
 #endif
 }
 
-PropMesherJobStep::~PropMesherJobStep() {
+Prop2DMesherJobStep::~Prop2DMesherJobStep() {
 #ifdef MESH_UTILS_PRESENT
 	_fqms.unref();
 #endif
 }
 
-void PropMesherJobStep::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_job_type"), &PropMesherJobStep::get_job_type);
-	ClassDB::bind_method(D_METHOD("set_job_type", "value"), &PropMesherJobStep::set_job_type);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "job_type", PROPERTY_HINT_ENUM, PropMesherJobStep::BINDING_STRING_PROP_2D_MESHER_JOB_STEP_TYPE), "set_job_type", "get_job_type");
+void Prop2DMesherJobStep::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_job_type"), &Prop2DMesherJobStep::get_job_type);
+	ClassDB::bind_method(D_METHOD("set_job_type", "value"), &Prop2DMesherJobStep::set_job_type);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "job_type", PROPERTY_HINT_ENUM, Prop2DMesherJobStep::BINDING_STRING_PROP_2D_MESHER_JOB_STEP_TYPE), "set_job_type", "get_job_type");
 
-	ClassDB::bind_method(D_METHOD("get_lod_index"), &PropMesherJobStep::get_lod_index);
-	ClassDB::bind_method(D_METHOD("set_lod_index", "value"), &PropMesherJobStep::set_lod_index);
+	ClassDB::bind_method(D_METHOD("get_lod_index"), &Prop2DMesherJobStep::get_lod_index);
+	ClassDB::bind_method(D_METHOD("set_lod_index", "value"), &Prop2DMesherJobStep::set_lod_index);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "lod_index"), "set_lod_index", "get_lod_index");
 
 #ifdef MESH_UTILS_PRESENT
-	ClassDB::bind_method(D_METHOD("get_fqms"), &PropMesherJobStep::get_fqms);
-	ClassDB::bind_method(D_METHOD("set_fqms", "value"), &PropMesherJobStep::set_fqms);
+	ClassDB::bind_method(D_METHOD("get_fqms"), &Prop2DMesherJobStep::get_fqms);
+	ClassDB::bind_method(D_METHOD("set_fqms", "value"), &Prop2DMesherJobStep::set_fqms);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "fqms", PROPERTY_HINT_RESOURCE_TYPE, "FastQuadraticMeshSimplifier"), "set_fqms", "get_fqms");
 
-	ClassDB::bind_method(D_METHOD("get_simplification_step_ratio"), &PropMesherJobStep::get_simplification_step_ratio);
-	ClassDB::bind_method(D_METHOD("set_simplification_step_ratio", "value"), &PropMesherJobStep::set_simplification_step_ratio);
+	ClassDB::bind_method(D_METHOD("get_simplification_step_ratio"), &Prop2DMesherJobStep::get_simplification_step_ratio);
+	ClassDB::bind_method(D_METHOD("set_simplification_step_ratio", "value"), &Prop2DMesherJobStep::set_simplification_step_ratio);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "simplification_step_ratio"), "set_simplification_step_ratio", "get_simplification_step_ratio");
 
-	ClassDB::bind_method(D_METHOD("get_simplification_steps"), &PropMesherJobStep::get_simplification_steps);
-	ClassDB::bind_method(D_METHOD("set_simplification_steps", "value"), &PropMesherJobStep::set_simplification_steps);
+	ClassDB::bind_method(D_METHOD("get_simplification_steps"), &Prop2DMesherJobStep::get_simplification_steps);
+	ClassDB::bind_method(D_METHOD("set_simplification_steps", "value"), &Prop2DMesherJobStep::set_simplification_steps);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "simplification_steps"), "set_simplification_steps", "get_simplification_steps");
 
-	ClassDB::bind_method(D_METHOD("get_simplification_agressiveness"), &PropMesherJobStep::get_simplification_agressiveness);
-	ClassDB::bind_method(D_METHOD("set_simplification_agressiveness", "value"), &PropMesherJobStep::set_simplification_agressiveness);
+	ClassDB::bind_method(D_METHOD("get_simplification_agressiveness"), &Prop2DMesherJobStep::get_simplification_agressiveness);
+	ClassDB::bind_method(D_METHOD("set_simplification_agressiveness", "value"), &Prop2DMesherJobStep::set_simplification_agressiveness);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "simplification_agressiveness"), "set_simplification_agressiveness", "get_simplification_agressiveness");
 #endif
 

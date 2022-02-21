@@ -26,49 +26,49 @@ SOFTWARE.
 #include "../singleton/prop_2d_cache.h"
 #include "scene/resources/texture.h"
 
-int PropMaterialCachePCM::get_texture_flags() const {
+int Prop2DMaterialCachePCM::get_texture_flags() const {
 	return _packer->get_texture_flags();
 }
-void PropMaterialCachePCM::set_texture_flags(const int flags) {
+void Prop2DMaterialCachePCM::set_texture_flags(const int flags) {
 	_packer->set_texture_flags(flags);
 }
 
-int PropMaterialCachePCM::get_max_atlas_size() const {
+int Prop2DMaterialCachePCM::get_max_atlas_size() const {
 	return _packer->get_max_atlas_size();
 }
-void PropMaterialCachePCM::set_max_atlas_size(const int size) {
+void Prop2DMaterialCachePCM::set_max_atlas_size(const int size) {
 	_packer->set_max_atlas_size(size);
 }
 
-bool PropMaterialCachePCM::get_keep_original_atlases() const {
+bool Prop2DMaterialCachePCM::get_keep_original_atlases() const {
 	return _packer->get_keep_original_atlases();
 }
-void PropMaterialCachePCM::set_keep_original_atlases(const bool value) {
+void Prop2DMaterialCachePCM::set_keep_original_atlases(const bool value) {
 	_packer->set_keep_original_atlases(value);
 }
 
-Color PropMaterialCachePCM::get_background_color() const {
+Color Prop2DMaterialCachePCM::get_background_color() const {
 	return _packer->get_background_color();
 }
-void PropMaterialCachePCM::set_background_color(const Color &color) {
+void Prop2DMaterialCachePCM::set_background_color(const Color &color) {
 	_packer->set_background_color(color);
 }
 
-int PropMaterialCachePCM::get_margin() const {
+int Prop2DMaterialCachePCM::get_margin() const {
 	return _packer->get_margin();
 }
-void PropMaterialCachePCM::set_margin(const int margin) {
+void Prop2DMaterialCachePCM::set_margin(const int margin) {
 	_packer->set_margin(margin);
 }
 
-Ref<AtlasTexture> PropMaterialCachePCM::texture_get_atlas_tex(const Ref<Texture> &texture) {
+Ref<AtlasTexture> Prop2DMaterialCachePCM::texture_get_atlas_tex(const Ref<Texture> &texture) {
 	if (!_packer->contains_texture(texture)) {
 		return Ref<AtlasTexture>();
 	}
 
 	return _packer->get_texture(texture);
 }
-Rect2 PropMaterialCachePCM::texture_get_uv_rect(const Ref<Texture> &texture) {
+Rect2 Prop2DMaterialCachePCM::texture_get_uv_rect(const Ref<Texture> &texture) {
 	if (!texture.is_valid()) {
 		return Rect2(0, 0, 1, 1);
 	}
@@ -102,7 +102,7 @@ Rect2 PropMaterialCachePCM::texture_get_uv_rect(const Ref<Texture> &texture) {
 	return region;
 }
 
-void PropMaterialCachePCM::refresh_rects() {
+void Prop2DMaterialCachePCM::refresh_rects() {
 	bool texture_added = false;
 
 	for (int i = 0; i < _textures.size(); i++) {
@@ -129,10 +129,10 @@ void PropMaterialCachePCM::refresh_rects() {
 	_initialized = true;
 }
 
-void PropMaterialCachePCM::initial_setup_default() {
-	PropMaterialCache::initial_setup_default();
+void Prop2DMaterialCachePCM::initial_setup_default() {
+	Prop2DMaterialCache::initial_setup_default();
 
-	PropCache *pc = PropCache::get_singleton();
+	Prop2DCache *pc = Prop2DCache::get_singleton();
 
 	set_texture_flags(pc->get_texture_flags());
 	set_max_atlas_size(pc->get_max_atlas_size());
@@ -141,7 +141,7 @@ void PropMaterialCachePCM::initial_setup_default() {
 	set_margin(pc->get_margin());
 }
 
-void PropMaterialCachePCM::_setup_material_albedo(Ref<Texture> texture) {
+void Prop2DMaterialCachePCM::_setup_material_albedo(Ref<Texture> texture) {
 	int count = material_get_num();
 
 	for (int i = 0; i < count; ++i) {
@@ -162,7 +162,7 @@ void PropMaterialCachePCM::_setup_material_albedo(Ref<Texture> texture) {
 	}
 }
 
-PropMaterialCachePCM::PropMaterialCachePCM() {
+Prop2DMaterialCachePCM::Prop2DMaterialCachePCM() {
 	_packer.instance();
 
 #if GODOT4
@@ -176,31 +176,31 @@ PropMaterialCachePCM::PropMaterialCachePCM() {
 	_packer->set_margin(0);
 }
 
-PropMaterialCachePCM::~PropMaterialCachePCM() {
+Prop2DMaterialCachePCM::~Prop2DMaterialCachePCM() {
 	_packer->clear();
 	_packer.unref();
 }
 
-void PropMaterialCachePCM::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_texture_flags"), &PropMaterialCachePCM::get_texture_flags);
-	ClassDB::bind_method(D_METHOD("set_texture_flags", "flags"), &PropMaterialCachePCM::set_texture_flags);
+void Prop2DMaterialCachePCM::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_texture_flags"), &Prop2DMaterialCachePCM::get_texture_flags);
+	ClassDB::bind_method(D_METHOD("set_texture_flags", "flags"), &Prop2DMaterialCachePCM::set_texture_flags);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "texture_flags", PROPERTY_HINT_FLAGS, "Mipmaps,Repeat,Filter,Anisotropic Linear,Convert to Linear,Mirrored Repeat,Video Surface"), "set_texture_flags", "get_texture_flags");
 
-	ClassDB::bind_method(D_METHOD("get_max_atlas_size"), &PropMaterialCachePCM::get_max_atlas_size);
-	ClassDB::bind_method(D_METHOD("set_max_atlas_size", "size"), &PropMaterialCachePCM::set_max_atlas_size);
+	ClassDB::bind_method(D_METHOD("get_max_atlas_size"), &Prop2DMaterialCachePCM::get_max_atlas_size);
+	ClassDB::bind_method(D_METHOD("set_max_atlas_size", "size"), &Prop2DMaterialCachePCM::set_max_atlas_size);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "max_atlas_size"), "set_max_atlas_size", "get_max_atlas_size");
 
-	ClassDB::bind_method(D_METHOD("get_keep_original_atlases"), &PropMaterialCachePCM::get_keep_original_atlases);
-	ClassDB::bind_method(D_METHOD("set_keep_original_atlases", "value"), &PropMaterialCachePCM::set_keep_original_atlases);
+	ClassDB::bind_method(D_METHOD("get_keep_original_atlases"), &Prop2DMaterialCachePCM::get_keep_original_atlases);
+	ClassDB::bind_method(D_METHOD("set_keep_original_atlases", "value"), &Prop2DMaterialCachePCM::set_keep_original_atlases);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "keep_original_atlases"), "set_keep_original_atlases", "get_keep_original_atlases");
 
-	ClassDB::bind_method(D_METHOD("get_background_color"), &PropMaterialCachePCM::get_background_color);
-	ClassDB::bind_method(D_METHOD("set_background_color", "color"), &PropMaterialCachePCM::set_background_color);
+	ClassDB::bind_method(D_METHOD("get_background_color"), &Prop2DMaterialCachePCM::get_background_color);
+	ClassDB::bind_method(D_METHOD("set_background_color", "color"), &Prop2DMaterialCachePCM::set_background_color);
 	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "background_color"), "set_background_color", "get_background_color");
 
-	ClassDB::bind_method(D_METHOD("get_margin"), &PropMaterialCachePCM::get_margin);
-	ClassDB::bind_method(D_METHOD("set_margin", "size"), &PropMaterialCachePCM::set_margin);
+	ClassDB::bind_method(D_METHOD("get_margin"), &Prop2DMaterialCachePCM::get_margin);
+	ClassDB::bind_method(D_METHOD("set_margin", "size"), &Prop2DMaterialCachePCM::set_margin);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "margin"), "set_margin", "get_margin");
 
-	ClassDB::bind_method(D_METHOD("_setup_material_albedo", "texture"), &PropMaterialCachePCM::_setup_material_albedo);
+	ClassDB::bind_method(D_METHOD("_setup_material_albedo", "texture"), &Prop2DMaterialCachePCM::_setup_material_albedo);
 }

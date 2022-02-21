@@ -61,12 +61,12 @@ using PoolVector = Vector<N>;
 #endif
 
 class OpenSimplexNoise;
-class PropLight;
-class PropMaterialCache;
-class TiledWallData;
+class Prop2DLight;
+class Prop2DMaterialCache;
+class TiledWall2DData;
 
-class PropMesher : public Reference {
-	GDCLASS(PropMesher, Reference);
+class Prop2DMesher : public Reference {
+	GDCLASS(Prop2DMesher, Reference);
 
 public:
 	static const String BINDING_STRING_BUILD_FLAGS;
@@ -145,7 +145,7 @@ public:
 
 	void reset();
 
-	void add_tiled_wall_simple(const int width, const int height, const Transform &transform, const Ref<TiledWallData> &tiled_wall_data, Ref<PropMaterialCache> cache);
+	void add_tiled_wall_simple(const int width, const int height, const Transform &transform, const Ref<TiledWall2DData> &tiled_wall_data, Ref<Prop2DMaterialCache> cache);
 	void add_tiled_wall_mesh_rect_simple(const int x, const int y, const Transform &transform, const Rect2 &texture_rect);
 	Vector2 transform_uv(const Vector2 &uv, const Rect2 &rect) const;
 
@@ -159,10 +159,10 @@ public:
 	float get_random_ao(const Vector3 &position);
 	Color get_light_color_at(const Vector3 &position, const Vector3 &normal);
 
-	void add_mesher(const Ref<PropMesher> &mesher);
-	void _add_mesher(const Ref<PropMesher> &mesher);
+	void add_mesher(const Ref<Prop2DMesher> &mesher);
+	void _add_mesher(const Ref<Prop2DMesher> &mesher);
 
-	void add_light(const Ref<PropLight> &light);
+	void add_light(const Ref<Prop2DLight> &light);
 	void clear_lights();
 
 	PoolVector<Vector3> build_collider() const;
@@ -217,8 +217,8 @@ public:
 	void remove_index(const int idx);
 	void add_indices(const int index);
 
-	PropMesher();
-	~PropMesher();
+	Prop2DMesher();
+	~Prop2DMesher();
 
 protected:
 	static void _bind_methods();
@@ -234,7 +234,7 @@ protected:
 
 	PoolVector<Vertex> _vertices;
 	PoolVector<int> _indices;
-	Vector<Ref<PropLight>> _lights;
+	Vector<Ref<Prop2DLight>> _lights;
 
 	Color _last_color;
 	Vector3 _last_normal;
@@ -258,6 +258,6 @@ protected:
 	int _rao_seed;
 };
 
-VARIANT_ENUM_CAST(PropMesher::BuildFlags);
+VARIANT_ENUM_CAST(Prop2DMesher::BuildFlags);
 
 #endif

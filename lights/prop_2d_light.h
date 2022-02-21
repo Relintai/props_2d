@@ -35,8 +35,8 @@ SOFTWARE.
 #include "core/color.h"
 #endif
 
-class PropLight : public Reference {
-	GDCLASS(PropLight, Reference);
+class Prop2DLight : public Reference {
+	GDCLASS(Prop2DLight, Reference);
 
 public:
 	Vector3 get_position();
@@ -48,8 +48,8 @@ public:
 	float get_size() const;
 	void set_size(const float strength);
 
-	PropLight();
-	~PropLight();
+	Prop2DLight();
+	~Prop2DLight();
 
 private:
 	static void _bind_methods();

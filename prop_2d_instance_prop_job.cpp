@@ -61,36 +61,36 @@ SOFTWARE.
 #include "props/prop_2d_data_tiled_wall_2d.h"
 #include "tiled_wall/tiled_wall_2d_data.h"
 
-Ref<PropMaterialCache> PropInstancePropJob::get_material_cache() {
+Ref<Prop2DMaterialCache> Prop2DInstanceProp2DJob::get_material_cache() {
 	return _material_cache;
 }
-void PropInstancePropJob::set_material_cache(const Ref<PropMaterialCache> &cache) {
+void Prop2DInstanceProp2DJob::set_material_cache(const Ref<Prop2DMaterialCache> &cache) {
 	_material_cache = cache;
 }
 
-Ref<PropMesherJobStep> PropInstancePropJob::get_jobs_step(int index) const {
-	ERR_FAIL_INDEX_V(index, _job_steps.size(), Ref<PropMesherJobStep>());
+Ref<Prop2DMesherJobStep> Prop2DInstanceProp2DJob::get_jobs_step(int index) const {
+	ERR_FAIL_INDEX_V(index, _job_steps.size(), Ref<Prop2DMesherJobStep>());
 
 	return _job_steps.get(index);
 }
-void PropInstancePropJob::set_jobs_step(int index, const Ref<PropMesherJobStep> &step) {
+void Prop2DInstanceProp2DJob::set_jobs_step(int index, const Ref<Prop2DMesherJobStep> &step) {
 	ERR_FAIL_INDEX(index, _job_steps.size());
 
 	_job_steps.set(index, step);
 }
-void PropInstancePropJob::remove_jobs_step(const int index) {
+void Prop2DInstanceProp2DJob::remove_jobs_step(const int index) {
 	ERR_FAIL_INDEX(index, _job_steps.size());
 
 	_job_steps.remove(index);
 }
-void PropInstancePropJob::add_jobs_step(const Ref<PropMesherJobStep> &step) {
+void Prop2DInstanceProp2DJob::add_jobs_step(const Ref<Prop2DMesherJobStep> &step) {
 	_job_steps.push_back(step);
 }
-int PropInstancePropJob::get_jobs_step_count() const {
+int Prop2DInstanceProp2DJob::get_jobs_step_count() const {
 	return _job_steps.size();
 }
 
-void PropInstancePropJob::add_collision_shape(const Ref<Shape> &shape, const Transform &transform, const bool owns_shape) {
+void Prop2DInstanceProp2DJob::add_collision_shape(const Ref<Shape> &shape, const Transform &transform, const bool owns_shape) {
 	CollisionShapeEntry e;
 
 	e.shape = shape;
@@ -99,30 +99,30 @@ void PropInstancePropJob::add_collision_shape(const Ref<Shape> &shape, const Tra
 
 	_collision_shapes.push_back(e);
 }
-void PropInstancePropJob::clear_collision_shapes() {
+void Prop2DInstanceProp2DJob::clear_collision_shapes() {
 	_collision_shapes.clear();
 }
 
-PropInstanceMerger *PropInstancePropJob::get_prop_instace() {
+Prop2DInstanceMerger *Prop2DInstanceProp2DJob::get_prop_instace() {
 	return _prop_instace;
 }
-void PropInstancePropJob::set_prop_instace(PropInstanceMerger *prop) {
+void Prop2DInstanceProp2DJob::set_prop_instace(Prop2DInstanceMerger *prop) {
 	_prop_instace = prop;
 	_instance = prop;
 }
-void PropInstancePropJob::set_prop_instace_bind(Node *prop) {
-	set_prop_instace(Object::cast_to<PropInstanceMerger>(prop));
+void Prop2DInstanceProp2DJob::set_prop_instace_bind(Node *prop) {
+	set_prop_instace(Object::cast_to<Prop2DInstanceMerger>(prop));
 }
 
-Ref<PropMesher> PropInstancePropJob::get_prop_mesher() const {
+Ref<Prop2DMesher> Prop2DInstanceProp2DJob::get_prop_mesher() const {
 	return _prop_mesher;
 }
-void PropInstancePropJob::set_prop_mesher(const Ref<PropMesher> &mesher) {
+void Prop2DInstanceProp2DJob::set_prop_mesher(const Ref<Prop2DMesher> &mesher) {
 	_prop_mesher = mesher;
 }
 
 #if MESH_DATA_RESOURCE_PRESENT
-void PropInstancePropJob::add_mesh(const Ref<Prop2DDataMeshData> &mesh_data, const Transform &base_transform) {
+void Prop2DInstanceProp2DJob::add_mesh(const Ref<Prop2D2DDataMeshData> &mesh_data, const Transform &base_transform) {
 	PMDREntry e;
 	e.mesh_data = mesh_data;
 	e.base_transform = base_transform;
@@ -130,12 +130,12 @@ void PropInstancePropJob::add_mesh(const Ref<Prop2DDataMeshData> &mesh_data, con
 	_prop_mesh_datas.push_back(e);
 }
 
-void PropInstancePropJob::clear_meshes() {
+void Prop2DInstanceProp2DJob::clear_meshes() {
 	_prop_mesh_datas.clear();
 }
 #endif
 
-void PropInstancePropJob::add_tiled_wall(const Ref<PropDataTiledWall> &data, const Transform &base_transform) {
+void Prop2DInstanceProp2DJob::add_tiled_wall(const Ref<Prop2DDataTiledWall2D> &data, const Transform &base_transform) {
 	PTWEntry e;
 	e.data = data;
 	e.base_transform = base_transform;
@@ -143,25 +143,25 @@ void PropInstancePropJob::add_tiled_wall(const Ref<PropDataTiledWall> &data, con
 	_prop_tiled_wall_datas.push_back(e);
 }
 
-void PropInstancePropJob::clear_tiled_walls() {
+void Prop2DInstanceProp2DJob::clear_tiled_walls() {
 	_prop_tiled_wall_datas.clear();
 }
 
-void PropInstancePropJob::add_light(const Ref<PropLight> &light) {
+void Prop2DInstanceProp2DJob::add_light(const Ref<Prop2DLight> &light) {
 	_prop_mesher->add_light(light);
 }
-void PropInstancePropJob::clear_lights() {
+void Prop2DInstanceProp2DJob::clear_lights() {
 	_prop_mesher->clear_lights();
 }
 
-void PropInstancePropJob::_physics_process(float delta) {
+void Prop2DInstanceProp2DJob::_physics_process(float delta) {
 	if (_phase == 0)
 		phase_physics_process();
 }
 
-void PropInstancePropJob::_execute_phase() {
+void Prop2DInstanceProp2DJob::_execute_phase() {
 	if (!_material_cache.is_valid()) {
-		ERR_PRINT("!PropInstancePropJob::_execute_phase(): !_material_cache.is_valid()");
+		ERR_PRINT("!Prop2DInstanceProp2DJob::_execute_phase(): !_material_cache.is_valid()");
 		//reset_meshes();
 		set_complete(true); //So threadpool knows it's done
 		finished();
@@ -185,12 +185,12 @@ void PropInstancePropJob::_execute_phase() {
 	} else if (_phase > 3) {
 		set_complete(true); //So threadpool knows it's done
 		finished();
-		ERR_FAIL_MSG("PropInstancePropJob: _phase is too high!");
+		ERR_FAIL_MSG("Prop2DInstanceProp2DJob: _phase is too high!");
 	}
 }
 
-void PropInstancePropJob::_reset() {
-	PropInstanceJob::_reset();
+void Prop2DInstanceProp2DJob::_reset() {
+	Prop2DInstanceJob::_reset();
 
 	_build_done = false;
 	_phase = 0;
@@ -212,7 +212,7 @@ void PropInstancePropJob::_reset() {
 	set_build_phase_type(BUILD_PHASE_TYPE_PHYSICS_PROCESS);
 }
 
-void PropInstancePropJob::phase_physics_process() {
+void Prop2DInstanceProp2DJob::phase_physics_process() {
 	//TODO this should only update the differences
 	//for (int i = 0; i < _prop_instace->collider_get_num(); ++i) {
 	//	PhysicsServer::get_singleton()->free(_prop_instace->collider_body_get(i));
@@ -259,7 +259,7 @@ void PropInstancePropJob::phase_physics_process() {
 	next_phase();
 }
 
-void PropInstancePropJob::phase_setup_cache() {
+void Prop2DInstanceProp2DJob::phase_setup_cache() {
 	if (should_do()) {
 		if (!_material_cache->get_initialized()) {
 			_material_cache->mutex_lock();
@@ -288,7 +288,7 @@ void PropInstancePropJob::phase_setup_cache() {
 	next_phase();
 }
 
-void PropInstancePropJob::phase_prop() {
+void Prop2DInstanceProp2DJob::phase_prop() {
 	if (!_prop_mesher.is_valid()) {
 		set_complete(true); //So threadpool knows it's done
 		return;
@@ -306,7 +306,7 @@ void PropInstancePropJob::phase_prop() {
 		for (int i = 0; i < _prop_mesh_datas.size(); ++i) {
 			PMDREntry &e = _prop_mesh_datas.write[i];
 
-			Ref<Prop2DDataMeshData> pmd = e.mesh_data;
+			Ref<Prop2D2DDataMeshData> pmd = e.mesh_data;
 
 			Ref<MeshDataResource> mesh = pmd->get_mesh();
 			Ref<Texture> tex = pmd->get_texture();
@@ -321,7 +321,7 @@ void PropInstancePropJob::phase_prop() {
 		for (int i = 0; i < _prop_tiled_wall_datas.size(); ++i) {
 			PTWEntry &e = _prop_tiled_wall_datas.write[i];
 
-			Ref<PropDataTiledWall> pdtw = e.data;
+			Ref<Prop2DDataTiledWall2D> pdtw = e.data;
 			//Transform t = pdtw->get_transform();
 			Transform t = e.base_transform;
 
@@ -343,7 +343,7 @@ void PropInstancePropJob::phase_prop() {
 	}
 
 	if (should_do()) {
-		if ((_prop_mesher->get_build_flags() & PropMesher::BUILD_FLAG_USE_LIGHTING) != 0) {
+		if ((_prop_mesher->get_build_flags() & Prop2DMesher::BUILD_FLAG_USE_LIGHTING) != 0) {
 			_prop_mesher->bake_colors();
 		}
 
@@ -356,7 +356,7 @@ void PropInstancePropJob::phase_prop() {
 	next_phase();
 }
 
-void PropInstancePropJob::phase_steps() {
+void Prop2DInstanceProp2DJob::phase_steps() {
 	ERR_FAIL_COND(!_prop_mesher.is_valid());
 
 	if (should_return()) {
@@ -379,27 +379,27 @@ void PropInstancePropJob::phase_steps() {
 			//first count how many we need
 			int count = 0;
 			for (int i = 0; i < _job_steps.size(); ++i) {
-				Ref<PropMesherJobStep> step = _job_steps[i];
+				Ref<Prop2DMesherJobStep> step = _job_steps[i];
 
 				ERR_FAIL_COND(!step.is_valid());
 
 				switch (step->get_job_type()) {
-					case PropMesherJobStep::TYPE_NORMAL:
+					case Prop2DMesherJobStep::TYPE_NORMAL:
 						++count;
 						break;
-					case PropMesherJobStep::TYPE_NORMAL_LOD:
+					case Prop2DMesherJobStep::TYPE_NORMAL_LOD:
 						++count;
 						break;
-					case PropMesherJobStep::TYPE_DROP_UV2:
+					case Prop2DMesherJobStep::TYPE_DROP_UV2:
 						++count;
 						break;
-					case PropMesherJobStep::TYPE_MERGE_VERTS:
+					case Prop2DMesherJobStep::TYPE_MERGE_VERTS:
 						++count;
 						break;
-					case PropMesherJobStep::TYPE_BAKE_TEXTURE:
+					case Prop2DMesherJobStep::TYPE_BAKE_TEXTURE:
 						++count;
 						break;
-					case PropMesherJobStep::TYPE_SIMPLIFY_MESH:
+					case Prop2DMesherJobStep::TYPE_SIMPLIFY_MESH:
 #ifdef MESH_UTILS_PRESENT
 						count += step->get_simplification_steps();
 #endif
@@ -432,30 +432,30 @@ void PropInstancePropJob::phase_steps() {
 	}
 
 	for (; _current_job_step < _job_steps.size();) {
-		Ref<PropMesherJobStep> step = _job_steps[_current_job_step];
+		Ref<Prop2DMesherJobStep> step = _job_steps[_current_job_step];
 
 		ERR_FAIL_COND(!step.is_valid());
 
 		switch (step->get_job_type()) {
-			case PropMesherJobStep::TYPE_NORMAL:
+			case Prop2DMesherJobStep::TYPE_NORMAL:
 				step_type_normal();
 				break;
-			case PropMesherJobStep::TYPE_NORMAL_LOD:
+			case Prop2DMesherJobStep::TYPE_NORMAL_LOD:
 				step_type_normal_lod();
 				break;
-			case PropMesherJobStep::TYPE_DROP_UV2:
+			case Prop2DMesherJobStep::TYPE_DROP_UV2:
 				step_type_drop_uv2();
 				break;
-			case PropMesherJobStep::TYPE_MERGE_VERTS:
+			case Prop2DMesherJobStep::TYPE_MERGE_VERTS:
 				step_type_merge_verts();
 				break;
-			case PropMesherJobStep::TYPE_BAKE_TEXTURE:
+			case Prop2DMesherJobStep::TYPE_BAKE_TEXTURE:
 				step_type_bake_texture();
 				break;
-			case PropMesherJobStep::TYPE_SIMPLIFY_MESH:
+			case Prop2DMesherJobStep::TYPE_SIMPLIFY_MESH:
 				step_type_simplify_mesh();
 				break;
-			case PropMesherJobStep::TYPE_OTHER:
+			case Prop2DMesherJobStep::TYPE_OTHER:
 				//do nothing
 				break;
 		}
@@ -473,7 +473,7 @@ void PropInstancePropJob::phase_steps() {
 	finished();
 }
 
-void PropInstancePropJob::step_type_normal() {
+void Prop2DInstanceProp2DJob::step_type_normal() {
 	//TODO add a lighting generation step
 
 	temp_mesh_arr = _prop_mesher->build_mesh();
@@ -491,13 +491,13 @@ void PropInstancePropJob::step_type_normal() {
 	++_current_mesh;
 }
 
-void PropInstancePropJob::step_type_normal_lod() {
-	print_error("Error: step_type_normal_lod doesn't work for TerraPropJobs!");
+void Prop2DInstanceProp2DJob::step_type_normal_lod() {
+	print_error("Error: step_type_normal_lod doesn't work for TerraProp2DJobs!");
 
 	++_current_mesh;
 }
 
-void PropInstancePropJob::step_type_drop_uv2() {
+void Prop2DInstanceProp2DJob::step_type_drop_uv2() {
 	RID mesh_rid = _prop_instace->mesh_get(_current_mesh);
 
 	temp_mesh_arr[VisualServer::ARRAY_TEX_UV2] = Variant();
@@ -513,7 +513,7 @@ void PropInstancePropJob::step_type_drop_uv2() {
 	++_current_mesh;
 }
 
-void PropInstancePropJob::step_type_merge_verts() {
+void Prop2DInstanceProp2DJob::step_type_merge_verts() {
 	Array temp_mesh_arr2 = merge_mesh_array(temp_mesh_arr);
 	temp_mesh_arr = temp_mesh_arr2;
 
@@ -530,7 +530,7 @@ void PropInstancePropJob::step_type_merge_verts() {
 	++_current_mesh;
 }
 
-void PropInstancePropJob::step_type_bake_texture() {
+void Prop2DInstanceProp2DJob::step_type_bake_texture() {
 	Ref<ShaderMaterial> mat = _material_cache->material_lod_get(0);
 	Ref<SpatialMaterial> spmat = _material_cache->material_lod_get(0);
 	Ref<Texture> tex;
@@ -559,10 +559,10 @@ void PropInstancePropJob::step_type_bake_texture() {
 	++_current_mesh;
 }
 
-void PropInstancePropJob::step_type_simplify_mesh() {
+void Prop2DInstanceProp2DJob::step_type_simplify_mesh() {
 #ifdef MESH_UTILS_PRESENT
 
-	Ref<PropMesherJobStep> step = _job_steps[_current_job_step];
+	Ref<Prop2DMesherJobStep> step = _job_steps[_current_job_step];
 	ERR_FAIL_COND(!step.is_valid());
 	Ref<FastQuadraticMeshSimplifier> fqms = step->get_fqms();
 	ERR_FAIL_COND(!fqms.is_valid());
@@ -589,7 +589,7 @@ void PropInstancePropJob::step_type_simplify_mesh() {
 #endif
 }
 
-Array PropInstancePropJob::merge_mesh_array(Array arr) const {
+Array Prop2DInstanceProp2DJob::merge_mesh_array(Array arr) const {
 	ERR_FAIL_COND_V(arr.size() != VisualServer::ARRAY_MAX, arr);
 
 	PoolVector3Array verts = arr[VisualServer::ARRAY_VERTEX];
@@ -653,7 +653,7 @@ Array PropInstancePropJob::merge_mesh_array(Array arr) const {
 
 	return arr;
 }
-Array PropInstancePropJob::bake_mesh_array_uv(Array arr, Ref<Texture> tex, const float mul_color) const {
+Array Prop2DInstanceProp2DJob::bake_mesh_array_uv(Array arr, Ref<Texture> tex, const float mul_color) const {
 	ERR_FAIL_COND_V(arr.size() != VisualServer::ARRAY_MAX, arr);
 	ERR_FAIL_COND_V(!tex.is_valid(), arr);
 
@@ -694,7 +694,7 @@ Array PropInstancePropJob::bake_mesh_array_uv(Array arr, Ref<Texture> tex, const
 	return arr;
 }
 
-void PropInstancePropJob::reset_meshes() {
+void Prop2DInstanceProp2DJob::reset_meshes() {
 	if (!_prop_instace) {
 		return;
 	}
@@ -716,7 +716,7 @@ void PropInstancePropJob::reset_meshes() {
 	}
 }
 
-PropInstancePropJob::PropInstancePropJob() {
+Prop2DInstanceProp2DJob::Prop2DInstanceProp2DJob() {
 	set_build_phase_type(BUILD_PHASE_TYPE_PHYSICS_PROCESS);
 
 	_prop_instace = NULL;
@@ -725,29 +725,29 @@ PropInstancePropJob::PropInstancePropJob() {
 
 	//todo allocate this in a virtual method
 	_prop_mesher.instance();
-	_prop_mesher->set_build_flags(PropMesher::BUILD_FLAG_USE_LIGHTING | PropMesher::BUILD_FLAG_USE_AO | PropMesher::BUILD_FLAG_USE_RAO | PropMesher::BUILD_FLAG_BAKE_LIGHTS);
+	_prop_mesher->set_build_flags(Prop2DMesher::BUILD_FLAG_USE_LIGHTING | Prop2DMesher::BUILD_FLAG_USE_AO | Prop2DMesher::BUILD_FLAG_USE_RAO | Prop2DMesher::BUILD_FLAG_BAKE_LIGHTS);
 }
 
-PropInstancePropJob::~PropInstancePropJob() {
+Prop2DInstanceProp2DJob::~Prop2DInstanceProp2DJob() {
 }
 
-void PropInstancePropJob::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_material_cache"), &PropInstancePropJob::get_material_cache);
-	ClassDB::bind_method(D_METHOD("set_material_cache", "packer"), &PropInstancePropJob::set_material_cache);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "material_cache", PROPERTY_HINT_RESOURCE_TYPE, "PropMaterialCache", 0), "set_material_cache", "get_material_cache");
+void Prop2DInstanceProp2DJob::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_material_cache"), &Prop2DInstanceProp2DJob::get_material_cache);
+	ClassDB::bind_method(D_METHOD("set_material_cache", "packer"), &Prop2DInstanceProp2DJob::set_material_cache);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "material_cache", PROPERTY_HINT_RESOURCE_TYPE, "Prop2DMaterialCache", 0), "set_material_cache", "get_material_cache");
 
-	ClassDB::bind_method(D_METHOD("get_jobs_step", "index"), &PropInstancePropJob::get_jobs_step);
-	ClassDB::bind_method(D_METHOD("set_jobs_step", "index", "mesher"), &PropInstancePropJob::set_jobs_step);
-	ClassDB::bind_method(D_METHOD("remove_jobs_step", "index"), &PropInstancePropJob::remove_jobs_step);
-	ClassDB::bind_method(D_METHOD("add_jobs_step", "mesher"), &PropInstancePropJob::add_jobs_step);
-	ClassDB::bind_method(D_METHOD("get_jobs_step_count"), &PropInstancePropJob::get_jobs_step_count);
+	ClassDB::bind_method(D_METHOD("get_jobs_step", "index"), &Prop2DInstanceProp2DJob::get_jobs_step);
+	ClassDB::bind_method(D_METHOD("set_jobs_step", "index", "mesher"), &Prop2DInstanceProp2DJob::set_jobs_step);
+	ClassDB::bind_method(D_METHOD("remove_jobs_step", "index"), &Prop2DInstanceProp2DJob::remove_jobs_step);
+	ClassDB::bind_method(D_METHOD("add_jobs_step", "mesher"), &Prop2DInstanceProp2DJob::add_jobs_step);
+	ClassDB::bind_method(D_METHOD("get_jobs_step_count"), &Prop2DInstanceProp2DJob::get_jobs_step_count);
 
-	ClassDB::bind_method(D_METHOD("get_prop_mesher"), &PropInstancePropJob::get_prop_mesher);
-	ClassDB::bind_method(D_METHOD("set_prop_mesher", "mesher"), &PropInstancePropJob::set_prop_mesher);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "prop_mesher", PROPERTY_HINT_RESOURCE_TYPE, "PropMesher", 0), "set_prop_mesher", "get_prop_mesher");
+	ClassDB::bind_method(D_METHOD("get_prop_mesher"), &Prop2DInstanceProp2DJob::get_prop_mesher);
+	ClassDB::bind_method(D_METHOD("set_prop_mesher", "mesher"), &Prop2DInstanceProp2DJob::set_prop_mesher);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "prop_mesher", PROPERTY_HINT_RESOURCE_TYPE, "Prop2DMesher", 0), "set_prop_mesher", "get_prop_mesher");
 
-	ClassDB::bind_method(D_METHOD("add_light", "light"), &PropInstancePropJob::add_light);
-	ClassDB::bind_method(D_METHOD("clear_lights"), &PropInstancePropJob::clear_lights);
+	ClassDB::bind_method(D_METHOD("add_light", "light"), &Prop2DInstanceProp2DJob::add_light);
+	ClassDB::bind_method(D_METHOD("clear_lights"), &Prop2DInstanceProp2DJob::clear_lights);
 
-	ClassDB::bind_method(D_METHOD("_physics_process", "delta"), &PropInstancePropJob::_physics_process);
+	ClassDB::bind_method(D_METHOD("_physics_process", "delta"), &Prop2DInstanceProp2DJob::_physics_process);
 }

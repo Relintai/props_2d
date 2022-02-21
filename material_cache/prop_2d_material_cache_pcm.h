@@ -41,10 +41,10 @@ SOFTWARE.
 #include "scene/resources/material.h"
 
 class TexturePacker;
-class PropData;
+class Prop2DData;
 
-class PropMaterialCachePCM : public PropMaterialCache {
-	GDCLASS(PropMaterialCachePCM, PropMaterialCache);
+class Prop2DMaterialCachePCM : public Prop2DMaterialCache {
+	GDCLASS(Prop2DMaterialCachePCM, Prop2DMaterialCache);
 
 public:
 	int get_texture_flags() const;
@@ -71,8 +71,8 @@ public:
 
 	void _setup_material_albedo(Ref<Texture> texture);
 
-	PropMaterialCachePCM();
-	~PropMaterialCachePCM();
+	Prop2DMaterialCachePCM();
+	~Prop2DMaterialCachePCM();
 
 protected:
 	static void _bind_methods();

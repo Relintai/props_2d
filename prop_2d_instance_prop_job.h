@@ -25,51 +25,51 @@ SOFTWARE.
 
 #include "prop_2d_instance_job.h"
 
-class PropMesher;
-class PropInstance;
-class PropInstanceMerger;
-class PropMesherJobStep;
-class PropMaterialCache;
+class Prop2DMesher;
+class Prop2DInstance;
+class Prop2DInstanceMerger;
+class Prop2DMesherJobStep;
+class Prop2DMaterialCache;
 class Shape;
-class PropLight;
-class PropDataTiledWall;
+class Prop2DLight;
+class Prop2DDataTiledWall2D;
 
 #if MESH_DATA_RESOURCE_PRESENT
-class Prop2DDataMeshData;
+class Prop2D2DDataMeshData;
 #endif
 
-class PropInstancePropJob : public PropInstanceJob {
-	GDCLASS(PropInstancePropJob, PropInstanceJob);
+class Prop2DInstanceProp2DJob : public Prop2DInstanceJob {
+	GDCLASS(Prop2DInstanceProp2DJob, Prop2DInstanceJob);
 
 public:
-	Ref<PropMaterialCache> get_material_cache();
-	void set_material_cache(const Ref<PropMaterialCache> &cache);
+	Ref<Prop2DMaterialCache> get_material_cache();
+	void set_material_cache(const Ref<Prop2DMaterialCache> &cache);
 
-	Ref<PropMesherJobStep> get_jobs_step(const int index) const;
-	void set_jobs_step(const int index, const Ref<PropMesherJobStep> &step);
+	Ref<Prop2DMesherJobStep> get_jobs_step(const int index) const;
+	void set_jobs_step(const int index, const Ref<Prop2DMesherJobStep> &step);
 	void remove_jobs_step(const int index);
-	void add_jobs_step(const Ref<PropMesherJobStep> &step);
+	void add_jobs_step(const Ref<Prop2DMesherJobStep> &step);
 	int get_jobs_step_count() const;
 
 	void add_collision_shape(const Ref<Shape> &shape, const Transform &transform, const bool owns_shape = false);
 	void clear_collision_shapes();
 
-	PropInstanceMerger *get_prop_instace();
-	void set_prop_instace(PropInstanceMerger *prop);
+	Prop2DInstanceMerger *get_prop_instace();
+	void set_prop_instace(Prop2DInstanceMerger *prop);
 	void set_prop_instace_bind(Node *prop);
 
-	Ref<PropMesher> get_prop_mesher() const;
-	void set_prop_mesher(const Ref<PropMesher> &mesher);
+	Ref<Prop2DMesher> get_prop_mesher() const;
+	void set_prop_mesher(const Ref<Prop2DMesher> &mesher);
 
 #if MESH_DATA_RESOURCE_PRESENT
-	void add_mesh(const Ref<Prop2DDataMeshData> &mesh_data, const Transform &base_transform);
+	void add_mesh(const Ref<Prop2D2DDataMeshData> &mesh_data, const Transform &base_transform);
 	void clear_meshes();
 #endif
 
-	void add_tiled_wall(const Ref<PropDataTiledWall> &data, const Transform &base_transform);
+	void add_tiled_wall(const Ref<Prop2DDataTiledWall2D> &data, const Transform &base_transform);
 	void clear_tiled_walls();
 
-	void add_light(const Ref<PropLight> &light);
+	void add_light(const Ref<Prop2DLight> &light);
 	void clear_lights();
 
 	void _physics_process(float delta);
@@ -93,8 +93,8 @@ public:
 
 	void reset_meshes();
 
-	PropInstancePropJob();
-	~PropInstancePropJob();
+	Prop2DInstanceProp2DJob();
+	~Prop2DInstanceProp2DJob();
 
 protected:
 	static void _bind_methods();
@@ -102,13 +102,13 @@ protected:
 protected:
 #if MESH_DATA_RESOURCE_PRESENT
 	struct PMDREntry {
-		Ref<Prop2DDataMeshData> mesh_data;
+		Ref<Prop2D2DDataMeshData> mesh_data;
 		Transform base_transform;
 	};
 #endif
 
 	struct PTWEntry {
-		Ref<PropDataTiledWall> data;
+		Ref<Prop2DDataTiledWall2D> data;
 		Transform base_transform;
 	};
 
@@ -122,14 +122,14 @@ protected:
 		}
 	};
 
-	Ref<PropMaterialCache> _material_cache;
+	Ref<Prop2DMaterialCache> _material_cache;
 
-	Vector<Ref<PropMesherJobStep>> _job_steps;
+	Vector<Ref<Prop2DMesherJobStep>> _job_steps;
 	int _current_job_step;
 	int _current_mesh;
 
-	Ref<PropMesher> _prop_mesher;
-	PropInstanceMerger *_prop_instace;
+	Ref<Prop2DMesher> _prop_mesher;
+	Prop2DInstanceMerger *_prop_instace;
 
 #if MESH_DATA_RESOURCE_PRESENT
 	Vector<PMDREntry> _prop_mesh_datas;

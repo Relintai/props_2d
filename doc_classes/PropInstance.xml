@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="PropInstance" inherits="Spatial" version="3.5">
+<class name="Prop2DInstance" inherits="Spatial" version="3.5">
 	<brief_description>
 	</brief_description>
 	<description>
@@ -25,7 +25,7 @@
 		<method name="_prop_preprocess" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="tarnsform" type="Transform" />
-			<argument index="1" name="prop_data" type="PropData" />
+			<argument index="1" name="prop_data" type="Prop2DData" />
 			<description>
 			</description>
 		</method>
@@ -47,7 +47,7 @@
 		<method name="prop_preprocess">
 			<return type="void" />
 			<argument index="0" name="tarnsform" type="Transform" />
-			<argument index="1" name="prop" type="PropData" />
+			<argument index="1" name="prop" type="Prop2DData" />
 			<description>
 			</description>
 		</method>
@@ -64,7 +64,7 @@
 		</member>
 		<member name="material" type="Material" setter="set_material" getter="get_material">
 		</member>
-		<member name="prop_data" type="PropData" setter="set_prop_data" getter="get_prop_data">
+		<member name="prop_data" type="Prop2DData" setter="set_prop_data" getter="get_prop_data">
 		</member>
 	</members>
 	<constants>

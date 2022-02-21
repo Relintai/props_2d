@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="PropDataTiledWall" inherits="PropDataEntry" version="3.5">
+<class name="Prop2DDataTiledWall2D" inherits="Prop2DDataEntry" version="3.5">
 	<brief_description>
 	</brief_description>
 	<description>
@@ -11,7 +11,7 @@
 	<members>
 		<member name="collision" type="bool" setter="set_collision" getter="get_collision" default="true">
 		</member>
-		<member name="data" type="TiledWallData" setter="set_data" getter="get_data">
+		<member name="data" type="TiledWall2DData" setter="set_data" getter="get_data">
 		</member>
 		<member name="heigth" type="int" setter="set_heigth" getter="get_heigth" default="1">
 		</member>

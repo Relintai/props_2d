@@ -47,14 +47,14 @@ SOFTWARE.
 #include "../../texture_packer/texture_packer.h"
 #endif
 
-class PropMaterialCache;
-class PropMesher;
+class Prop2DMaterialCache;
+class Prop2DMesher;
 
-class TiledWallData : public Resource {
-	GDCLASS(TiledWallData, Resource);
+class TiledWall2DData : public Resource {
+	GDCLASS(TiledWall2DData, Resource);
 
 public:
-	enum TiledWallTilingType {
+	enum TiledWall2DTilingType {
 		TILED_WALL_TILING_TYPE_NONE = 0,
 		TILED_WALL_TILING_TYPE_HORIZONTAL,
 		TILED_WALL_TILING_TYPE_VERTICAL,
@@ -64,8 +64,8 @@ public:
 	static const String BINDING_STRING_TILED_WALL_TILING_TYPE;
 
 public:
-	TiledWallTilingType get_tiling_type() const;
-	void set_tiling_type(const TiledWallTilingType value);
+	TiledWall2DTilingType get_tiling_type() const;
+	void set_tiling_type(const TiledWall2DTilingType value);
 
 	//textures
 	Ref<Texture> get_texture(const int index) const;
@@ -106,21 +106,21 @@ public:
 	void add_textures_into(Ref<TexturePacker> texture_packer);
 #endif
 
-	void setup_cache(Ref<PropMaterialCache> cache);
-	void _setup_cache(Ref<PropMaterialCache> cache);
+	void setup_cache(Ref<Prop2DMaterialCache> cache);
+	void _setup_cache(Ref<Prop2DMaterialCache> cache);
 
-	void copy_from(const Ref<TiledWallData> &tiled_wall_data);
+	void copy_from(const Ref<TiledWall2DData> &tiled_wall_data);
 
 	//Ref<Shape> get_collider_shape();
 
-	TiledWallData();
-	~TiledWallData();
+	TiledWall2DData();
+	~TiledWall2DData();
 
 protected:
 	static void _bind_methods();
 
 private:
-	TiledWallTilingType _tiling_type;
+	TiledWall2DTilingType _tiling_type;
 
 	Vector<Ref<Texture>> _textures;
 	Vector<Ref<Texture>> _flavour_textures;
@@ -129,6 +129,6 @@ private:
 	Vector<Ref<Material>> _materials;
 };
 
-VARIANT_ENUM_CAST(TiledWallData::TiledWallTilingType);
+VARIANT_ENUM_CAST(TiledWall2DData::TiledWall2DTilingType);
 
 #endif

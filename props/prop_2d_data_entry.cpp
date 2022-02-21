@@ -40,64 +40,64 @@ SOFTWARE.
 
 #include "../prop_2d_mesher.h"
 
-Transform PropDataEntry::get_transform() const {
+Transform Prop2DDataEntry::get_transform() const {
 	return _transform;
 }
-void PropDataEntry::set_transform(const Transform &value) {
+void Prop2DDataEntry::set_transform(const Transform &value) {
 	_transform = value;
 }
 
 #if TEXTURE_PACKER_PRESENT
-void PropDataEntry::add_textures_into(Ref<TexturePacker> texture_packer) {
+void Prop2DDataEntry::add_textures_into(Ref<TexturePacker> texture_packer) {
 	if (has_method("_add_textures_into"))
 		call("_add_textures_into", texture_packer);
 }
 #endif
 
-bool PropDataEntry::processor_handles(Node *node) {
+bool Prop2DDataEntry::processor_handles(Node *node) {
 	return call("_processor_handles", node);
 }
-void PropDataEntry::processor_process(Ref<PropData> prop_data, Node *node, const Transform &transform) {
+void Prop2DDataEntry::processor_process(Ref<Prop2DData> prop_data, Node *node, const Transform &transform) {
 	call("_processor_process", prop_data, node, transform);
 }
-Node *PropDataEntry::processor_get_node_for(const Transform &transform) {
+Node *Prop2DDataEntry::processor_get_node_for(const Transform &transform) {
 	return call("_processor_get_node_for", transform);
 }
-bool PropDataEntry::processor_evaluate_children() {
+bool Prop2DDataEntry::processor_evaluate_children() {
 	return call("_processor_evaluate_children");
 }
 
-bool PropDataEntry::_processor_handles(Node *node) {
+bool Prop2DDataEntry::_processor_handles(Node *node) {
 	return false;
 }
-void PropDataEntry::_processor_process(Ref<PropData> prop_data, Node *node, const Transform &transform) {
+void Prop2DDataEntry::_processor_process(Ref<Prop2DData> prop_data, Node *node, const Transform &transform) {
 }
-Node *PropDataEntry::_processor_get_node_for(const Transform &transform) {
+Node *Prop2DDataEntry::_processor_get_node_for(const Transform &transform) {
 	return NULL;
 }
-bool PropDataEntry::_processor_evaluate_children() {
+bool Prop2DDataEntry::_processor_evaluate_children() {
 	return true;
 }
 
-PropDataEntry::PropDataEntry() {
+Prop2DDataEntry::Prop2DDataEntry() {
 }
-PropDataEntry::~PropDataEntry() {
+Prop2DDataEntry::~Prop2DDataEntry() {
 }
 
-void PropDataEntry::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_transform"), &PropDataEntry::get_transform);
-	ClassDB::bind_method(D_METHOD("set_transform", "value"), &PropDataEntry::set_transform);
+void Prop2DDataEntry::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_transform"), &Prop2DDataEntry::get_transform);
+	ClassDB::bind_method(D_METHOD("set_transform", "value"), &Prop2DDataEntry::set_transform);
 	ADD_PROPERTY(PropertyInfo(Variant::TRANSFORM, "transform"), "set_transform", "get_transform");
 
 #if TEXTURE_PACKER_PRESENT
 	BIND_VMETHOD(MethodInfo("_add_textures_into", PropertyInfo(Variant::OBJECT, "texture_packer", PROPERTY_HINT_RESOURCE_TYPE, "TexturePacker")));
 
-	ClassDB::bind_method(D_METHOD("add_textures_into", "texture_packer"), &PropDataEntry::add_textures_into);
+	ClassDB::bind_method(D_METHOD("add_textures_into", "texture_packer"), &Prop2DDataEntry::add_textures_into);
 #endif
 
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "handles"), "_processor_handles"));
 	BIND_VMETHOD(MethodInfo("_processor_process",
-			PropertyInfo(Variant::OBJECT, "prop_data", PROPERTY_HINT_RESOURCE_TYPE, "PropData"),
+			PropertyInfo(Variant::OBJECT, "prop_data", PROPERTY_HINT_RESOURCE_TYPE, "Prop2DData"),
 			PropertyInfo(Variant::OBJECT, "node", PROPERTY_HINT_RESOURCE_TYPE, "Node"),
 			PropertyInfo(Variant::TRANSFORM, "transform")));
 
@@ -106,14 +106,14 @@ void PropDataEntry::_bind_methods() {
 
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "evaluate"), "_processor_evaluate_children"));
 
-	ClassDB::bind_method(D_METHOD("processor_handles", "node"), &PropDataEntry::processor_handles);
-	ClassDB::bind_method(D_METHOD("processor_process", "prop_data", "node", "transform"), &PropDataEntry::processor_process);
-	ClassDB::bind_method(D_METHOD("processor_get_node_for", "prop_data"), &PropDataEntry::processor_get_node_for);
-	ClassDB::bind_method(D_METHOD("processor_evaluate_children"), &PropDataEntry::processor_evaluate_children);
+	ClassDB::bind_method(D_METHOD("processor_handles", "node"), &Prop2DDataEntry::processor_handles);
+	ClassDB::bind_method(D_METHOD("processor_process", "prop_data", "node", "transform"), &Prop2DDataEntry::processor_process);
+	ClassDB::bind_method(D_METHOD("processor_get_node_for", "prop_data"), &Prop2DDataEntry::processor_get_node_for);
+	ClassDB::bind_method(D_METHOD("processor_evaluate_children"), &Prop2DDataEntry::processor_evaluate_children);
 
-	ClassDB::bind_method(D_METHOD("_processor_handles", "node"), &PropDataEntry::_processor_handles);
-	ClassDB::bind_method(D_METHOD("_processor_process", "prop_data", "node", "transform"), &PropDataEntry::_processor_process);
-	ClassDB::bind_method(D_METHOD("_processor_get_node_for", "transform"), &PropDataEntry::_processor_get_node_for);
-	ClassDB::bind_method(D_METHOD("_processor_evaluate_children"), &PropDataEntry::_processor_evaluate_children);
+	ClassDB::bind_method(D_METHOD("_processor_handles", "node"), &Prop2DDataEntry::_processor_handles);
+	ClassDB::bind_method(D_METHOD("_processor_process", "prop_data", "node", "transform"), &Prop2DDataEntry::_processor_process);
+	ClassDB::bind_method(D_METHOD("_processor_get_node_for", "transform"), &Prop2DDataEntry::_processor_get_node_for);
+	ClassDB::bind_method(D_METHOD("_processor_evaluate_children"), &Prop2DDataEntry::_processor_evaluate_children);
 
 }

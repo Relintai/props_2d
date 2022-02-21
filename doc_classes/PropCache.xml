@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="PropCache" inherits="Object" version="3.5">
+<class name="Prop2DCache" inherits="Object" version="3.5">
 	<brief_description>
 	</brief_description>
 	<description>
@@ -26,7 +26,7 @@
 			</description>
 		</method>
 		<method name="material_cache_custom_key_get">
-			<return type="PropMaterialCache" />
+			<return type="Prop2DMaterialCache" />
 			<argument index="0" name="key" type="int" />
 			<description>
 			</description>
@@ -38,14 +38,14 @@
 			</description>
 		</method>
 		<method name="material_cache_get">
-			<return type="PropMaterialCache" />
-			<argument index="0" name="prop" type="PropData" />
+			<return type="Prop2DMaterialCache" />
+			<argument index="0" name="prop" type="Prop2DData" />
 			<description>
 			</description>
 		</method>
 		<method name="material_cache_unref">
 			<return type="void" />
-			<argument index="0" name="prop" type="PropData" />
+			<argument index="0" name="prop" type="Prop2DData" />
 			<description>
 			</description>
 		</method>
@@ -84,14 +84,14 @@
 			</description>
 		</method>
 		<method name="tiled_wall_material_cache_get">
-			<return type="PropMaterialCache" />
-			<argument index="0" name="twd" type="TiledWallData" />
+			<return type="Prop2DMaterialCache" />
+			<argument index="0" name="twd" type="TiledWall2DData" />
 			<description>
 			</description>
 		</method>
 		<method name="tiled_wall_material_cache_unref">
 			<return type="void" />
-			<argument index="0" name="twd" type="TiledWallData" />
+			<argument index="0" name="twd" type="TiledWall2DData" />
 			<description>
 			</description>
 		</method>
@@ -99,7 +99,7 @@
 	<members>
 		<member name="background_color" type="Color" setter="set_background_color" getter="get_background_color" default="Color( 0, 0, 0, 1 )">
 		</member>
-		<member name="default_prop_material_cache_class" type="String" setter="set_default_prop_material_cache_class" getter="get_default_prop_material_cache_class" default="&quot;PropMaterialCachePCM&quot;">
+		<member name="default_prop_material_cache_class" type="String" setter="set_default_prop_material_cache_class" getter="get_default_prop_material_cache_class" default="&quot;Prop2DMaterialCachePCM&quot;">
 		</member>
 		<member name="keep_original_atlases" type="bool" setter="set_keep_original_atlases" getter="get_keep_original_atlases" default="false">
 		</member>

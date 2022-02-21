@@ -43,11 +43,11 @@ class TexturePacker;
 #endif
 
 #if THREAD_POOL_PRESENT
-class PropTextureJob : public ThreadPoolJob {
-	GDCLASS(PropTextureJob, ThreadPoolJob);
+class Prop2DTextureJob : public ThreadPoolJob {
+	GDCLASS(Prop2DTextureJob, ThreadPoolJob);
 #else
-class PropTextureJob : public Reference {
-	GDCLASS(PropTextureJob, Reference);
+class Prop2DTextureJob : public Reference {
+	GDCLASS(Prop2DTextureJob, Reference);
 #endif
 
 public:
@@ -58,8 +58,8 @@ public:
 
 	void _execute();
 
-	PropTextureJob();
-	~PropTextureJob();
+	Prop2DTextureJob();
+	~Prop2DTextureJob();
 
 protected:
 	static void _bind_methods();

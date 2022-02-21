@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="PropData" inherits="Resource" version="3.5">
+<class name="Prop2DData" inherits="Resource" version="3.5">
 	<brief_description>
 	</brief_description>
 	<description>
@@ -9,7 +9,7 @@
 	<methods>
 		<method name="add_prop">
 			<return type="void" />
-			<argument index="0" name="prop" type="PropDataEntry" />
+			<argument index="0" name="prop" type="Prop2DDataEntry" />
 			<description>
 			</description>
 		</method>
@@ -21,12 +21,12 @@
 		</method>
 		<method name="copy_from">
 			<return type="void" />
-			<argument index="0" name="prop_data" type="PropData" />
+			<argument index="0" name="prop_data" type="Prop2DData" />
 			<description>
 			</description>
 		</method>
 		<method name="get_prop" qualifiers="const">
-			<return type="PropDataEntry" />
+			<return type="Prop2DDataEntry" />
 			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
@@ -45,7 +45,7 @@
 		<method name="set_prop">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
-			<argument index="1" name="spell" type="PropDataEntry" />
+			<argument index="1" name="spell" type="Prop2DDataEntry" />
 			<description>
 			</description>
 		</method>

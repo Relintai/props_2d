@@ -33,12 +33,12 @@ SOFTWARE.
 #include "../../texture_packer/texture_packer.h"
 #endif
 
-class PropDataProp : public PropDataEntry {
-	GDCLASS(PropDataProp, PropDataEntry);
+class Prop2DDataProp2D : public Prop2DDataEntry {
+	GDCLASS(Prop2DDataProp2D, Prop2DDataEntry);
 
 public:
-	Ref<PropData> get_prop() const;
-	void set_prop(const Ref<PropData> value);
+	Ref<Prop2DData> get_prop() const;
+	void set_prop(const Ref<Prop2DData> value);
 
 	bool get_snap_to_mesh();
 	void set_snap_to_mesh(bool value);
@@ -51,11 +51,11 @@ public:
 #endif
 
 	bool _processor_handles(Node *node);
-	void _processor_process(Ref<PropData> prop_data, Node *node, const Transform &transform);
+	void _processor_process(Ref<Prop2DData> prop_data, Node *node, const Transform &transform);
 	Node *_processor_get_node_for(const Transform &transform);
 
-	PropDataProp();
-	~PropDataProp();
+	Prop2DDataProp2D();
+	~Prop2DDataProp2D();
 
 protected:
 	static void _bind_methods();
@@ -63,7 +63,7 @@ protected:
 private:
 	bool _snap_to_mesh;
 	Vector3 _snap_axis;
-	Ref<PropData> _prop;
+	Ref<Prop2DData> _prop;
 };
 
 #endif

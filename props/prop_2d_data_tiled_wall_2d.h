@@ -26,10 +26,10 @@ SOFTWARE.
 #include "core/math/vector3.h"
 #include "prop_2d_data_entry.h"
 
-class TiledWallData;
+class TiledWall2DData;
 
-class PropDataTiledWall : public PropDataEntry {
-	GDCLASS(PropDataTiledWall, PropDataEntry);
+class Prop2DDataTiledWall2D : public Prop2DDataEntry {
+	GDCLASS(Prop2DDataTiledWall2D, Prop2DDataEntry);
 
 public:
 	int get_width() const;
@@ -38,18 +38,18 @@ public:
 	int get_heigth() const;
 	void set_heigth(const int value);
 
-	Ref<TiledWallData> get_data();
-	void set_data(const Ref<TiledWallData> &data);
+	Ref<TiledWall2DData> get_data();
+	void set_data(const Ref<TiledWall2DData> &data);
 
 	bool get_collision() const;
 	void set_collision(const int value);
 
 	bool _processor_handles(Node *node);
-	void _processor_process(Ref<PropData> prop_data, Node *node, const Transform &transform);
+	void _processor_process(Ref<Prop2DData> prop_data, Node *node, const Transform &transform);
 	Node *_processor_get_node_for(const Transform &transform);
 
-	PropDataTiledWall();
-	~PropDataTiledWall();
+	Prop2DDataTiledWall2D();
+	~Prop2DDataTiledWall2D();
 
 protected:
 	static void _bind_methods();
@@ -59,7 +59,7 @@ private:
 	int _height;
 	bool _collision;
 
-	Ref<TiledWallData> _data;
+	Ref<TiledWall2DData> _data;
 };
 
 #endif

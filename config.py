@@ -10,41 +10,41 @@ def configure(env):
 
 def get_doc_classes():
     return [
-        "PropDataEntry",
-        "PropDataLight",
-        "PropDataProp",
-        "PropDataScene",
-        "PropDataPortal",
-        "PropDataTiledWall",
-        "PropData",
+        "Prop2DDataEntry",
+        "Prop2DDataLight",
+        "Prop2DDataProp2D",
+        "Prop2DDataScene",
+        "Prop2DDataPortal",
+        "Prop2DDataTiledWall2D",
+        "Prop2DData",
         
-        "TiledWall",
-        "TiledWallData",
+        "TiledWall2D",
+        "TiledWall2DData",
 
-        "PropDataProcessor",
+        "Prop2DDataProcessor",
 
-        "GroundClutterFoliage",
-        "GroundClutter",
+        "GroundClutter2DFoliage",
+        "GroundClutter2D",
 
-        "PropESSEntity",
-        "PropInstance",
-        "PropMeshUtils",
+        "Prop2DESSEntity",
+        "Prop2DInstance",
+        "Prop2DMeshUtils",
 
-        "PropSceneInstance",
+        "Prop2DSceneInstance",
 
-        "PropUtils",
+        "Prop2DUtils",
 
-        "PropInstanceMerger",
-        "PropCache",
-        "PropInstanceJob",
-        "PropInstanceMerger",
-        "PropInstancePropJob",
-        "PropMaterialCache",
-        "PropMaterialCachePCM",
-        "PropMesher",
-        "PropMesherJobStep",
-        "PropTextureJob",
-        "PropLight",
+        "Prop2DInstanceMerger",
+        "Prop2DCache",
+        "Prop2DInstanceJob",
+        "Prop2DInstanceMerger",
+        "Prop2DInstanceProp2DJob",
+        "Prop2DMaterialCache",
+        "Prop2DMaterialCachePCM",
+        "Prop2DMesher",
+        "Prop2DMesherJobStep",
+        "Prop2DTextureJob",
+        "Prop2DLight",
     ]
 
 def get_doc_path():

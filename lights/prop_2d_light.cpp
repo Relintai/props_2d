@@ -22,44 +22,44 @@ SOFTWARE.
 
 #include "prop_2d_light.h"
 
-Vector3 PropLight::get_position() {
+Vector3 Prop2DLight::get_position() {
 	return _position;
 }
-void PropLight::set_position(const Vector3 &pos)  {
+void Prop2DLight::set_position(const Vector3 &pos)  {
 	_position = pos;
 }
 
-Color PropLight::get_color() const {
+Color Prop2DLight::get_color() const {
 	return _color;
 }
-void PropLight::set_color(const Color &color) {
+void Prop2DLight::set_color(const Color &color) {
 	_color = color;
 }
 
-float PropLight::get_size() const {
+float Prop2DLight::get_size() const {
 	return _size;
 }
-void PropLight::set_size(const float size) {
+void Prop2DLight::set_size(const float size) {
 	_size = size;
 }
 
-PropLight::PropLight() {
+Prop2DLight::Prop2DLight() {
 	_size = 0;
 }
 
-PropLight::~PropLight() {
+Prop2DLight::~Prop2DLight() {
 }
 
-void PropLight::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_position"), &PropLight::get_position);
-	ClassDB::bind_method(D_METHOD("set_position"), &PropLight::set_position);
+void Prop2DLight::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_position"), &Prop2DLight::get_position);
+	ClassDB::bind_method(D_METHOD("set_position"), &Prop2DLight::set_position);
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "world_position"), "set_position", "get_position");
 
-	ClassDB::bind_method(D_METHOD("get_color"), &PropLight::get_color);
-	ClassDB::bind_method(D_METHOD("set_color"), &PropLight::set_color);
+	ClassDB::bind_method(D_METHOD("get_color"), &Prop2DLight::get_color);
+	ClassDB::bind_method(D_METHOD("set_color"), &Prop2DLight::set_color);
 	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "color"), "set_color", "get_color");
 
-	ClassDB::bind_method(D_METHOD("get_size"), &PropLight::get_size);
-	ClassDB::bind_method(D_METHOD("set_size"), &PropLight::set_size);
+	ClassDB::bind_method(D_METHOD("get_size"), &Prop2DLight::get_size);
+	ClassDB::bind_method(D_METHOD("set_size"), &Prop2DLight::set_size);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "size"), "set_size", "get_size");
 }

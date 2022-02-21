@@ -46,19 +46,19 @@ SOFTWARE.
 #include "core/engine.h"
 #endif
 
-PropUtils *PropUtils::_instance;
-Vector<Ref<PropDataEntry> > PropUtils::_processors;
+Prop2DUtils *Prop2DUtils::_instance;
+Vector<Ref<Prop2DDataEntry> > Prop2DUtils::_processors;
 
-PropUtils *PropUtils::get_singleton() {
+Prop2DUtils *Prop2DUtils::get_singleton() {
 	return _instance;
 }
 
-Ref<PropData> PropUtils::convert_tree(Node *root) {
+Ref<Prop2DData> Prop2DUtils::convert_tree(Node *root) {
 #if VERSION_MAJOR < 4
-	ERR_FAIL_COND_V(!ObjectDB::instance_validate(root), Ref<PropData>());
+	ERR_FAIL_COND_V(!ObjectDB::instance_validate(root), Ref<Prop2DData>());
 #endif
 
-	Ref<PropData> data;
+	Ref<Prop2DData> data;
 	data.instance();
 	Transform t;
 
@@ -67,13 +67,13 @@ Ref<PropData> PropUtils::convert_tree(Node *root) {
 	return data;
 }
 
-void PropUtils::_convert_tree(Ref<PropData> prop_data, Node *node, const Transform &transform) {
+void Prop2DUtils::_convert_tree(Ref<Prop2DData> prop_data, Node *node, const Transform &transform) {
 #if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(node));
 #endif
 
-	for (int i = 0; i < PropUtils::_processors.size(); ++i) {
-		Ref<PropDataEntry> proc = PropUtils::_processors.get(i);
+	for (int i = 0; i < Prop2DUtils::_processors.size(); ++i) {
+		Ref<Prop2DDataEntry> proc = Prop2DUtils::_processors.get(i);
 
 		ERR_CONTINUE(!proc.is_valid());
 
@@ -138,7 +138,7 @@ void PropUtils::_convert_tree(Ref<PropData> prop_data, Node *node, const Transfo
 }
 
 #if VERSION_MINOR >= 4
-bool PropUtils::generate_room_points_node(Node *node) {
+bool Prop2DUtils::generate_room_points_node(Node *node) {
 	ERR_FAIL_COND_V(!ObjectDB::instance_validate(node), false);
 
 	Room *r = Object::cast_to<Room>(node);
@@ -158,7 +158,7 @@ bool PropUtils::generate_room_points_node(Node *node) {
 	return false;
 }
 
-void PropUtils::generate_room_points(Room *room) {
+void Prop2DUtils::generate_room_points(Room *room) {
 	ERR_FAIL_COND(!ObjectDB::instance_validate(room));
 
 	Vector<PoolVector<Vector3> > mesh_arrays;
@@ -281,7 +281,7 @@ void PropUtils::generate_room_points(Room *room) {
 }
 
 //based on Room::SimplifyInfo::add_plane_if_unique
-bool PropUtils::is_plane_unique(const PoolVector<Plane> &planes, const Plane &p) {
+bool Prop2DUtils::is_plane_unique(const PoolVector<Plane> &planes, const Plane &p) {
 	for (int n = 0; n < planes.size(); n++) {
 		const Plane &o = planes[n];
 
@@ -306,7 +306,7 @@ bool PropUtils::is_plane_unique(const PoolVector<Plane> &planes, const Plane &p)
 	return true;
 }
 
-void PropUtils::get_mesh_arrays(Node *node, Vector<PoolVector<Vector3> > *arrs) {
+void Prop2DUtils::get_mesh_arrays(Node *node, Vector<PoolVector<Vector3> > *arrs) {
 	ERR_FAIL_COND(!ObjectDB::instance_validate(node));
 
 	for (int i = 0; i < node->get_child_count(); ++i) {
@@ -462,67 +462,67 @@ void PropUtils::get_mesh_arrays(Node *node, Vector<PoolVector<Vector3> > *arrs) 
 
 #endif
 
-int PropUtils::add_processor(const Ref<PropDataEntry> &processor) {
+int Prop2DUtils::add_processor(const Ref<Prop2DDataEntry> &processor) {
 	ERR_FAIL_COND_V(!processor.is_valid(), 0);
 
-	PropUtils::_processors.push_back(processor);
+	Prop2DUtils::_processors.push_back(processor);
 
-	return PropUtils::_processors.size() - 1;
+	return Prop2DUtils::_processors.size() - 1;
 }
-Ref<PropDataEntry> PropUtils::get_processor(const int index) {
-	ERR_FAIL_INDEX_V(index, PropUtils::_processors.size(), Ref<PropDataEntry>());
+Ref<Prop2DDataEntry> Prop2DUtils::get_processor(const int index) {
+	ERR_FAIL_INDEX_V(index, Prop2DUtils::_processors.size(), Ref<Prop2DDataEntry>());
 
-	return PropUtils::_processors[index];
+	return Prop2DUtils::_processors[index];
 }
-void PropUtils::swap_processors(const int index1, const int index2) {
-	ERR_FAIL_INDEX(index1, PropUtils::_processors.size());
-	ERR_FAIL_INDEX(index2, PropUtils::_processors.size());
+void Prop2DUtils::swap_processors(const int index1, const int index2) {
+	ERR_FAIL_INDEX(index1, Prop2DUtils::_processors.size());
+	ERR_FAIL_INDEX(index2, Prop2DUtils::_processors.size());
 
-	Ref<PropDataEntry> a = PropUtils::_processors.get(index1);
-	PropUtils::_processors.set(index1, PropUtils::_processors.get(index2));
-	PropUtils::_processors.set(index2, a);
+	Ref<Prop2DDataEntry> a = Prop2DUtils::_processors.get(index1);
+	Prop2DUtils::_processors.set(index1, Prop2DUtils::_processors.get(index2));
+	Prop2DUtils::_processors.set(index2, a);
 }
-void PropUtils::remove_processor(const int index) {
-	ERR_FAIL_INDEX(index, PropUtils::_processors.size());
+void Prop2DUtils::remove_processor(const int index) {
+	ERR_FAIL_INDEX(index, Prop2DUtils::_processors.size());
 
-	PropUtils::_processors.remove(index);
+	Prop2DUtils::_processors.remove(index);
 }
-int PropUtils::get_processor_count() {
-	return PropUtils::_processors.size();
+int Prop2DUtils::get_processor_count() {
+	return Prop2DUtils::_processors.size();
 }
 
-PropUtils::PropUtils() {
+Prop2DUtils::Prop2DUtils() {
 	_instance = this;
 }
 
-PropUtils::~PropUtils() {
+Prop2DUtils::~Prop2DUtils() {
 	_instance = NULL;
 
-	PropUtils::_processors.clear();
+	Prop2DUtils::_processors.clear();
 }
 
-void PropUtils::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("convert_tree", "root"), &PropUtils::convert_tree);
+void Prop2DUtils::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("convert_tree", "root"), &Prop2DUtils::convert_tree);
 
-	ClassDB::bind_method(D_METHOD("add_processor", "processor"), &PropUtils::_add_processor_bind);
-	ClassDB::bind_method(D_METHOD("get_processor", "index"), &PropUtils::_get_processor_bind);
-	ClassDB::bind_method(D_METHOD("swap_processors", "index1", "index2"), &PropUtils::_swap_processors_bind);
-	ClassDB::bind_method(D_METHOD("remove_processor", "index"), &PropUtils::_remove_processor_bind);
-	ClassDB::bind_method(D_METHOD("get_processor_count"), &PropUtils::_get_processor_count_bind);
+	ClassDB::bind_method(D_METHOD("add_processor", "processor"), &Prop2DUtils::_add_processor_bind);
+	ClassDB::bind_method(D_METHOD("get_processor", "index"), &Prop2DUtils::_get_processor_bind);
+	ClassDB::bind_method(D_METHOD("swap_processors", "index1", "index2"), &Prop2DUtils::_swap_processors_bind);
+	ClassDB::bind_method(D_METHOD("remove_processor", "index"), &Prop2DUtils::_remove_processor_bind);
+	ClassDB::bind_method(D_METHOD("get_processor_count"), &Prop2DUtils::_get_processor_count_bind);
 }
 
-int PropUtils::_add_processor_bind(const Ref<PropDataEntry> &processor) {
-	return PropUtils::add_processor(processor);
+int Prop2DUtils::_add_processor_bind(const Ref<Prop2DDataEntry> &processor) {
+	return Prop2DUtils::add_processor(processor);
 }
-Ref<PropDataEntry> PropUtils::_get_processor_bind(const int index) {
-	return PropUtils::get_processor(index);
+Ref<Prop2DDataEntry> Prop2DUtils::_get_processor_bind(const int index) {
+	return Prop2DUtils::get_processor(index);
 }
-void PropUtils::_swap_processors_bind(const int index1, const int index2) {
-	PropUtils::swap_processors(index1, index2);
+void Prop2DUtils::_swap_processors_bind(const int index1, const int index2) {
+	Prop2DUtils::swap_processors(index1, index2);
 }
-void PropUtils::_remove_processor_bind(const int index) {
-	PropUtils::remove_processor(index);
+void Prop2DUtils::_remove_processor_bind(const int index) {
+	Prop2DUtils::remove_processor(index);
 }
-int PropUtils::_get_processor_count_bind() {
-	return PropUtils::get_processor_count();
+int Prop2DUtils::_get_processor_count_bind() {
+	return Prop2DUtils::get_processor_count();
 }

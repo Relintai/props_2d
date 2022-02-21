@@ -28,10 +28,10 @@
 #include "tiled_wall/tiled_wall_2d.h"
 #include "tiled_wall/tiled_wall_2d_data.h"
 
-Ref<PropData> PropInstance::get_prop_data() {
+Ref<Prop2DData> Prop2DInstance::get_prop_data() {
 	return _prop_data;
 }
-void PropInstance::set_prop_data(const Ref<PropData> &data) {
+void Prop2DInstance::set_prop_data(const Ref<Prop2DData> &data) {
 	if (_prop_data == data)
 		return;
 
@@ -44,58 +44,58 @@ void PropInstance::set_prop_data(const Ref<PropData> &data) {
 	}
 }
 
-Ref<Material> PropInstance::get_material() {
+Ref<Material> Prop2DInstance::get_material() {
 	return _material;
 }
-void PropInstance::set_material(const Ref<Material> &material) {
+void Prop2DInstance::set_material(const Ref<Material> &material) {
 	_material = material;
 }
 
-uint32_t PropInstance::get_collision_layer() const {
+uint32_t Prop2DInstance::get_collision_layer() const {
 	return _collision_layer;
 }
 
-void PropInstance::set_collision_layer(uint32_t p_layer) {
+void Prop2DInstance::set_collision_layer(uint32_t p_layer) {
 	_collision_layer = p_layer;
 
 	collision_layer_changed();
 }
 
-uint32_t PropInstance::get_collision_mask() const {
+uint32_t Prop2DInstance::get_collision_mask() const {
 	return _collision_mask;
 }
 
-void PropInstance::set_collision_mask(uint32_t p_mask) {
+void Prop2DInstance::set_collision_mask(uint32_t p_mask) {
 	_collision_mask = p_mask;
 
 	collision_mask_changed();
 }
 
-void PropInstance::collision_layer_changed() {
+void Prop2DInstance::collision_layer_changed() {
 }
 
-void PropInstance::collision_mask_changed() {
+void Prop2DInstance::collision_mask_changed() {
 }
 
-void PropInstance::init_materials() {
+void Prop2DInstance::init_materials() {
 	call("_init_materials");
 }
-void PropInstance::_init_materials() {
+void Prop2DInstance::_init_materials() {
 }
 
-void PropInstance::build() {
+void Prop2DInstance::build() {
 	call("_build");
 }
 
-void PropInstance::queue_build() {
+void Prop2DInstance::queue_build() {
 	_build_queued = true;
 }
 
-void PropInstance::build_finished() {
+void Prop2DInstance::build_finished() {
 	call("_build_finished");
 }
 
-void PropInstance::_build() {
+void Prop2DInstance::_build() {
 	_building = true;
 	_build_queued = false;
 
@@ -118,7 +118,7 @@ void PropInstance::_build() {
 	prop_preprocess(Transform(), _prop_data);
 }
 
-void PropInstance::_build_finished() {
+void Prop2DInstance::_build_finished() {
 	_building = false;
 
 	if (_build_queued) {
@@ -126,28 +126,28 @@ void PropInstance::_build_finished() {
 	}
 }
 
-void PropInstance::prop_preprocess(Transform transform, const Ref<PropData> &prop) {
+void Prop2DInstance::prop_preprocess(Transform transform, const Ref<Prop2DData> &prop) {
 	call("_prop_preprocess", transform, prop);
 }
 
-void PropInstance::_prop_preprocess(Transform transform, const Ref<PropData> &prop) {
+void Prop2DInstance::_prop_preprocess(Transform transform, const Ref<Prop2DData> &prop) {
 	//don't set owners, to help working with the editor
 
 	ERR_FAIL_COND(!prop.is_valid());
 
 	int count = prop->get_prop_count();
 	for (int i = 0; i < count; ++i) {
-		Ref<PropDataEntry> e = prop->get_prop(i);
+		Ref<Prop2DDataEntry> e = prop->get_prop(i);
 
 		if (!e.is_valid())
 			continue;
 
 		Transform t = transform * e->get_transform();
 
-		Ref<PropDataProp> prop_entry_data = e;
+		Ref<Prop2DDataProp2D> prop_entry_data = e;
 
 		if (prop_entry_data.is_valid()) {
-			Ref<PropData> p = prop_entry_data->get_prop();
+			Ref<Prop2DData> p = prop_entry_data->get_prop();
 
 			if (!p.is_valid())
 				continue;
@@ -157,10 +157,10 @@ void PropInstance::_prop_preprocess(Transform transform, const Ref<PropData> &pr
 			continue;
 		}
 
-		Ref<PropDataTiledWall> tiled_wall_data = e;
+		Ref<Prop2DDataTiledWall2D> tiled_wall_data = e;
 
 		if (tiled_wall_data.is_valid()) {
-			TiledWall *twn = memnew(TiledWall);
+			TiledWall2D *twn = memnew(TiledWall2D);
 
 			twn->set_width(tiled_wall_data->get_width());
 			twn->set_heigth(tiled_wall_data->get_heigth());
@@ -174,7 +174,7 @@ void PropInstance::_prop_preprocess(Transform transform, const Ref<PropData> &pr
 			continue;
 		}
 
-		Ref<PropDataScene> scene_data = e;
+		Ref<Prop2DDataScene> scene_data = e;
 
 		if (scene_data.is_valid()) {
 			Ref<PackedScene> sc = scene_data->get_scene();
@@ -194,7 +194,7 @@ void PropInstance::_prop_preprocess(Transform transform, const Ref<PropData> &pr
 			continue;
 		}
 
-		Ref<PropDataLight> light_data = e;
+		Ref<Prop2DDataLight> light_data = e;
 
 		if (light_data.is_valid()) {
 			OmniLight *light = memnew(OmniLight);
@@ -207,7 +207,7 @@ void PropInstance::_prop_preprocess(Transform transform, const Ref<PropData> &pr
 		}
 
 #if MESH_DATA_RESOURCE_PRESENT
-		Ref<Prop2DDataMeshData> mesh_data = e;
+		Ref<Prop2D2DDataMeshData> mesh_data = e;
 
 		if (mesh_data.is_valid()) {
 			Ref<MeshDataResource> mdr = mesh_data->get_mesh();
@@ -251,7 +251,7 @@ void PropInstance::_prop_preprocess(Transform transform, const Ref<PropData> &pr
 	}
 }
 
-PropInstance::PropInstance() {
+Prop2DInstance::Prop2DInstance() {
 	_build_queued = false;
 	_building = false;
 
@@ -259,11 +259,11 @@ PropInstance::PropInstance() {
 	_collision_mask = 1;
 }
 
-PropInstance::~PropInstance() {
+Prop2DInstance::~Prop2DInstance() {
 	_prop_data.unref();
 }
 
-void PropInstance::_notification(int p_what) {
+void Prop2DInstance::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE: {
 			if (_prop_data.is_valid()) {
@@ -275,20 +275,20 @@ void PropInstance::_notification(int p_what) {
 	}
 }
 
-void PropInstance::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_prop_data"), &PropInstance::get_prop_data);
-	ClassDB::bind_method(D_METHOD("set_prop_data", "value"), &PropInstance::set_prop_data);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "prop_data", PROPERTY_HINT_RESOURCE_TYPE, "PropData"), "set_prop_data", "get_prop_data");
+void Prop2DInstance::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_prop_data"), &Prop2DInstance::get_prop_data);
+	ClassDB::bind_method(D_METHOD("set_prop_data", "value"), &Prop2DInstance::set_prop_data);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "prop_data", PROPERTY_HINT_RESOURCE_TYPE, "Prop2DData"), "set_prop_data", "get_prop_data");
 
-	ClassDB::bind_method(D_METHOD("get_material"), &PropInstance::get_material);
-	ClassDB::bind_method(D_METHOD("set_material", "material"), &PropInstance::set_material);
+	ClassDB::bind_method(D_METHOD("get_material"), &Prop2DInstance::get_material);
+	ClassDB::bind_method(D_METHOD("set_material", "material"), &Prop2DInstance::set_material);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "material", PROPERTY_HINT_RESOURCE_TYPE, "Material"), "set_material", "get_material");
 
-	ClassDB::bind_method(D_METHOD("get_collision_layer"), &PropInstance::get_collision_layer);
-	ClassDB::bind_method(D_METHOD("set_collision_layer", "layer"), &PropInstance::set_collision_layer);
+	ClassDB::bind_method(D_METHOD("get_collision_layer"), &Prop2DInstance::get_collision_layer);
+	ClassDB::bind_method(D_METHOD("set_collision_layer", "layer"), &Prop2DInstance::set_collision_layer);
 
-	ClassDB::bind_method(D_METHOD("get_collision_mask"), &PropInstance::get_collision_mask);
-	ClassDB::bind_method(D_METHOD("set_collision_mask", "layer"), &PropInstance::set_collision_mask);
+	ClassDB::bind_method(D_METHOD("get_collision_mask"), &Prop2DInstance::get_collision_mask);
+	ClassDB::bind_method(D_METHOD("set_collision_mask", "layer"), &Prop2DInstance::set_collision_mask);
 
 	ADD_GROUP("Collision", "collision_");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "collision_layer", PROPERTY_HINT_LAYERS_3D_PHYSICS), "set_collision_layer", "get_collision_layer");
@@ -296,25 +296,25 @@ void PropInstance::_bind_methods() {
 
 	BIND_VMETHOD(MethodInfo("_prop_preprocess",
 			PropertyInfo(Variant::TRANSFORM, "tarnsform"),
-			PropertyInfo(Variant::OBJECT, "prop_data", PROPERTY_HINT_RESOURCE_TYPE, "PropData")));
+			PropertyInfo(Variant::OBJECT, "prop_data", PROPERTY_HINT_RESOURCE_TYPE, "Prop2DData")));
 
-	ClassDB::bind_method(D_METHOD("prop_preprocess", "tarnsform", "prop"), &PropInstance::prop_preprocess);
-	ClassDB::bind_method(D_METHOD("_prop_preprocess", "tarnsform", "prop"), &PropInstance::_prop_preprocess);
+	ClassDB::bind_method(D_METHOD("prop_preprocess", "tarnsform", "prop"), &Prop2DInstance::prop_preprocess);
+	ClassDB::bind_method(D_METHOD("_prop_preprocess", "tarnsform", "prop"), &Prop2DInstance::_prop_preprocess);
 
 	//---
 	BIND_VMETHOD(MethodInfo("_init_materials"));
 
-	ClassDB::bind_method(D_METHOD("init_materials"), &PropInstance::init_materials);
-	ClassDB::bind_method(D_METHOD("_init_materials"), &PropInstance::_init_materials);
+	ClassDB::bind_method(D_METHOD("init_materials"), &Prop2DInstance::init_materials);
+	ClassDB::bind_method(D_METHOD("_init_materials"), &Prop2DInstance::_init_materials);
 
 	//---
-	ClassDB::bind_method(D_METHOD("build"), &PropInstance::build);
-	ClassDB::bind_method(D_METHOD("queue_build"), &PropInstance::queue_build);
-	ClassDB::bind_method(D_METHOD("build_finished"), &PropInstance::build_finished);
+	ClassDB::bind_method(D_METHOD("build"), &Prop2DInstance::build);
+	ClassDB::bind_method(D_METHOD("queue_build"), &Prop2DInstance::queue_build);
+	ClassDB::bind_method(D_METHOD("build_finished"), &Prop2DInstance::build_finished);
 
 	BIND_VMETHOD(MethodInfo("_build"));
 	BIND_VMETHOD(MethodInfo("_build_finished"));
 
-	ClassDB::bind_method(D_METHOD("_build"), &PropInstance::_build);
-	ClassDB::bind_method(D_METHOD("_build_finished"), &PropInstance::_build_finished);
+	ClassDB::bind_method(D_METHOD("_build"), &Prop2DInstance::_build);
+	ClassDB::bind_method(D_METHOD("_build_finished"), &Prop2DInstance::_build_finished);
 }

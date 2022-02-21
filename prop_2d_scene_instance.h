@@ -38,8 +38,8 @@ SOFTWARE.
 #include "props/prop_2d_data.h"
 #include "scene/resources/packed_scene.h"
 
-class PropSceneInstance : public Spatial {
-	GDCLASS(PropSceneInstance, Spatial);
+class Prop2DSceneInstance : public Spatial {
+	GDCLASS(Prop2DSceneInstance, Spatial);
 
 public:
 	Ref<PackedScene> get_scene();
@@ -53,8 +53,8 @@ public:
 
 	void build();
 
-	PropSceneInstance();
-	~PropSceneInstance();
+	Prop2DSceneInstance();
+	~Prop2DSceneInstance();
 
 protected:
 	void _notification(int p_what);

@@ -28,8 +28,8 @@ SOFTWARE.
 
 #include "scene/resources/packed_scene.h"
 
-class PropDataScene : public PropDataEntry {
-	GDCLASS(PropDataScene, PropDataEntry);
+class Prop2DDataScene : public Prop2DDataEntry {
+	GDCLASS(Prop2DDataScene, Prop2DDataEntry);
 
 public:
 	Ref<PackedScene> get_scene();
@@ -42,11 +42,11 @@ public:
 	void set_snap_axis(Vector3 value);
 
 	bool _processor_handles(Node *node);
-	void _processor_process(Ref<PropData> prop_data, Node *node, const Transform &transform);
+	void _processor_process(Ref<Prop2DData> prop_data, Node *node, const Transform &transform);
 	Node *_processor_get_node_for(const Transform &transform);
 
-	PropDataScene();
-	~PropDataScene();
+	Prop2DDataScene();
+	~Prop2DDataScene();
 
 protected:
 	static void _bind_methods();

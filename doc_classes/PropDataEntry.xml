@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="PropDataEntry" inherits="Resource" version="3.5">
+<class name="Prop2DDataEntry" inherits="Resource" version="3.5">
 	<brief_description>
 	</brief_description>
 	<description>
@@ -31,7 +31,7 @@
 		</method>
 		<method name="_processor_process" qualifiers="virtual">
 			<return type="void" />
-			<argument index="0" name="prop_data" type="PropData" />
+			<argument index="0" name="prop_data" type="Prop2DData" />
 			<argument index="1" name="node" type="Node" />
 			<argument index="2" name="transform" type="Transform" />
 			<description>
@@ -62,7 +62,7 @@
 		</method>
 		<method name="processor_process">
 			<return type="void" />
-			<argument index="0" name="prop_data" type="PropData" />
+			<argument index="0" name="prop_data" type="Prop2DData" />
 			<argument index="1" name="node" type="Node" />
 			<argument index="2" name="transform" type="Transform" />
 			<description>

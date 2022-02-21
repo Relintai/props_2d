@@ -40,15 +40,15 @@ SOFTWARE.
 
 #endif
 
-class PropData;
-class PropInstance;
+class Prop2DData;
+class Prop2DInstance;
 
 #if THREAD_POOL_PRESENT
-class PropInstanceJob : public ThreadPoolJob {
-	GDCLASS(PropInstanceJob, ThreadPoolJob);
+class Prop2DInstanceJob : public ThreadPoolJob {
+	GDCLASS(Prop2DInstanceJob, ThreadPoolJob);
 #else
-class PropInstanceJob : public Reference {
-	GDCLASS(PropInstanceJob, Reference);
+class Prop2DInstanceJob : public Reference {
+	GDCLASS(Prop2DInstanceJob, Reference);
 #endif
 
 public:
@@ -62,10 +62,10 @@ public:
 
 public:
 	ActiveBuildPhaseType get_build_phase_type();
-	void set_build_phase_type(PropInstanceJob::ActiveBuildPhaseType build_phase_type);
+	void set_build_phase_type(Prop2DInstanceJob::ActiveBuildPhaseType build_phase_type);
 
-	void set_prop(const Ref<PropData> &prop);
-	void set_prop_instance(PropInstance *instance);
+	void set_prop(const Ref<Prop2DData> &prop);
+	void set_prop_instance(Prop2DInstance *instance);
 	void set_prop_instance_bind(Node *instance);
 
 	int get_phase();
@@ -91,8 +91,8 @@ public:
 	void prop_instance_enter_tree();
 	void prop_instance_exit_tree();
 
-	PropInstanceJob();
-	~PropInstanceJob();
+	Prop2DInstanceJob();
+	~Prop2DInstanceJob();
 
 protected:
 	static void _bind_methods();
@@ -101,8 +101,8 @@ protected:
 	bool _build_done;
 	int _phase;
 	bool _in_tree;
-	Ref<PropData> _prop;
-	PropInstance *_instance;
+	Ref<Prop2DData> _prop;
+	Prop2DInstance *_instance;
 
 public:
 #if !THREAD_POOL_PRESENT
@@ -145,6 +145,6 @@ private:
 #endif
 };
 
-VARIANT_ENUM_CAST(PropInstanceJob::ActiveBuildPhaseType);
+VARIANT_ENUM_CAST(Prop2DInstanceJob::ActiveBuildPhaseType);
 
 #endif

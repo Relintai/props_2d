@@ -1,9 +1,9 @@
 #include "prop_2d_ess_entity.h"
 
-PropESSEntity::PropESSEntity() {
+Prop2DESSEntity::Prop2DESSEntity() {
 }
-PropESSEntity::~PropESSEntity() {
+Prop2DESSEntity::~Prop2DESSEntity() {
 }
 
-void PropESSEntity::_bind_methods() {
+void Prop2DESSEntity::_bind_methods() {
 }

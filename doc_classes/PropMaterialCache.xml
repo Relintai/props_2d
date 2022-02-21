@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="PropMaterialCache" inherits="Resource" version="3.5">
+<class name="Prop2DMaterialCache" inherits="Resource" version="3.5">
 	<brief_description>
 	</brief_description>
 	<description>
@@ -81,13 +81,13 @@
 		</method>
 		<method name="prop_add_textures">
 			<return type="void" />
-			<argument index="0" name="prop" type="PropData" />
+			<argument index="0" name="prop" type="Prop2DData" />
 			<description>
 			</description>
 		</method>
 		<method name="prop_remove_textures">
 			<return type="void" />
-			<argument index="0" name="prop" type="PropData" />
+			<argument index="0" name="prop" type="Prop2DData" />
 			<description>
 			</description>
 		</method>
