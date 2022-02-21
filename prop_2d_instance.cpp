@@ -207,7 +207,7 @@ void Prop2DInstance::_prop_preprocess(Transform transform, const Ref<Prop2DData>
 		}
 
 #if MESH_DATA_RESOURCE_PRESENT
-		Ref<Prop2D2DDataMeshData> mesh_data = e;
+		Ref<Prop2DDataMeshData> mesh_data = e;
 
 		if (mesh_data.is_valid()) {
 			Ref<MeshDataResource> mdr = mesh_data->get_mesh();

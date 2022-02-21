@@ -35,7 +35,7 @@ class Prop2DLight;
 class Prop2DDataTiledWall2D;
 
 #if MESH_DATA_RESOURCE_PRESENT
-class Prop2D2DDataMeshData;
+class Prop2DDataMeshData;
 #endif
 
 class Prop2DInstanceProp2DJob : public Prop2DInstanceJob {
@@ -62,7 +62,7 @@ public:
 	void set_prop_mesher(const Ref<Prop2DMesher> &mesher);
 
 #if MESH_DATA_RESOURCE_PRESENT
-	void add_mesh(const Ref<Prop2D2DDataMeshData> &mesh_data, const Transform &base_transform);
+	void add_mesh(const Ref<Prop2DDataMeshData> &mesh_data, const Transform &base_transform);
 	void clear_meshes();
 #endif
 
@@ -102,7 +102,7 @@ protected:
 protected:
 #if MESH_DATA_RESOURCE_PRESENT
 	struct PMDREntry {
-		Ref<Prop2D2DDataMeshData> mesh_data;
+		Ref<Prop2DDataMeshData> mesh_data;
 		Transform base_transform;
 	};
 #endif

@@ -190,7 +190,7 @@ void Prop2DMaterialCache::prop_add_textures(const Ref<Prop2DData> &prop) {
 
 	for (int i = 0; i < prop->get_prop_count(); ++i) {
 #if MESH_DATA_RESOURCE_PRESENT
-		Ref<Prop2D2DDataMeshData> pdm = prop->get_prop(i);
+		Ref<Prop2DDataMeshData> pdm = prop->get_prop(i);
 
 		if (pdm.is_valid()) {
 			Ref<Texture> tex = pdm->get_texture();
@@ -231,7 +231,7 @@ void Prop2DMaterialCache::prop_remove_textures(const Ref<Prop2DData> &prop) {
 
 	for (int i = 0; i < prop->get_prop_count(); ++i) {
 #if MESH_DATA_RESOURCE_PRESENT
-		Ref<Prop2D2DDataMeshData> pdm = prop->get_prop(i);
+		Ref<Prop2DDataMeshData> pdm = prop->get_prop(i);
 
 		if (pdm.is_valid()) {
 			Ref<Texture> tex = pdm->get_texture();

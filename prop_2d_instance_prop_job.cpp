@@ -122,7 +122,7 @@ void Prop2DInstanceProp2DJob::set_prop_mesher(const Ref<Prop2DMesher> &mesher) {
 }
 
 #if MESH_DATA_RESOURCE_PRESENT
-void Prop2DInstanceProp2DJob::add_mesh(const Ref<Prop2D2DDataMeshData> &mesh_data, const Transform &base_transform) {
+void Prop2DInstanceProp2DJob::add_mesh(const Ref<Prop2DDataMeshData> &mesh_data, const Transform &base_transform) {
 	PMDREntry e;
 	e.mesh_data = mesh_data;
 	e.base_transform = base_transform;
@@ -306,7 +306,7 @@ void Prop2DInstanceProp2DJob::phase_prop() {
 		for (int i = 0; i < _prop_mesh_datas.size(); ++i) {
 			PMDREntry &e = _prop_mesh_datas.write[i];
 
-			Ref<Prop2D2DDataMeshData> pmd = e.mesh_data;
+			Ref<Prop2DDataMeshData> pmd = e.mesh_data;
 
 			Ref<MeshDataResource> mesh = pmd->get_mesh();
 			Ref<Texture> tex = pmd->get_texture();
