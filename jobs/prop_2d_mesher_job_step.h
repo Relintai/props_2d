@@ -20,8 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef PROP_MESHER_JOB_STEP_H
-#define PROP_MESHER_JOB_STEP_H
+#ifndef PROP_2D_MESHER_JOB_STEP_H
+#define PROP_2D_MESHER_JOB_STEP_H
 
 #include "core/version.h"
 
@@ -53,7 +53,7 @@ public:
 		TYPE_OTHER,
 	};
 
-	static const String BINDING_STRING_PROP_MESHER_JOB_STEP_TYPE;
+	static const String BINDING_STRING_PROP_2D_MESHER_JOB_STEP_TYPE;
 
 	PropMesherJobStepType get_job_type() const;
 	void set_job_type(const PropMesherJobStepType value);

@@ -20,8 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef PROP_JOB_H
-#define PROP_JOB_H
+#ifndef PROP_2D_JOB_H
+#define PROP_2D_JOB_H
 
 #include "prop_2d_instance_job.h"
 

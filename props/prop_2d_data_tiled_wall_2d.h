@@ -20,8 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef PROP_DATA_TILED_WALL_H
-#define PROP_DATA_TILED_WALL_H
+#ifndef PROP_2D_DATA_TILED_WALL_H
+#define PROP_2D_DATA_TILED_WALL_H
 
 #include "core/math/vector3.h"
 #include "prop_2d_data_entry.h"

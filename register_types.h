@@ -20,8 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef PROPS_REGISTER_TYPES_H
-#define PROPS_REGISTER_TYPES_H
+#ifndef PROPS_2D_REGISTER_TYPES_H
+#define PROPS_2D_REGISTER_TYPES_H
 
 void register_props_2d_types();
 void unregister_props_2d_types();

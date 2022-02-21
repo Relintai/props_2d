@@ -20,8 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef PROP_EDITOR_PLUGIN_H
-#define PROP_EDITOR_PLUGIN_H
+#ifndef PROP_2D_EDITOR_PLUGIN_H
+#define PROP_2D_EDITOR_PLUGIN_H
 
 #include "editor/editor_node.h"
 #include "editor/editor_plugin.h"

@@ -20,8 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef TILED_WALL_H
-#define TILED_WALL_H
+#ifndef TILED_WALL_2D_H
+#define TILED_WALL_2D_H
 
 #include "core/version.h"
 #include "scene/resources/texture.h"
