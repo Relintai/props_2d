@@ -30,48 +30,48 @@ SOFTWARE.
 #include "core/engine.h"
 #endif
 
-#include "tiled_wall/tiled_wall.h"
-#include "tiled_wall/tiled_wall_data.h"
+#include "tiled_wall/tiled_wall_2d.h"
+#include "tiled_wall/tiled_wall_2d_data.h"
 
-#include "props/prop_data.h"
-#include "props/prop_data_entry.h"
-#include "props/prop_data_light.h"
-#include "props/prop_data_prop.h"
-#include "props/prop_data_scene.h"
-#include "props/prop_data_tiled_wall.h"
+#include "props/prop_2d_data.h"
+#include "props/prop_2d_data_entry.h"
+#include "props/prop_2d_data_light.h"
+#include "props/prop_2d_data_prop.h"
+#include "props/prop_2d_data_scene.h"
+#include "props/prop_2d_data_tiled_wall_2d.h"
 
 #if VERSION_MINOR >= 4
-#include "props/prop_data_portal.h"
+#include "props/prop_2d_data_portal.h"
 #endif
 
-#include "clutter/ground_clutter.h"
-#include "clutter/ground_clutter_foliage.h"
+#include "clutter/ground_clutter_2d.h"
+#include "clutter/ground_clutter_2d_foliage.h"
 
-#include "prop_ess_entity.h"
-#include "prop_instance.h"
-#include "prop_instance_merger.h"
+#include "prop_2d_ess_entity.h"
+#include "prop_2d_instance.h"
+#include "prop_2d_instance_merger.h"
 
-#include "prop_instance_job.h"
-#include "prop_instance_prop_job.h"
+#include "prop_2d_instance_job.h"
+#include "prop_2d_instance_prop_job.h"
 
-#include "jobs/prop_mesher_job_step.h"
-#include "jobs/prop_texture_job.h"
+#include "jobs/prop_2d_mesher_job_step.h"
+#include "jobs/prop_2d_texture_job.h"
 
-#include "prop_scene_instance.h"
+#include "prop_2d_scene_instance.h"
 
-#include "singleton/prop_cache.h"
-#include "singleton/prop_utils.h"
+#include "singleton/prop_2d_cache.h"
+#include "singleton/prop_2d_utils.h"
 
-#include "lights/prop_light.h"
+#include "lights/prop_2d_light.h"
 
-#include "./editor/prop_editor_plugin.h"
+#include "./editor/prop_2d_editor_plugin.h"
 
-#include "prop_mesher.h"
+#include "prop_2d_mesher.h"
 
-#include "material_cache/prop_material_cache.h"
+#include "material_cache/prop_2d_material_cache.h"
 
 #ifdef TEXTURE_PACKER_PRESENT
-#include "material_cache/prop_material_cache_pcm.h"
+#include "material_cache/prop_2d_material_cache_pcm.h"
 #endif
 
 static PropUtils *prop_utils = NULL;
