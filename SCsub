@@ -6,8 +6,8 @@ module_env = env.Clone()
 
 import version
 
-#if os.path.isdir('../mesh_data_resource'):
-    #module_env.Append(CPPDEFINES=['MESH_DATA_RESOURCE_PRESENT'])
+if os.path.isdir('../mesh_data_resource'):
+    module_env.Append(CPPDEFINES=['MESH_DATA_RESOURCE_PRESENT'])
 
 has_texture_packer = False
 
@@ -29,48 +29,48 @@ sources = [
 
     "register_types.cpp",
 
-    "lights/prop_light_2d.cpp",
+    "lights/prop_light.cpp",
 
-    "tiled_wall/tiled_wall_2d.cpp",
-    "tiled_wall/tiled_wall_data_2d.cpp",
+    "tiled_wall/tiled_wall.cpp",
+    "tiled_wall/tiled_wall_data.cpp",
 
-    "props/prop_data_2d.cpp",
-    "props/prop_data_entry_2d.cpp",
-    "props/prop_data_scene_2d.cpp",
-    "props/prop_data_light_2d.cpp",
-    "props/prop_data_prop_2d.cpp",
-    "props/prop_data_tiled_wall_2d.cpp",
+    "props/prop_data.cpp",
+    "props/prop_data_entry.cpp",
+    "props/prop_data_scene.cpp",
+    "props/prop_data_light.cpp",
+    "props/prop_data_prop.cpp",
+    "props/prop_data_tiled_wall.cpp",
 
-    "clutter/ground_clutter_2d.cpp",
-    "clutter/ground_clutter_foliage_2d.cpp",
+    "clutter/ground_clutter.cpp",
+    "clutter/ground_clutter_foliage.cpp",
 
-    "prop_instance_2d.cpp",
-    "prop_instance_merger_2d.cpp",
-    "prop_ess_entity_2d.cpp",
-    "prop_instance_job_2d.cpp",
-    "prop_instance_prop_job_2d.cpp",
+    "prop_instance.cpp",
+    "prop_instance_merger.cpp",
+    "prop_ess_entity.cpp",
+    "prop_instance_job.cpp",
+    "prop_instance_prop_job.cpp",
 
-    "prop_scene_instance_2d.cpp",
+    "prop_scene_instance.cpp",
 
-    "singleton/prop_utils_2d.cpp",
-    "singleton/prop_cache_2d.cpp",
+    "singleton/prop_utils.cpp",
+    "singleton/prop_cache.cpp",
 
-    "editor/prop_editor_plugin_2d.cpp",
+    "editor/prop_editor_plugin.cpp",
 
-    "prop_mesher_2d.cpp",
+    "prop_mesher.cpp",
 
-    "jobs/prop_texture_job_2d.cpp",
+    "jobs/prop_texture_job.cpp",
 
-    "jobs/prop_mesher_job_step_2d.cpp",
+    "jobs/prop_mesher_job_step.cpp",
 
-    "material_cache/prop_material_cache_2d.cpp"
+    "material_cache/prop_material_cache.cpp"
 ]
 
 if version.minor >= 4:
-    sources.append("props/prop_data_portal_2d.cpp")
+    sources.append("props/prop_data_portal.cpp")
 
 if has_texture_packer:
-    sources.append("material_cache/prop_material_cache_pcm_2d.cpp")
+    sources.append("material_cache/prop_material_cache_pcm.cpp")
 
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':
     # Shared lib compilation

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2019-2021 Péter Magyar
+Copyright (c) 2019-2022 Péter Magyar
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -30,121 +30,121 @@ SOFTWARE.
 #include "core/engine.h"
 #endif
 
-#include "tiled_wall/tiled_wall_2d.h"
-#include "tiled_wall/tiled_wall_data_2d.h"
+#include "tiled_wall/tiled_wall.h"
+#include "tiled_wall/tiled_wall_data.h"
 
-#include "props/prop_data_2d.h"
-#include "props/prop_data_entry_2d.h"
-#include "props/prop_data_light_2d.h"
-#include "props/prop_data_prop_2d.h"
-#include "props/prop_data_scene_2d.h"
-#include "props/prop_data_tiled_wall_2d.h"
+#include "props/prop_data.h"
+#include "props/prop_data_entry.h"
+#include "props/prop_data_light.h"
+#include "props/prop_data_prop.h"
+#include "props/prop_data_scene.h"
+#include "props/prop_data_tiled_wall.h"
 
 #if VERSION_MINOR >= 4
-#include "props/prop_data_portal_2d.h"
+#include "props/prop_data_portal.h"
 #endif
 
-#include "clutter/ground_clutter_2d.h"
-#include "clutter/ground_clutter_foliage_2d.h"
+#include "clutter/ground_clutter.h"
+#include "clutter/ground_clutter_foliage.h"
 
-#include "prop_ess_entity_2d.h"
-#include "prop_instance_2d.h"
-#include "prop_instance_merger_2d.h"
+#include "prop_ess_entity.h"
+#include "prop_instance.h"
+#include "prop_instance_merger.h"
 
-#include "prop_instance_job_2d.h"
-#include "prop_instance_prop_job_2d.h"
+#include "prop_instance_job.h"
+#include "prop_instance_prop_job.h"
 
-#include "jobs/prop_mesher_job_step_2d.h"
-#include "jobs/prop_texture_job_2d.h"
+#include "jobs/prop_mesher_job_step.h"
+#include "jobs/prop_texture_job.h"
 
-#include "prop_scene_instance_2d.h"
+#include "prop_scene_instance.h"
 
-#include "singleton/prop_cache_2d.h"
-#include "singleton/prop_utils_2d.h"
+#include "singleton/prop_cache.h"
+#include "singleton/prop_utils.h"
 
-#include "lights/prop_light_2d.h"
+#include "lights/prop_light.h"
 
-#include "./editor/prop_editor_plugin_2d.h"
+#include "./editor/prop_editor_plugin.h"
 
-#include "prop_mesher_2d.h"
+#include "prop_mesher.h"
 
-#include "material_cache/prop_material_cache_2d.h"
+#include "material_cache/prop_material_cache.h"
 
 #ifdef TEXTURE_PACKER_PRESENT
-#include "material_cache/prop_material_cache_pcm_2d.h"
+#include "material_cache/prop_material_cache_pcm.h"
 #endif
 
-static PropUtils2D *prop_utils = NULL;
-static PropCache2D *prop_texture_cache = NULL;
+static PropUtils *prop_utils = NULL;
+static PropCache *prop_texture_cache = NULL;
 
 void register_props_2d_types() {
-	ClassDB::register_class<TiledWall2D>();
-	ClassDB::register_class<TiledWallData2D>();
+	ClassDB::register_class<TiledWall>();
+	ClassDB::register_class<TiledWallData>();
 
-	ClassDB::register_class<PropLight2D>();
+	ClassDB::register_class<PropLight>();
 
-	ClassDB::register_class<PropData2D>();
-	ClassDB::register_class<PropDataEntry2D>();
-	ClassDB::register_class<PropDataScene2D>();
-	ClassDB::register_class<PropDataLight2D>();
-	ClassDB::register_class<PropDataProp2D>();
-	ClassDB::register_class<PropDataTiledWall2D>();
+	ClassDB::register_class<PropData>();
+	ClassDB::register_class<PropDataEntry>();
+	ClassDB::register_class<PropDataScene>();
+	ClassDB::register_class<PropDataLight>();
+	ClassDB::register_class<PropDataProp>();
+	ClassDB::register_class<PropDataTiledWall>();
 
 #if VERSION_MINOR >= 4
-	ClassDB::register_class<PropDataPortal2D>();
+	ClassDB::register_class<PropDataPortal>();
 #endif
 
-	ClassDB::register_class<GroundClutter2D>();
-	ClassDB::register_class<GroundClutterFoliage2D>();
+	ClassDB::register_class<GroundClutter>();
+	ClassDB::register_class<GroundClutterFoliage>();
 
-	ClassDB::register_class<PropMesher2D>();
-	ClassDB::register_class<PropMesherJobStep2D>();
+	ClassDB::register_class<PropMesher>();
+	ClassDB::register_class<PropMesherJobStep>();
 
-	ClassDB::register_class<PropInstance2D>();
-	ClassDB::register_class<PropInstanceMerger2D>();
+	ClassDB::register_class<PropInstance>();
+	ClassDB::register_class<PropInstanceMerger>();
 
-	ClassDB::register_class<PropESSEntity2D>();
+	ClassDB::register_class<PropESSEntity>();
 
-	ClassDB::register_class<PropInstanceJob2D>();
-	ClassDB::register_class<PropInstancePropJob2D>();
+	ClassDB::register_class<PropInstanceJob>();
+	ClassDB::register_class<PropInstancePropJob>();
 
-	ClassDB::register_class<PropTextureJob2D>();
+	ClassDB::register_class<PropTextureJob>();
 
-	ClassDB::register_class<PropSceneInstance2D>();
+	ClassDB::register_class<PropSceneInstance>();
 
-	ClassDB::register_class<PropMaterialCache2D>();
+	ClassDB::register_class<PropMaterialCache>();
 
 #ifdef TEXTURE_PACKER_PRESENT
-	ClassDB::register_class<PropMaterialCachePCM2D>();
+	ClassDB::register_class<PropMaterialCachePCM>();
 #endif
 
-	prop_utils = memnew(PropUtils2D);
-	ClassDB::register_class<PropUtils2D>();
-	Engine::get_singleton()->add_singleton(Engine::Singleton("PropUtils2D", PropUtils2D::get_singleton()));
+	prop_utils = memnew(PropUtils);
+	ClassDB::register_class<PropUtils>();
+	Engine::get_singleton()->add_singleton(Engine::Singleton("PropUtils", PropUtils::get_singleton()));
 
-	prop_texture_cache = memnew(PropCache2D);
-	ClassDB::register_class<PropCache2D>();
-	Engine::get_singleton()->add_singleton(Engine::Singleton("PropCache2D", PropCache2D::get_singleton()));
+	prop_texture_cache = memnew(PropCache);
+	ClassDB::register_class<PropCache>();
+	Engine::get_singleton()->add_singleton(Engine::Singleton("PropCache", PropCache::get_singleton()));
 
-	Ref<PropDataLight2D> light_processor = Ref<PropDataLight2D>(memnew(PropDataLight2D));
-	PropUtils2D::add_processor(light_processor);
+	Ref<PropDataLight> light_processor = Ref<PropDataLight>(memnew(PropDataLight));
+	PropUtils::add_processor(light_processor);
 
-	Ref<PropDataProp2D> prop_processor = Ref<PropDataProp2D>(memnew(PropDataProp2D));
-	PropUtils2D::add_processor(prop_processor);
+	Ref<PropDataProp> prop_processor = Ref<PropDataProp>(memnew(PropDataProp));
+	PropUtils::add_processor(prop_processor);
 
-	Ref<PropDataScene2D> scene_processor = Ref<PropDataScene2D>(memnew(PropDataScene2D));
-	PropUtils2D::add_processor(scene_processor);
+	Ref<PropDataScene> scene_processor = Ref<PropDataScene>(memnew(PropDataScene));
+	PropUtils::add_processor(scene_processor);
 
 #if VERSION_MINOR >= 4
-	Ref<PropDataPortal2D> portal_processor = Ref<PropDataPortal2D>(memnew(PropDataPortal2D));
-	PropUtils2D::add_processor(portal_processor);
+	Ref<PropDataPortal> portal_processor = Ref<PropDataPortal>(memnew(PropDataPortal));
+	PropUtils::add_processor(portal_processor);
 #endif
 
-	Ref<PropDataTiledWall2D> tiled_wall_processor = Ref<PropDataTiledWall2D>(memnew(PropDataTiledWall2D));
-	PropUtils2D::add_processor(tiled_wall_processor);
+	Ref<PropDataTiledWall> tiled_wall_processor = Ref<PropDataTiledWall>(memnew(PropDataTiledWall));
+	PropUtils::add_processor(tiled_wall_processor);
 
 #ifdef TOOLS_ENABLED
-	EditorPlugins::add_by_type<PropEditorPlugin2D>();
+	EditorPlugins::add_by_type<PropEditorPlugin>();
 #endif
 }
 

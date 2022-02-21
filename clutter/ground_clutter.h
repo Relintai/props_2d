@@ -1,3 +1,4 @@
+/*
 Copyright (c) 2019-2022 Péter Magyar
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -17,3 +18,51 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+*/
+
+#ifndef GROUND_CLUTTER_H
+#define GROUND_CLUTTER_H
+
+#include "core/version.h"
+
+#if VERSION_MAJOR > 3
+#include "core/io/resource.h"
+#else
+#include "core/resource.h"
+#endif
+
+#ifdef TEXTURE_PACKER_PRESENT
+#include "../../texture_packer/texture_packer.h"
+#endif
+
+#ifdef VOXELMAN_PRESENT
+#include "../../voxelman/meshers/voxel_mesher.h"
+#endif
+
+class VoxelChunk;
+class VoxelMesher;
+
+class GroundClutter : public Resource {
+	GDCLASS(GroundClutter, Resource);
+
+public:
+#ifdef VOXELMAN_PRESENT
+	bool should_spawn(Ref<VoxelChunk> chunk, int x, int y, int z);
+
+	void add_meshes_to(Ref<VoxelMesher> mesher, Ref<VoxelChunk> chunk, int x, int y, int z);
+#endif
+
+#ifdef TEXTURE_PACKER_PRESENT
+	void add_textures_to(Ref<TexturePacker> packer);
+#endif
+
+	GroundClutter();
+	~GroundClutter();
+
+private:
+	static void _bind_methods();
+
+private:
+};
+
+#endif

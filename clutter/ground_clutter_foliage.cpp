@@ -20,10 +20,35 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef PROPS_REGISTER_TYPES_H
-#define PROPS_REGISTER_TYPES_H
+#include "ground_clutter_foliage.h"
 
-void register_props_2d_types();
-void unregister_props_2d_types();
+int GroundClutterFoliage::get_texture_count() const {
+	return _textures.size();
+}
+Ref<Texture> GroundClutterFoliage::get_texture(const int index) {
+	ERR_FAIL_INDEX_V(index, _textures.size(), Ref<Texture>());
 
-#endif
+	return _textures.get(index);
+}
+void GroundClutterFoliage::remove_texture(const int index) {
+	ERR_FAIL_INDEX(index, _textures.size());
+
+	_textures.remove(index);
+}
+void GroundClutterFoliage::add_texture(Ref<Texture> texture) {
+	_textures.push_back(texture);
+}
+
+GroundClutterFoliage::GroundClutterFoliage() {
+}
+
+GroundClutterFoliage::~GroundClutterFoliage() {
+	_textures.clear();
+}
+
+void GroundClutterFoliage::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_texture_count"), &GroundClutterFoliage::get_texture_count);
+	ClassDB::bind_method(D_METHOD("get_texture", "index"), &GroundClutterFoliage::get_texture);
+	ClassDB::bind_method(D_METHOD("remove_texture", "index"), &GroundClutterFoliage::remove_texture);
+	ClassDB::bind_method(D_METHOD("add_texture", "texture"), &GroundClutterFoliage::add_texture);
+}

@@ -1,3 +1,4 @@
+/*
 Copyright (c) 2019-2022 Péter Magyar
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -17,3 +18,40 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+*/
+
+#ifndef GROUND_CLUTTER_FOLIAGE_H
+#define GROUND_CLUTTER_FOLIAGE_H
+
+#include "core/version.h"
+
+#if VERSION_MAJOR > 3
+#include "core/templates/vector.h"
+#else
+#include "core/vector.h"
+#endif
+
+#include "ground_clutter.h"
+
+#include "scene/resources/texture.h"
+
+class GroundClutterFoliage : public GroundClutter {
+	GDCLASS(GroundClutterFoliage, GroundClutter);
+
+public:
+	int get_texture_count() const;
+	Ref<Texture> get_texture(const int index);
+	void remove_texture(const int index);
+	void add_texture(Ref<Texture> texture);
+
+	GroundClutterFoliage();
+	~GroundClutterFoliage();
+
+private:
+	static void _bind_methods();
+
+private:
+	Vector<Ref<Texture> > _textures;
+};
+
+#endif
