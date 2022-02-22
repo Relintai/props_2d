@@ -299,7 +299,7 @@ void Prop2DInstanceProp2DJob::phase_prop() {
 			//Transform t = pdtw->get_transform();
 			Transform t = e.base_transform;
 
-			_prop_mesher->add_tiled_wall_simple(pdtw->get_width(), pdtw->get_heigth(), t, pdtw->get_data(), _material_cache);
+			//_prop_mesher->add_tiled_wall_simple(pdtw->get_width(), pdtw->get_heigth(), t, pdtw->get_data(), _material_cache);
 		}
 
 		if (_prop_mesher->get_vertex_count() == 0) {

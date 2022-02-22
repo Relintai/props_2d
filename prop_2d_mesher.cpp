@@ -171,10 +171,10 @@ Array Prop2DMesher::build_mesh() {
 	}
 
 	{
-		PoolVector<Vector3> array;
+		PoolVector<Vector2> array;
 		array.resize(_vertices.size());
 #if !GODOT4
-		PoolVector<Vector3>::Write w = array.write();
+		PoolVector<Vector2>::Write w = array.write();
 #endif
 
 		for (int i = 0; i < _vertices.size(); ++i) {
@@ -339,15 +339,16 @@ void Prop2DMesher::generate_normals(bool p_flip) {
 		Vertex v1 = _vertices.get(i1);
 		Vertex v2 = _vertices.get(i2);
 
+/*
 		Vector3 normal;
 		if (!p_flip)
 			normal = Plane(v0.vertex, v1.vertex, v2.vertex).normal;
 		else
 			normal = Plane(v2.vertex, v1.vertex, v0.vertex).normal;
-
-		v0.normal = normal;
-		v1.normal = normal;
-		v2.normal = normal;
+*/
+//		v0.normal = normal;
+//		v1.normal = normal;
+//		v2.normal = normal;
 
 		_vertices.set(i0, v0);
 		_vertices.set(i1, v1);
@@ -466,7 +467,7 @@ void Prop2DMesher::reset() {
 	_last_tangent = Plane();
 }
 
-void Prop2DMesher::add_tiled_wall_simple(const int width, const int height, const Transform &transform, const Ref<TiledWall2DData> &tiled_wall_data, Ref<Prop2DMaterialCache> cache) {
+void Prop2DMesher::add_tiled_wall_simple(const int width, const int height, const Transform2D &transform, const Ref<TiledWall2DData> &tiled_wall_data, Ref<Prop2DMaterialCache> cache) {
 	ERR_FAIL_COND(!tiled_wall_data.is_valid());
 	ERR_FAIL_COND(!cache.is_valid());
 	ERR_FAIL_COND(width < 0);
@@ -610,28 +611,28 @@ void Prop2DMesher::add_tiled_wall_simple(const int width, const int height, cons
 	}
 }
 
-void Prop2DMesher::add_tiled_wall_mesh_rect_simple(const int x, const int y, const Transform &transform, const Rect2 &texture_rect) {
+void Prop2DMesher::add_tiled_wall_mesh_rect_simple(const int x, const int y, const Transform2D &transform, const Rect2 &texture_rect) {
 	int vc = get_vertex_count();
 
 	//x + 1, y
-	add_normal(transform.basis.xform(Vector3(0, 0, -1)));
+	//add_normal(transform.basis.xform(Vector3(0, 0, -1)));
 	add_uv(transform_uv(Vector2(1, 1), texture_rect));
-	add_vertex(transform.xform(Vector3(x + 1, y, 0)));
+	add_vertex(transform.xform(Vector2(x + 1, y)));
 
 	//x, y
-	add_normal(transform.basis.xform(Vector3(0, 0, -1)));
+	//add_normal(transform.basis.xform(Vector3(0, 0, -1)));
 	add_uv(transform_uv(Vector2(0, 1), texture_rect));
-	add_vertex(transform.xform(Vector3(x, y, 0)));
+	add_vertex(transform.xform(Vector2(x, y)));
 
 	//x, y + 1
-	add_normal(transform.basis.xform(Vector3(0, 0, -1)));
+	//add_normal(transform.basis.xform(Vector3(0, 0, -1)));
 	add_uv(transform_uv(Vector2(0, 0), texture_rect));
-	add_vertex(transform.xform(Vector3(x, y + 1, 0)));
+	add_vertex(transform.xform(Vector2(x, y + 1)));
 
 	//x + 1, y + 1
-	add_normal(transform.basis.xform(Vector3(0, 0, -1)));
+	//add_normal(transform.basis.xform(Vector3(0, 0, -1)));
 	add_uv(transform_uv(Vector2(1, 0), texture_rect));
-	add_vertex(transform.xform(Vector3(x + 1, y + 1, 0)));
+	add_vertex(transform.xform(Vector2(x + 1, y + 1)));
 
 	add_indices(vc + 2);
 	add_indices(vc + 1);
@@ -665,7 +666,7 @@ void Prop2DMesher::add_mesh_data_resource_transform(Ref<MeshDataResource> mesh, 
 
 	const Array &arr = mesh->get_array();
 
-	PoolVector3Array vertices = arr[Mesh::ARRAY_VERTEX];
+	PoolVector2Array vertices = arr[Mesh::ARRAY_VERTEX];
 	PoolVector3Array normals = arr[Mesh::ARRAY_NORMAL];
 	PoolVector2Array uvs = arr[Mesh::ARRAY_TEX_UV];
 	PoolColorArray colors = arr[Mesh::ARRAY_COLOR];
@@ -692,7 +693,7 @@ void Prop2DMesher::add_mesh_data_resource_transform(Ref<MeshDataResource> mesh, 
 		if (colors.size() > 0)
 			add_color(colors[i]);
 
-		add_vertex(transform.xform(vertices[i]));
+		//add_vertex(transform.xform(vertices[i]));
 	}
 
 	int orig_indices_count = _indices.size();
@@ -709,7 +710,7 @@ void Prop2DMesher::add_mesh_data_resource_transform_colored(Ref<MeshDataResource
 
 	const Array &arr = mesh->get_array();
 
-	PoolVector3Array vertices = arr[Mesh::ARRAY_VERTEX];
+	PoolVector2Array vertices = arr[Mesh::ARRAY_VERTEX];
 	PoolVector3Array normals = arr[Mesh::ARRAY_NORMAL];
 	PoolVector2Array uvs = arr[Mesh::ARRAY_TEX_UV];
 	PoolIntArray indices = arr[Mesh::ARRAY_INDEX];
@@ -735,7 +736,7 @@ void Prop2DMesher::add_mesh_data_resource_transform_colored(Ref<MeshDataResource
 		if (colors.size() > 0)
 			add_color(colors[i]);
 
-		add_vertex(transform.xform(vertices[i]));
+		//add_vertex(transform.xform(vertices[i]));
 	}
 
 	int orig_indices_count = _indices.size();
@@ -787,8 +788,8 @@ void Prop2DMesher::generate_ao() {
 	}*/
 }
 
-float Prop2DMesher::get_random_ao(const Vector3 &position) {
-	float val = _noise->get_noise_3d(position.x, position.y, position.z);
+float Prop2DMesher::get_random_ao(const Vector2 &position) {
+	float val = _noise->get_noise_2d(position.x, position.y);
 
 	val *= _rao_scale_factor;
 
@@ -801,20 +802,20 @@ float Prop2DMesher::get_random_ao(const Vector3 &position) {
 	return val;
 }
 
-Color Prop2DMesher::get_light_color_at(const Vector3 &position, const Vector3 &normal) {
+Color Prop2DMesher::get_light_color_at(const Vector2 &position, const Vector3 &normal) {
 	Vector3 v_lightDiffuse;
 
 	//calculate the lights value
 	for (int i = 0; i < _lights.size(); ++i) {
 		Ref<Prop2DLight> light = _lights.get(i);
 
-		Vector3 lightDir = light->get_position() - position;
+		Vector2 lightDir = light->get_position() - position;
 
 		float dist2 = lightDir.dot(lightDir);
 		//inverse sqrt
 		lightDir *= (1.0 / sqrt(dist2));
 
-		float NdotL = normal.dot(lightDir);
+		float NdotL = 1.0;//normal.dot(lightDir);
 
 		if (NdotL > 1.0) {
 			NdotL = 1.0;
@@ -871,8 +872,8 @@ void Prop2DMesher::clear_lights() {
 	_lights.clear();
 }
 
-PoolVector<Vector3> Prop2DMesher::build_collider() const {
-	PoolVector<Vector3> face_points;
+PoolVector<Vector2> Prop2DMesher::build_collider() const {
+	PoolVector<Vector2> face_points;
 
 	if (_vertices.size() == 0)
 		return face_points;
@@ -928,7 +929,7 @@ void Prop2DMesher::bake_colors() {
 void Prop2DMesher::bake_colors_rao() {
 	for (int i = 0; i < _vertices.size(); ++i) {
 		Vertex vertex = _vertices[i];
-		Vector3 vert = vertex.vertex;
+		Vector2 vert = vertex.vertex;
 
 		Color light = Color(_base_light_value, _base_light_value, _base_light_value);
 
@@ -952,7 +953,7 @@ void Prop2DMesher::bake_colors_rao() {
 void Prop2DMesher::bake_colors_lights_rao() {
 	for (int i = 0; i < _vertices.size(); ++i) {
 		Vertex vertex = _vertices[i];
-		Vector3 vert = vertex.vertex;
+		Vector2 vert = vertex.vertex;
 
 		Color light = get_light_color_at(vert, vertex.normal);
 
@@ -980,7 +981,7 @@ void Prop2DMesher::bake_colors_lights_rao() {
 void Prop2DMesher::bake_colors_lights() {
 	for (int i = 0; i < _vertices.size(); ++i) {
 		Vertex vertex = _vertices[i];
-		Vector3 vert = vertex.vertex;
+		Vector2 vert = vertex.vertex;
 
 		Color light = get_light_color_at(vert, vertex.normal);
 
@@ -1008,7 +1009,7 @@ void Prop2DMesher::bake_lights(MeshInstance *node, Vector<Ref<TerrainLight>> &li
 
 	for (int v = 0; v < _vertices.size(); ++v) {
 		Vertex vertexv = _vertices.get(v);
-		Vector3 vet = vertexv.vertex;
+		Vector3 vet = Vector3()//vertexv.vertex;
 		Vector3 vertex = node->to_global(vet);
 
 		//grab normal
@@ -1089,8 +1090,8 @@ void Prop2DMesher::bake_lights(MeshInstance *node, Vector<Ref<TerrainLight>> &li
 }
 #endif
 
-PoolVector<Vector3> Prop2DMesher::get_vertices() const {
-	PoolVector<Vector3> arr;
+PoolVector<Vector2> Prop2DMesher::get_vertices() const {
+	PoolVector<Vector2> arr;
 
 	arr.resize(_vertices.size());
 	for (int i = 0; i < _vertices.size(); ++i) {
@@ -1100,13 +1101,13 @@ PoolVector<Vector3> Prop2DMesher::get_vertices() const {
 	return arr;
 }
 
-void Prop2DMesher::set_vertices(const PoolVector<Vector3> &values) {
+void Prop2DMesher::set_vertices(const PoolVector<Vector2> &values) {
 	ERR_FAIL_COND(values.size() != _vertices.size());
 
 	for (int i = 0; i < _vertices.size(); ++i) {
 		Vertex v = _vertices[i];
 
-		v.normal = values[i];
+		v.vertex = values[i];
 
 		_vertices.set(i, v);
 	}
@@ -1116,7 +1117,7 @@ int Prop2DMesher::get_vertex_count() const {
 	return _vertices.size();
 }
 
-void Prop2DMesher::add_vertex(const Vector3 &vertex) {
+void Prop2DMesher::add_vertex(const Vector2 &vertex) {
 	Vertex vtx;
 	vtx.vertex = vertex;
 	vtx.color = _last_color;
@@ -1132,7 +1133,7 @@ void Prop2DMesher::add_vertex(const Vector3 &vertex) {
 	_vertices.push_back(vtx);
 }
 
-Vector3 Prop2DMesher::get_vertex(const int idx) const {
+Vector2 Prop2DMesher::get_vertex(const int idx) const {
 	return _vertices.get(idx).vertex;
 }
 

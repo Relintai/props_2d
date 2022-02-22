@@ -78,6 +78,7 @@ private:
 	AABB _aabb;
 
 	RID _mesh_rid;
+	RID _texture_rid;
 
 	Array _mesh_array;
 };

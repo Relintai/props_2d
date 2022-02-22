@@ -22,10 +22,10 @@ SOFTWARE.
 
 #include "prop_2d_light.h"
 
-Vector3 Prop2DLight::get_position() {
+Vector2 Prop2DLight::get_position() {
 	return _position;
 }
-void Prop2DLight::set_position(const Vector3 &pos)  {
+void Prop2DLight::set_position(const Vector2 &pos)  {
 	_position = pos;
 }
 
@@ -53,7 +53,7 @@ Prop2DLight::~Prop2DLight() {
 void Prop2DLight::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_position"), &Prop2DLight::get_position);
 	ClassDB::bind_method(D_METHOD("set_position"), &Prop2DLight::set_position);
-	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "world_position"), "set_position", "get_position");
+	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "world_position"), "set_position", "get_position");
 
 	ClassDB::bind_method(D_METHOD("get_color"), &Prop2DLight::get_color);
 	ClassDB::bind_method(D_METHOD("set_color"), &Prop2DLight::set_color);

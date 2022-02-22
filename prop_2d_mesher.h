@@ -82,7 +82,7 @@ public:
 	};
 
 	struct Vertex {
-		Vector3 vertex;
+		Vector2 vertex;
 		Color color;
 		Vector3 normal; // normal, binormal, tangent
 		Vector3 binormal;
@@ -145,8 +145,8 @@ public:
 
 	void reset();
 
-	void add_tiled_wall_simple(const int width, const int height, const Transform &transform, const Ref<TiledWall2DData> &tiled_wall_data, Ref<Prop2DMaterialCache> cache);
-	void add_tiled_wall_mesh_rect_simple(const int x, const int y, const Transform &transform, const Rect2 &texture_rect);
+	void add_tiled_wall_simple(const int width, const int height, const Transform2D &transform, const Ref<TiledWall2DData> &tiled_wall_data, Ref<Prop2DMaterialCache> cache);
+	void add_tiled_wall_mesh_rect_simple(const int x, const int y, const Transform2D &transform, const Rect2 &texture_rect);
 	Vector2 transform_uv(const Vector2 &uv, const Rect2 &rect) const;
 
 #ifdef MESH_DATA_RESOURCE_PRESENT
@@ -156,8 +156,8 @@ public:
 #endif
 
 	void generate_ao();
-	float get_random_ao(const Vector3 &position);
-	Color get_light_color_at(const Vector3 &position, const Vector3 &normal);
+	float get_random_ao(const Vector2 &position);
+	Color get_light_color_at(const Vector2 &position, const Vector3 &normal);
 
 	void add_mesher(const Ref<Prop2DMesher> &mesher);
 	void _add_mesher(const Ref<Prop2DMesher> &mesher);
@@ -165,7 +165,7 @@ public:
 	void add_light(const Ref<Prop2DLight> &light);
 	void clear_lights();
 
-	PoolVector<Vector3> build_collider() const;
+	PoolVector<Vector2> build_collider() const;
 
 	void bake_colors();
 	void bake_colors_rao();
@@ -183,12 +183,12 @@ public:
 	void remove_doubles();
 	void remove_doubles_hashed();
 
-	PoolVector<Vector3> get_vertices() const;
-	void set_vertices(const PoolVector<Vector3> &values);
+	PoolVector<Vector2> get_vertices() const;
+	void set_vertices(const PoolVector<Vector2> &values);
 	int get_vertex_count() const;
-	Vector3 get_vertex(const int idx) const;
+	Vector2 get_vertex(const int idx) const;
 	void remove_vertex(const int idx);
-	void add_vertex(const Vector3 &vertex);
+	void add_vertex(const Vector2 &vertex);
 
 	PoolVector<Vector3> get_normals() const;
 	void set_normals(const PoolVector<Vector3> &values);

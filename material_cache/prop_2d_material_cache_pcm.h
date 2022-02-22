@@ -65,6 +65,8 @@ public:
 	Ref<AtlasTexture> texture_get_atlas_tex(const Ref<Texture> &texture);
 	Rect2 texture_get_uv_rect(const Ref<Texture> &texture);
 
+	Ref<Texture> texture_get_merged();
+
 	void refresh_rects();
 
 	void initial_setup_default();
@@ -78,6 +80,7 @@ protected:
 	static void _bind_methods();
 
 	Ref<TexturePacker> _packer;
+	Ref<Texture> _merged_texture;
 };
 
 #endif

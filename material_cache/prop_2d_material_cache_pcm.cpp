@@ -102,6 +102,10 @@ Rect2 Prop2DMaterialCachePCM::texture_get_uv_rect(const Ref<Texture> &texture) {
 	return region;
 }
 
+Ref<Texture> Prop2DMaterialCachePCM::texture_get_merged() {
+	return _merged_texture;
+}
+
 void Prop2DMaterialCachePCM::refresh_rects() {
 	bool texture_added = false;
 
@@ -121,9 +125,9 @@ void Prop2DMaterialCachePCM::refresh_rects() {
 
 		ERR_FAIL_COND(_packer->get_texture_count() == 0);
 
-		Ref<Texture> tex = _packer->get_generated_texture(0);
+		_merged_texture = _packer->get_generated_texture(0);
 
-		setup_material_albedo(tex);
+		setup_material_albedo(_merged_texture);
 	}
 
 	_initialized = true;

@@ -183,6 +183,10 @@ Rect2 Prop2DMaterialCache::texture_get_uv_rect(const Ref<Texture> &texture) {
 	return Rect2(0, 0, 1, 1);
 }
 
+Ref<Texture> Prop2DMaterialCache::texture_get_merged() {
+	return Ref<Texture>();
+}
+
 void Prop2DMaterialCache::prop_add_textures(const Ref<Prop2DData> &prop) {
 	if (!prop.is_valid()) {
 		return;
@@ -354,6 +358,7 @@ void Prop2DMaterialCache::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("texture_get_atlas", "index"), &Prop2DMaterialCache::texture_get_atlas);
 	ClassDB::bind_method(D_METHOD("texture_get_atlas_tex", "index"), &Prop2DMaterialCache::texture_get_atlas_tex);
 	ClassDB::bind_method(D_METHOD("texture_get_uv_rect", "texture"), &Prop2DMaterialCache::texture_get_uv_rect);
+	ClassDB::bind_method(D_METHOD("texture_get_merged"), &Prop2DMaterialCache::texture_get_merged);
 
 	ClassDB::bind_method(D_METHOD("prop_add_textures", "prop"), &Prop2DMaterialCache::prop_add_textures);
 	ClassDB::bind_method(D_METHOD("prop_remove_textures", "prop"), &Prop2DMaterialCache::prop_remove_textures);

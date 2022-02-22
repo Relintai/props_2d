@@ -39,8 +39,8 @@ class Prop2DLight : public Reference {
 	GDCLASS(Prop2DLight, Reference);
 
 public:
-	Vector3 get_position();
-	void set_position(const Vector3 &pos);
+	Vector2 get_position();
+	void set_position(const Vector2 &pos);
 
 	Color get_color() const;
 	void set_color(const Color &color);
@@ -55,7 +55,7 @@ private:
 	static void _bind_methods();
 
 private:
-	Vector3 _position;
+	Vector2 _position;
 
 	Color _color;
 	int _size;

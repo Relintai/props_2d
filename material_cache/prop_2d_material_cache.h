@@ -78,6 +78,8 @@ public:
 	virtual Ref<AtlasTexture> texture_get_atlas_tex(const Ref<Texture> &texture);
 	virtual Rect2 texture_get_uv_rect(const Ref<Texture> &texture);
 
+	virtual Ref<Texture> texture_get_merged();
+
 	void prop_add_textures(const Ref<Prop2DData> &prop);
 	void prop_remove_textures(const Ref<Prop2DData> &prop);
 

@@ -671,7 +671,7 @@ void Prop2DInstanceMerger::_prop_preprocess(Transform transform, const Ref<Prop2
 
 			Vector3 v = t.xform(Vector3());
 
-			light->set_position(v);
+			//light->set_position(v);
 			light->set_color(light_data->get_light_color());
 			light->set_size(light_data->get_light_size());
 

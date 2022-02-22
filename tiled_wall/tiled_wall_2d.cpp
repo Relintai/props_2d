@@ -137,6 +137,14 @@ void TiledWall2D::refresh() {
 		_cache->mutex_unlock();
 	}
 
+	Ref<Texture> tex = _cache->texture_get_merged();
+
+	if (tex.is_valid()) {
+		_texture_rid = tex->get_rid();
+	} else {
+		_texture_rid = RID();
+	}
+
 	generate_mesh();
 }
 
@@ -151,7 +159,7 @@ void TiledWall2D::generate_mesh() {
 		return;
 	}
 
-	_mesher->add_tiled_wall_simple(_width, _height, Transform(), _data, _cache);
+	_mesher->add_tiled_wall_simple(_width, _height, Transform2D(), _data, _cache);
 
 	_mesh_array = _mesher->build_mesh();
 
@@ -160,7 +168,7 @@ void TiledWall2D::generate_mesh() {
 		return;
 	}
 
-	PoolVector<Vector3> vertices = _mesh_array[Mesh::ARRAY_VERTEX];
+	PoolVector<Vector2> vertices = _mesh_array[Mesh::ARRAY_VERTEX];
 
 	if (vertices.size() == 0) {
 		update();
@@ -169,11 +177,11 @@ void TiledWall2D::generate_mesh() {
 
 	VisualServer::get_singleton()->mesh_add_surface_from_arrays(_mesh_rid, VisualServer::PRIMITIVE_TRIANGLES, _mesh_array);
 
-	Ref<Material> material = _cache->material_lod_get(0);
+	//Ref<Material> material = _cache->material_lod_get(0);
 
-	if (material.is_valid()) {
+	//if (material.is_valid()) {
 	//	VisualServer::get_singleton()->mesh_surface_set_material(_mesh_rid, 0, material->get_rid());
-	}
+	//}
 
 	_aabb.size = Vector3(_width, _height, 0);
 
@@ -203,9 +211,11 @@ void TiledWall2D::free_mesh() {
 }
 
 void TiledWall2D::draw() {
-	if (!is_inside_tree()) {
+	if (_mesh_rid == RID()) {
 		return;
 	}
+
+	VisualServer::get_singleton()->canvas_item_add_mesh(get_canvas_item(), _mesh_rid, get_transform(), Color(1, 1, 1, 1), _texture_rid, RID());
 }
 
 TiledWall2D::TiledWall2D() {
@@ -253,9 +263,9 @@ void TiledWall2D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_data", "value"), &TiledWall2D::set_data);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "TiledWall2DData"), "set_data", "get_data");
 
-	ADD_GROUP("Collision", "collision_");
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "collision_layer", PROPERTY_HINT_LAYERS_3D_PHYSICS), "set_collision_layer", "get_collision_layer");
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "collision_mask", PROPERTY_HINT_LAYERS_3D_PHYSICS), "set_collision_mask", "get_collision_mask");
+	//ADD_GROUP("Collision", "collision_");
+	//ADD_PROPERTY(PropertyInfo(Variant::INT, "collision_layer", PROPERTY_HINT_LAYERS_3D_PHYSICS), "set_collision_layer", "get_collision_layer");
+	//ADD_PROPERTY(PropertyInfo(Variant::INT, "collision_mask", PROPERTY_HINT_LAYERS_3D_PHYSICS), "set_collision_mask", "get_collision_mask");
 
 	ClassDB::bind_method(D_METHOD("refresh"), &TiledWall2D::refresh);
 	ClassDB::bind_method(D_METHOD("generate_mesh"), &TiledWall2D::generate_mesh);
