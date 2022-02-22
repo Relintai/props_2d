@@ -192,31 +192,6 @@ Array Prop2DMesher::build_mesh() {
 		a[VisualServer::ARRAY_VERTEX] = array;
 	}
 
-	if ((_format & VisualServer::ARRAY_FORMAT_NORMAL) == 0) {
-		generate_normals();
-	}
-
-	{
-		PoolVector<Vector3> array;
-		array.resize(_vertices.size());
-#if !GODOT4
-		PoolVector<Vector3>::Write w = array.write();
-#endif
-
-		for (int i = 0; i < _vertices.size(); ++i) {
-#if !GODOT4
-			w[i] = _vertices[i].normal;
-#else
-			array.set(i, _vertices[i].normal);
-#endif
-		}
-
-#if !GODOT4
-		w.release();
-#endif
-		a[VisualServer::ARRAY_NORMAL] = array;
-	}
-
 	if ((_format & VisualServer::ARRAY_FORMAT_COLOR) != 0) {
 		PoolVector<Color> array;
 		array.resize(_vertices.size());
@@ -258,27 +233,6 @@ Array Prop2DMesher::build_mesh() {
 #endif
 
 		a[VisualServer::ARRAY_TEX_UV] = array;
-	}
-
-	if ((_format & VisualServer::ARRAY_FORMAT_TEX_UV2) != 0) {
-		PoolVector<Vector2> array;
-		array.resize(_vertices.size());
-#if !GODOT4
-		PoolVector<Vector2>::Write w = array.write();
-#endif
-
-		for (int i = 0; i < _vertices.size(); ++i) {
-#if !GODOT4
-			w[i] = _vertices[i].uv2;
-#else
-			array.set(i, _vertices[i].uv2);
-#endif
-		}
-
-#if !GODOT4
-		w.release();
-#endif
-		a[VisualServer::ARRAY_TEX_UV2] = array;
 	}
 
 	if (_indices.size() > 0) {
@@ -615,22 +569,18 @@ void Prop2DMesher::add_tiled_wall_mesh_rect_simple(const int x, const int y, con
 	int vc = get_vertex_count();
 
 	//x + 1, y
-	//add_normal(transform.basis.xform(Vector3(0, 0, -1)));
 	add_uv(transform_uv(Vector2(1, 1), texture_rect));
 	add_vertex(transform.xform(Vector2(x + 1, y)));
 
 	//x, y
-	//add_normal(transform.basis.xform(Vector3(0, 0, -1)));
 	add_uv(transform_uv(Vector2(0, 1), texture_rect));
 	add_vertex(transform.xform(Vector2(x, y)));
 
 	//x, y + 1
-	//add_normal(transform.basis.xform(Vector3(0, 0, -1)));
 	add_uv(transform_uv(Vector2(0, 0), texture_rect));
 	add_vertex(transform.xform(Vector2(x, y + 1)));
 
 	//x + 1, y + 1
-	//add_normal(transform.basis.xform(Vector3(0, 0, -1)));
 	add_uv(transform_uv(Vector2(1, 0), texture_rect));
 	add_vertex(transform.xform(Vector2(x + 1, y + 1)));
 
