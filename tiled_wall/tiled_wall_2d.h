@@ -26,15 +26,11 @@ SOFTWARE.
 #include "core/version.h"
 #include "scene/resources/texture.h"
 
-#if VERSION_MAJOR < 4
-#include "scene/3d/visual_instance.h"
-#else
-#include "scene/3d/node_3d.h"
-
-#define SpatialMaterial StandardMaterial3D
-#define Spatial Node3D
+#if VERSION_MAJOR >= 4
 #define Texture Texture2D
 #endif
+
+#include "scene/2d/node_2d.h"
 
 #include "core/math/vector3.h"
 
@@ -42,8 +38,8 @@ class TiledWall2DData;
 class Prop2DMaterialCache;
 class Prop2DMesher;
 
-class TiledWall2D : public GeometryInstance {
-	GDCLASS(TiledWall2D, GeometryInstance);
+class TiledWall2D : public Node2D {
+	GDCLASS(TiledWall2D, Node2D);
 
 public:
 	int get_width() const;
@@ -55,15 +51,6 @@ public:
 	Ref<TiledWall2DData> get_data();
 	void set_data(const Ref<TiledWall2DData> &data);
 
-	bool get_collision() const;
-	void set_collision(const int value);
-
-	uint32_t get_collision_layer() const;
-	void set_collision_layer(uint32_t p_layer);
-
-	uint32_t get_collision_mask() const;
-	void set_collision_mask(uint32_t p_mask);
-
 	AABB get_aabb() const;
 	PoolVector<Face3> get_faces(uint32_t p_usage_flags) const;
 
@@ -72,8 +59,7 @@ public:
 	void clear_mesh();
 	void free_mesh();
 
-	void create_colliders();
-	void free_colliders();
+	void draw();
 
 	TiledWall2D();
 	~TiledWall2D();
@@ -85,10 +71,6 @@ protected:
 private:
 	int _width;
 	int _height;
-	bool _collision;
-
-	uint32_t _collision_layer;
-	uint32_t _collision_mask;
 
 	Ref<TiledWall2DData> _data;
 	Ref<Prop2DMaterialCache> _cache;
@@ -96,8 +78,6 @@ private:
 	AABB _aabb;
 
 	RID _mesh_rid;
-	RID _physics_shape_rid;
-	RID _physics_body_rid;
 
 	Array _mesh_array;
 };

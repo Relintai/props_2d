@@ -72,7 +72,7 @@ void Prop2DDataTiledWall2D::_processor_process(Ref<Prop2DData> prop_data, Node *
 	tw->set_width(t->get_width());
 	tw->set_heigth(t->get_heigth());
 	tw->set_data(t->get_data());
-	tw->set_collision(t->get_collision());
+	//tw->set_collision(t->get_collision());
 	//tw->set_transform(transform * t->get_transform());
 	prop_data->add_prop(tw);
 }
@@ -82,7 +82,7 @@ Node *Prop2DDataTiledWall2D::_processor_get_node_for(const Transform2D &transfor
 
 	t->set_width(get_width());
 	t->set_heigth(get_heigth());
-	t->set_collision(get_collision());
+	//t->set_collision(get_collision());
 	t->set_data(get_data());
 	//t->set_transform(get_transform());
 

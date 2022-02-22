@@ -165,9 +165,9 @@ void Prop2DInstance::_prop_preprocess(Transform transform, const Ref<Prop2DData>
 			twn->set_width(tiled_wall_data->get_width());
 			twn->set_heigth(tiled_wall_data->get_heigth());
 			twn->set_data(tiled_wall_data->get_data());
-			twn->set_collision(tiled_wall_data->get_collision());
+			//twn->set_collision(tiled_wall_data->get_collision());
 
-			twn->set_transform(t);
+			//twn->set_transform(t);
 
 			add_child(twn);
 
