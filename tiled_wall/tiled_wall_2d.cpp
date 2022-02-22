@@ -25,6 +25,8 @@
 #include "core/core_string_names.h"
 #include "tiled_wall_2d_data.h"
 
+#include "../lights/prop_2d_light.h"
+
 int TiledWall2D::get_width() const {
 	return _width;
 }
@@ -163,7 +165,16 @@ void TiledWall2D::generate_mesh() {
 		return;
 	}
 
+	Ref<Prop2DLight> l;
+	l.instance();
+
+	l->set_position(Vector2(10, 10));
+	l->set_color(Color(1, 0, 0, 1));
+	l->set_size(3);
+
+	_mesher->add_light(l);
 	_mesher->add_tiled_wall_simple(_width, _height, Transform2D(), _data, _cache);
+	_mesher->bake_colors();
 
 	_mesh_array = _mesher->build_mesh();
 
@@ -227,6 +238,7 @@ TiledWall2D::TiledWall2D() {
 	_height = 1;
 
 	_mesher.instance();
+	_mesher->set_build_flags(Prop2DMesher::BUILD_FLAG_USE_LIGHTING | Prop2DMesher::BUILD_FLAG_USE_AO | Prop2DMesher::BUILD_FLAG_USE_RAO | Prop2DMesher::BUILD_FLAG_BAKE_LIGHTS);
 }
 TiledWall2D::~TiledWall2D() {
 	_data.unref();
