@@ -15,8 +15,8 @@ if os.path.isdir('../texture_packer'):
     has_texture_packer = True
     module_env.Append(CPPDEFINES=['TEXTURE_PACKER_PRESENT'])
 
-if os.path.isdir('../terraman'):
-    module_env.Append(CPPDEFINES=['TERRAMAN_PRESENT'])
+if os.path.isdir('../terraman_2d'):
+    module_env.Append(CPPDEFINES=['TERRAMAN_2D_PRESENT'])
 
 if os.path.isdir('../mesh_utils'):
     module_env.Append(CPPDEFINES=['MESH_UTILS_PRESENT'])

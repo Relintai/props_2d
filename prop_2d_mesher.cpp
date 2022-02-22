@@ -951,8 +951,9 @@ void Prop2DMesher::bake_colors_lights() {
 	}
 }
 
-#ifdef TERRAMAN_PRESENT
-void Prop2DMesher::bake_lights(MeshInstance *node, Vector<Ref<TerrainLight>> &lights) {
+#ifdef TERRAMAN_2D_PRESENT
+void Prop2DMesher::bake_lights(MeshInstance *node, Vector<Ref<Terrain2DLight>> &lights) {
+	/*
 	ERR_FAIL_COND(node == NULL);
 
 	Color darkColor(0, 0, 0, 1);
@@ -992,15 +993,6 @@ void Prop2DMesher::bake_lights(MeshInstance *node, Vector<Ref<TerrainLight>> &li
 
 			value *= light->get_size();
 			v_lightDiffuse += value;
-
-			/*
-                    float dist2 = Mathf.Clamp(Vector3.Distance(transformedLights[i], vertices), 0f, 15f);
-                    dist2 /= 35f;
-
-                    Vector3 value = Vector3.one;
-                    value *= ((float) lights[i].Strength) / 255f;
-                    value *= (1 - dist2);
-                    v_lightDiffuse += value;*/
 		}
 
 		Color f = vertexv.color;
@@ -1037,6 +1029,7 @@ void Prop2DMesher::bake_lights(MeshInstance *node, Vector<Ref<TerrainLight>> &li
 	//	for (int i = 0; i < _colors->size(); ++i) {
 	//		print_error(_colors->get(i));
 	//	}
+	*/
 }
 #endif
 

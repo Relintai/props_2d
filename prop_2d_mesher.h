@@ -56,8 +56,8 @@ using PoolVector = Vector<N>;
 #include "../mesh_data_resource/mesh_data_resource.h"
 #endif
 
-#ifdef TERRAMAN_PRESENT
-#include "../terraman/data/terrain_light.h"
+#ifdef TERRAMAN_2D_PRESENT
+#include "../terraman_2d/data/terrain_2d_light.h"
 #endif
 
 class OpenSimplexNoise;
@@ -172,8 +172,8 @@ public:
 	void bake_colors_lights_rao();
 	void bake_colors_lights();
 
-#ifdef TERRAMAN_PRESENT
-	void bake_lights(MeshInstance *node, Vector<Ref<TerrainLight>> &lights);
+#ifdef TERRAMAN_2D_PRESENT
+	void bake_lights(MeshInstance *node, Vector<Ref<Terrain2DLight>> &lights);
 #endif
 
 	Array build_mesh();
