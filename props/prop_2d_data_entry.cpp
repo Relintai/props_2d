@@ -47,6 +47,13 @@ void Prop2DDataEntry::set_transform(const Transform &value) {
 	_transform = value;
 }
 
+Transform2D Prop2DDataEntry::get_transform_2d() const {
+	return _transform_2d;
+}
+void Prop2DDataEntry::set_transform_2d(const Transform2D &value) {
+	_transform_2d = value;
+}
+
 #if TEXTURE_PACKER_PRESENT
 void Prop2DDataEntry::add_textures_into(Ref<TexturePacker> texture_packer) {
 	if (has_method("_add_textures_into"))
@@ -57,10 +64,10 @@ void Prop2DDataEntry::add_textures_into(Ref<TexturePacker> texture_packer) {
 bool Prop2DDataEntry::processor_handles(Node *node) {
 	return call("_processor_handles", node);
 }
-void Prop2DDataEntry::processor_process(Ref<Prop2DData> prop_data, Node *node, const Transform &transform) {
+void Prop2DDataEntry::processor_process(Ref<Prop2DData> prop_data, Node *node, const Transform2D &transform) {
 	call("_processor_process", prop_data, node, transform);
 }
-Node *Prop2DDataEntry::processor_get_node_for(const Transform &transform) {
+Node *Prop2DDataEntry::processor_get_node_for(const Transform2D &transform) {
 	return call("_processor_get_node_for", transform);
 }
 bool Prop2DDataEntry::processor_evaluate_children() {
@@ -70,9 +77,9 @@ bool Prop2DDataEntry::processor_evaluate_children() {
 bool Prop2DDataEntry::_processor_handles(Node *node) {
 	return false;
 }
-void Prop2DDataEntry::_processor_process(Ref<Prop2DData> prop_data, Node *node, const Transform &transform) {
+void Prop2DDataEntry::_processor_process(Ref<Prop2DData> prop_data, Node *node, const Transform2D &transform) {
 }
-Node *Prop2DDataEntry::_processor_get_node_for(const Transform &transform) {
+Node *Prop2DDataEntry::_processor_get_node_for(const Transform2D &transform) {
 	return NULL;
 }
 bool Prop2DDataEntry::_processor_evaluate_children() {
@@ -88,6 +95,10 @@ void Prop2DDataEntry::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_transform"), &Prop2DDataEntry::get_transform);
 	ClassDB::bind_method(D_METHOD("set_transform", "value"), &Prop2DDataEntry::set_transform);
 	ADD_PROPERTY(PropertyInfo(Variant::TRANSFORM, "transform"), "set_transform", "get_transform");
+
+	ClassDB::bind_method(D_METHOD("get_transform_2d"), &Prop2DDataEntry::get_transform_2d);
+	ClassDB::bind_method(D_METHOD("set_transform_2d", "value"), &Prop2DDataEntry::set_transform_2d);
+	ADD_PROPERTY(PropertyInfo(Variant::TRANSFORM2D, "transform_2d"), "set_transform_2d", "get_transform_2d");
 
 #if TEXTURE_PACKER_PRESENT
 	BIND_VMETHOD(MethodInfo("_add_textures_into", PropertyInfo(Variant::OBJECT, "texture_packer", PROPERTY_HINT_RESOURCE_TYPE, "TexturePacker")));
@@ -115,5 +126,4 @@ void Prop2DDataEntry::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_processor_process", "prop_data", "node", "transform"), &Prop2DDataEntry::_processor_process);
 	ClassDB::bind_method(D_METHOD("_processor_get_node_for", "transform"), &Prop2DDataEntry::_processor_get_node_for);
 	ClassDB::bind_method(D_METHOD("_processor_evaluate_children"), &Prop2DDataEntry::_processor_evaluate_children);
-
 }

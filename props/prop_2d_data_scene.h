@@ -42,8 +42,8 @@ public:
 	void set_snap_axis(Vector3 value);
 
 	bool _processor_handles(Node *node);
-	void _processor_process(Ref<Prop2DData> prop_data, Node *node, const Transform &transform);
-	Node *_processor_get_node_for(const Transform &transform);
+	void _processor_process(Ref<Prop2DData> prop_data, Node *node, const Transform2D &transform);
+	Node *_processor_get_node_for(const Transform2D &transform);
 
 	Prop2DDataScene();
 	~Prop2DDataScene();

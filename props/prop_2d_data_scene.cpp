@@ -52,7 +52,7 @@ bool Prop2DDataScene::_processor_handles(Node *node) {
 	return i;
 }
 
-void Prop2DDataScene::_processor_process(Ref<Prop2DData> prop_data, Node *node, const Transform &transform) {
+void Prop2DDataScene::_processor_process(Ref<Prop2DData> prop_data, Node *node, const Transform2D &transform) {
 	Prop2DSceneInstance *i = Object::cast_to<Prop2DSceneInstance>(node);
 
 	ERR_FAIL_COND(!i);
@@ -60,15 +60,15 @@ void Prop2DDataScene::_processor_process(Ref<Prop2DData> prop_data, Node *node, 
 	Ref<Prop2DDataScene> l;
 	l.instance();
 	l->set_scene(i->get_scene());
-	l->set_transform(transform * i->get_transform());
+	//l->set_transform(transform * i->get_transform());
 	prop_data->add_prop(l);
 }
 
-Node *Prop2DDataScene::_processor_get_node_for(const Transform &transform) {
+Node *Prop2DDataScene::_processor_get_node_for(const Transform2D &transform) {
 	Prop2DSceneInstance *i = memnew(Prop2DSceneInstance);
 
 	i->set_scene(get_scene());
-	i->set_transform(get_transform());
+	//i->set_transform(get_transform());
 
 	return i;
 }

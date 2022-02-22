@@ -53,14 +53,7 @@ public:
 	static Prop2DUtils *get_singleton();
 
 	Ref<Prop2DData> convert_tree(Node *root);
-	void _convert_tree(Ref<Prop2DData> prop_data, Node *node, const Transform &transform);
-
-#if VERSION_MINOR >= 4
-	bool generate_room_points_node(Node *node);
-	void generate_room_points(Room *room);
-	void get_mesh_arrays(Node *node, Vector<PoolVector<Vector3>> *arrs);
-	bool is_plane_unique(const PoolVector<Plane> &planes, const Plane &p);
-#endif
+	void _convert_tree(Ref<Prop2DData> prop_data, Node *node, const Transform2D &transform);
 
 	static int add_processor(const Ref<Prop2DDataEntry> &processor);
 	static Ref<Prop2DDataEntry> get_processor(const int index);

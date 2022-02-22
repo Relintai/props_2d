@@ -67,7 +67,7 @@ bool Prop2DDataPortal::_processor_handles(Node *node) {
 	return p;
 }
 
-void Prop2DDataPortal::_processor_process(Ref<Prop2DData> prop_data, Node *node, const Transform &transform) {
+void Prop2DDataPortal::_processor_process(Ref<Prop2DData> prop_data, Node *node, const Transform2D &transform) {
 	Portal *p = Object::cast_to<Portal>(node);
 
 	ERR_FAIL_COND(!p);
@@ -80,11 +80,11 @@ void Prop2DDataPortal::_processor_process(Ref<Prop2DData> prop_data, Node *node,
 	l->set_portal_margin(p->get_portal_margin());
 	l->set_points(p->get_points());
 
-	l->set_transform(transform * p->get_transform());
+	//l->set_transform(transform * p->get_transform());
 	prop_data->add_prop(l);
 }
 
-Node *Prop2DDataPortal::_processor_get_node_for(const Transform &transform) {
+Node *Prop2DDataPortal::_processor_get_node_for(const Transform2D &transform) {
 	Portal *p = memnew(Portal);
 
 	p->set_portal_active(get_is_active());
@@ -93,7 +93,7 @@ Node *Prop2DDataPortal::_processor_get_node_for(const Transform &transform) {
 	p->set_portal_margin(get_portal_margin());
 	p->set_points(get_points());
 
-	p->set_transform(get_transform());
+	//p->set_transform(get_transform());
 
 	return p;
 }

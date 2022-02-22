@@ -60,7 +60,7 @@ bool Prop2DDataProp2D::_processor_handles(Node *node) {
 	return i;
 }
 
-void Prop2DDataProp2D::_processor_process(Ref<Prop2DData> prop_data, Node *node, const Transform &transform) {
+void Prop2DDataProp2D::_processor_process(Ref<Prop2DData> prop_data, Node *node, const Transform2D &transform) {
 	Prop2DInstance *i = Object::cast_to<Prop2DInstance>(node);
 
 	ERR_FAIL_COND(!i);
@@ -68,15 +68,15 @@ void Prop2DDataProp2D::_processor_process(Ref<Prop2DData> prop_data, Node *node,
 	Ref<Prop2DDataProp2D> l;
 	l.instance();
 	l->set_prop(i->get_prop_data());
-	l->set_transform(transform * i->get_transform());
+	//l->set_transform(transform * i->get_transform());
 	prop_data->add_prop(l);
 }
 
-Node *Prop2DDataProp2D::_processor_get_node_for(const Transform &transform) {
+Node *Prop2DDataProp2D::_processor_get_node_for(const Transform2D &transform) {
 	Prop2DInstance *i = memnew(Prop2DInstance);
 
 	i->set_prop_data(get_prop());
-	i->set_transform(get_transform());
+	//i->set_transform(get_transform());
 
 	return i;
 }

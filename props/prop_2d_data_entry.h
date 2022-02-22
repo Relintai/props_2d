@@ -29,12 +29,13 @@ SOFTWARE.
 #include "core/io/resource.h"
 #include "core/math/transform_3d.h"
 
-#ifndef Transform 
+#ifndef Transform
 #define Transform Transform3D
 #endif
 #else
-#include "core/resource.h"
 #include "core/math/transform.h"
+#include "core/math/transform_2d.h"
+#include "core/resource.h"
 #endif
 
 class Prop2DData;
@@ -48,20 +49,23 @@ public:
 	Transform get_transform() const;
 	void set_transform(const Transform &value);
 
+	Transform2D get_transform_2d() const;
+	void set_transform_2d(const Transform2D &value);
+
 #if TEXTURE_PACKER_PRESENT
 	void add_textures_into(Ref<TexturePacker> texture_packer);
 #endif
 
 	bool processor_handles(Node *node);
-	void processor_process(Ref<Prop2DData> prop_data, Node *node, const Transform &transform);
-	Node *processor_get_node_for(const Transform &transform);
+	void processor_process(Ref<Prop2DData> prop_data, Node *node, const Transform2D &transform);
+	Node *processor_get_node_for(const Transform2D &transform);
 	bool processor_evaluate_children();
 
 	virtual bool _processor_handles(Node *node);
-	virtual void _processor_process(Ref<Prop2DData> prop_data, Node *node, const Transform &transform);
-	virtual Node *_processor_get_node_for(const Transform &transform);
+	virtual void _processor_process(Ref<Prop2DData> prop_data, Node *node, const Transform2D &transform);
+	virtual Node *_processor_get_node_for(const Transform2D &transform);
 	virtual bool _processor_evaluate_children();
-	
+
 	Prop2DDataEntry();
 	~Prop2DDataEntry();
 
@@ -70,6 +74,7 @@ protected:
 
 private:
 	Transform _transform;
+	Transform2D _transform_2d;
 };
 
 #endif

@@ -89,7 +89,7 @@ void Prop2DEditorPlugin::find_room_points(Variant param) {
 		Node *scene = st->get_edited_scene_root();
 
 		if (scene) {
-			Prop2DUtils::get_singleton()->generate_room_points_node(scene);
+			//Prop2DUtils::get_singleton()->generate_room_points_node(scene);
 		}
 	}
 #endif
