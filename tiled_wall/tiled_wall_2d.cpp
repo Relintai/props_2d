@@ -137,6 +137,10 @@ void TiledWall2D::refresh() {
 		_cache->mutex_unlock();
 	}
 
+	//canvas_item_set_material TODO  (use canvas item's property)
+	//Remove material arrays, only have one optional
+	//Add tile widht, height
+
 	Ref<Texture> tex = _cache->texture_get_merged();
 
 	if (tex.is_valid()) {
