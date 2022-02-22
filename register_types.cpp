@@ -54,7 +54,6 @@ SOFTWARE.
 #include "prop_2d_instance_job.h"
 #include "prop_2d_instance_prop_job.h"
 
-#include "jobs/prop_2d_mesher_job_step.h"
 #include "jobs/prop_2d_texture_job.h"
 
 #include "prop_2d_scene_instance.h"
@@ -98,7 +97,6 @@ void register_props_2d_types() {
 	ClassDB::register_class<GroundClutter2DFoliage>();
 
 	ClassDB::register_class<Prop2DMesher>();
-	ClassDB::register_class<Prop2DMesherJobStep>();
 
 	ClassDB::register_class<Prop2DInstance>();
 	ClassDB::register_class<Prop2DInstanceMerger>();

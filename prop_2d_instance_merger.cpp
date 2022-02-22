@@ -48,7 +48,6 @@ typedef class RenderingServer VS;
 #include "./props/prop_2d_data_light.h"
 #include "./props/prop_2d_data_prop.h"
 #include "./props/prop_2d_data_scene.h"
-#include "jobs/prop_2d_mesher_job_step.h"
 #include "lights/prop_2d_light.h"
 #include "material_cache/prop_2d_material_cache.h"
 #include "scene/3d/camera.h"
@@ -722,20 +721,6 @@ void Prop2DInstanceMerger::collision_mask_changed() {
 void Prop2DInstanceMerger::_create_job() {
 	_job = Ref<Prop2DInstanceProp2DJob>(memnew(Prop2DInstanceProp2DJob()));
 	_job->set_prop_instace(this);
-
-	Ref<Prop2DMesherJobStep> js;
-
-	js.instance();
-	js->set_job_type(Prop2DMesherJobStep::TYPE_NORMAL);
-	_job->add_jobs_step(js);
-
-	js.instance();
-	js->set_job_type(Prop2DMesherJobStep::TYPE_MERGE_VERTS);
-	_job->add_jobs_step(js);
-
-	js.instance();
-	js->set_job_type(Prop2DMesherJobStep::TYPE_BAKE_TEXTURE);
-	_job->add_jobs_step(js);
 }
 
 Prop2DInstanceMerger::Prop2DInstanceMerger() {

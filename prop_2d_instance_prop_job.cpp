@@ -30,7 +30,6 @@ SOFTWARE.
 #define GET_WORLD get_world
 #endif
 
-#include "jobs/prop_2d_mesher_job_step.h"
 #include "lights/prop_2d_light.h"
 #include "material_cache/prop_2d_material_cache.h"
 #include "prop_2d_instance.h"
@@ -66,28 +65,6 @@ Ref<Prop2DMaterialCache> Prop2DInstanceProp2DJob::get_material_cache() {
 }
 void Prop2DInstanceProp2DJob::set_material_cache(const Ref<Prop2DMaterialCache> &cache) {
 	_material_cache = cache;
-}
-
-Ref<Prop2DMesherJobStep> Prop2DInstanceProp2DJob::get_jobs_step(int index) const {
-	ERR_FAIL_INDEX_V(index, _job_steps.size(), Ref<Prop2DMesherJobStep>());
-
-	return _job_steps.get(index);
-}
-void Prop2DInstanceProp2DJob::set_jobs_step(int index, const Ref<Prop2DMesherJobStep> &step) {
-	ERR_FAIL_INDEX(index, _job_steps.size());
-
-	_job_steps.set(index, step);
-}
-void Prop2DInstanceProp2DJob::remove_jobs_step(const int index) {
-	ERR_FAIL_INDEX(index, _job_steps.size());
-
-	_job_steps.remove(index);
-}
-void Prop2DInstanceProp2DJob::add_jobs_step(const Ref<Prop2DMesherJobStep> &step) {
-	_job_steps.push_back(step);
-}
-int Prop2DInstanceProp2DJob::get_jobs_step_count() const {
-	return _job_steps.size();
 }
 
 void Prop2DInstanceProp2DJob::add_collision_shape(const Ref<Shape> &shape, const Transform &transform, const bool owns_shape) {
@@ -194,9 +171,6 @@ void Prop2DInstanceProp2DJob::_reset() {
 
 	_build_done = false;
 	_phase = 0;
-
-	_current_mesh = 0;
-	_current_job_step = 0;
 
 	reset_stages();
 
@@ -375,45 +349,7 @@ void Prop2DInstanceProp2DJob::phase_steps() {
 	if (should_do()) {
 		if (_prop_instace->mesh_get_num() == 0) {
 			//need to allocate the meshes
-
-			//first count how many we need
-			int count = 0;
-			for (int i = 0; i < _job_steps.size(); ++i) {
-				Ref<Prop2DMesherJobStep> step = _job_steps[i];
-
-				ERR_FAIL_COND(!step.is_valid());
-
-				switch (step->get_job_type()) {
-					case Prop2DMesherJobStep::TYPE_NORMAL:
-						++count;
-						break;
-					case Prop2DMesherJobStep::TYPE_NORMAL_LOD:
-						++count;
-						break;
-					case Prop2DMesherJobStep::TYPE_DROP_UV2:
-						++count;
-						break;
-					case Prop2DMesherJobStep::TYPE_MERGE_VERTS:
-						++count;
-						break;
-					case Prop2DMesherJobStep::TYPE_BAKE_TEXTURE:
-						++count;
-						break;
-					case Prop2DMesherJobStep::TYPE_SIMPLIFY_MESH:
-#ifdef MESH_UTILS_PRESENT
-						count += step->get_simplification_steps();
-#endif
-						break;
-					default:
-						break;
-				}
-			}
-
-			//allocate
-			if (count > 0) {
-				_prop_instace->meshes_create(count);
-			}
-
+			_prop_instace->meshes_create(1);
 		} else {
 			//we have the meshes, just clear
 			int count = _prop_instace->mesh_get_num();
@@ -431,41 +367,7 @@ void Prop2DInstanceProp2DJob::phase_steps() {
 		}
 	}
 
-	for (; _current_job_step < _job_steps.size();) {
-		Ref<Prop2DMesherJobStep> step = _job_steps[_current_job_step];
-
-		ERR_FAIL_COND(!step.is_valid());
-
-		switch (step->get_job_type()) {
-			case Prop2DMesherJobStep::TYPE_NORMAL:
-				step_type_normal();
-				break;
-			case Prop2DMesherJobStep::TYPE_NORMAL_LOD:
-				step_type_normal_lod();
-				break;
-			case Prop2DMesherJobStep::TYPE_DROP_UV2:
-				step_type_drop_uv2();
-				break;
-			case Prop2DMesherJobStep::TYPE_MERGE_VERTS:
-				step_type_merge_verts();
-				break;
-			case Prop2DMesherJobStep::TYPE_BAKE_TEXTURE:
-				step_type_bake_texture();
-				break;
-			case Prop2DMesherJobStep::TYPE_SIMPLIFY_MESH:
-				step_type_simplify_mesh();
-				break;
-			case Prop2DMesherJobStep::TYPE_OTHER:
-				//do nothing
-				break;
-		}
-
-		++_current_job_step;
-
-		if (should_return()) {
-			return;
-		}
-	}
+	step_type_normal();
 
 	reset_stages();
 	//next_phase();
@@ -478,115 +380,15 @@ void Prop2DInstanceProp2DJob::step_type_normal() {
 
 	temp_mesh_arr = _prop_mesher->build_mesh();
 
-	RID mesh_rid = _prop_instace->mesh_get(_current_mesh);
+	RID mesh_rid = _prop_instace->mesh_get(0);
 
 	VS::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, VisualServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
 
-	Ref<Material> lmat = _material_cache->material_lod_get(_current_mesh);
+	Ref<Material> lmat = _material_cache->material_lod_get(0);
 
 	if (lmat.is_valid()) {
 		VisualServer::get_singleton()->mesh_surface_set_material(mesh_rid, 0, lmat->get_rid());
 	}
-
-	++_current_mesh;
-}
-
-void Prop2DInstanceProp2DJob::step_type_normal_lod() {
-	print_error("Error: step_type_normal_lod doesn't work for TerraProp2DJobs!");
-
-	++_current_mesh;
-}
-
-void Prop2DInstanceProp2DJob::step_type_drop_uv2() {
-	RID mesh_rid = _prop_instace->mesh_get(_current_mesh);
-
-	temp_mesh_arr[VisualServer::ARRAY_TEX_UV2] = Variant();
-
-	VisualServer::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, VisualServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
-
-	Ref<Material> lmat = _material_cache->material_lod_get(_current_mesh);
-
-	if (lmat.is_valid()) {
-		VisualServer::get_singleton()->mesh_surface_set_material(mesh_rid, 0, lmat->get_rid());
-	}
-
-	++_current_mesh;
-}
-
-void Prop2DInstanceProp2DJob::step_type_merge_verts() {
-	Array temp_mesh_arr2 = merge_mesh_array(temp_mesh_arr);
-	temp_mesh_arr = temp_mesh_arr2;
-
-	RID mesh_rid = _prop_instace->mesh_get(_current_mesh);
-
-	VisualServer::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, VisualServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
-
-	Ref<Material> lmat = _material_cache->material_lod_get(_current_mesh);
-
-	if (lmat.is_valid()) {
-		VisualServer::get_singleton()->mesh_surface_set_material(mesh_rid, 0, lmat->get_rid());
-	}
-
-	++_current_mesh;
-}
-
-void Prop2DInstanceProp2DJob::step_type_bake_texture() {
-	Ref<ShaderMaterial> mat = _material_cache->material_lod_get(0);
-	Ref<SpatialMaterial> spmat = _material_cache->material_lod_get(0);
-	Ref<Texture> tex;
-
-	if (mat.is_valid()) {
-		tex = mat->get_shader_param("texture_albedo");
-	} else if (spmat.is_valid()) {
-		tex = spmat->get_texture(SpatialMaterial::TEXTURE_ALBEDO);
-	}
-
-	if (tex.is_valid()) {
-		temp_mesh_arr = bake_mesh_array_uv(temp_mesh_arr, tex);
-		temp_mesh_arr[VisualServer::ARRAY_TEX_UV] = Variant();
-
-		RID mesh_rid = _prop_instace->mesh_get(_current_mesh);
-
-		VisualServer::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, VisualServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
-
-		Ref<Material> lmat = _material_cache->material_lod_get(_current_mesh);
-
-		if (lmat.is_valid()) {
-			VisualServer::get_singleton()->mesh_surface_set_material(mesh_rid, 0, lmat->get_rid());
-		}
-	}
-
-	++_current_mesh;
-}
-
-void Prop2DInstanceProp2DJob::step_type_simplify_mesh() {
-#ifdef MESH_UTILS_PRESENT
-
-	Ref<Prop2DMesherJobStep> step = _job_steps[_current_job_step];
-	ERR_FAIL_COND(!step.is_valid());
-	Ref<FastQuadraticMeshSimplifier> fqms = step->get_fqms();
-	ERR_FAIL_COND(!fqms.is_valid());
-
-	fqms->initialize(temp_mesh_arr);
-
-	for (int i = 0; i < step->get_simplification_steps(); ++i) {
-		fqms->simplify_mesh(temp_mesh_arr.size() * step->get_simplification_step_ratio(), step->get_simplification_agressiveness());
-		temp_mesh_arr = fqms->get_arrays();
-
-		RID mesh_rid = _prop_instace->mesh_get(_current_mesh);
-
-		VisualServer::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, VisualServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
-
-		Ref<Material> lmat = _material_cache->material_lod_get(_current_mesh);
-
-		if (lmat.is_valid()) {
-			VisualServer::get_singleton()->mesh_surface_set_material(mesh_rid, 0, lmat->get_rid());
-		}
-
-		++_current_mesh;
-	}
-
-#endif
 }
 
 Array Prop2DInstanceProp2DJob::merge_mesh_array(Array arr) const {
@@ -721,8 +523,6 @@ Prop2DInstanceProp2DJob::Prop2DInstanceProp2DJob() {
 
 	_prop_instace = NULL;
 
-	_current_job_step = 0;
-
 	//todo allocate this in a virtual method
 	_prop_mesher.instance();
 	_prop_mesher->set_build_flags(Prop2DMesher::BUILD_FLAG_USE_LIGHTING | Prop2DMesher::BUILD_FLAG_USE_AO | Prop2DMesher::BUILD_FLAG_USE_RAO | Prop2DMesher::BUILD_FLAG_BAKE_LIGHTS);
@@ -735,12 +535,6 @@ void Prop2DInstanceProp2DJob::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_material_cache"), &Prop2DInstanceProp2DJob::get_material_cache);
 	ClassDB::bind_method(D_METHOD("set_material_cache", "packer"), &Prop2DInstanceProp2DJob::set_material_cache);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "material_cache", PROPERTY_HINT_RESOURCE_TYPE, "Prop2DMaterialCache", 0), "set_material_cache", "get_material_cache");
-
-	ClassDB::bind_method(D_METHOD("get_jobs_step", "index"), &Prop2DInstanceProp2DJob::get_jobs_step);
-	ClassDB::bind_method(D_METHOD("set_jobs_step", "index", "mesher"), &Prop2DInstanceProp2DJob::set_jobs_step);
-	ClassDB::bind_method(D_METHOD("remove_jobs_step", "index"), &Prop2DInstanceProp2DJob::remove_jobs_step);
-	ClassDB::bind_method(D_METHOD("add_jobs_step", "mesher"), &Prop2DInstanceProp2DJob::add_jobs_step);
-	ClassDB::bind_method(D_METHOD("get_jobs_step_count"), &Prop2DInstanceProp2DJob::get_jobs_step_count);
 
 	ClassDB::bind_method(D_METHOD("get_prop_mesher"), &Prop2DInstanceProp2DJob::get_prop_mesher);
 	ClassDB::bind_method(D_METHOD("set_prop_mesher", "mesher"), &Prop2DInstanceProp2DJob::set_prop_mesher);

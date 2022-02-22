@@ -45,12 +45,6 @@ public:
 	Ref<Prop2DMaterialCache> get_material_cache();
 	void set_material_cache(const Ref<Prop2DMaterialCache> &cache);
 
-	Ref<Prop2DMesherJobStep> get_jobs_step(const int index) const;
-	void set_jobs_step(const int index, const Ref<Prop2DMesherJobStep> &step);
-	void remove_jobs_step(const int index);
-	void add_jobs_step(const Ref<Prop2DMesherJobStep> &step);
-	int get_jobs_step_count() const;
-
 	void add_collision_shape(const Ref<Shape> &shape, const Transform &transform, const bool owns_shape = false);
 	void clear_collision_shapes();
 
@@ -82,11 +76,6 @@ public:
 	void phase_steps();
 
 	void step_type_normal();
-	void step_type_normal_lod();
-	void step_type_drop_uv2();
-	void step_type_merge_verts();
-	void step_type_bake_texture();
-	void step_type_simplify_mesh();
 
 	Array merge_mesh_array(Array arr) const;
 	Array bake_mesh_array_uv(Array arr, Ref<Texture> tex, float mul_color = 0.7) const;
@@ -123,10 +112,6 @@ protected:
 	};
 
 	Ref<Prop2DMaterialCache> _material_cache;
-
-	Vector<Ref<Prop2DMesherJobStep>> _job_steps;
-	int _current_job_step;
-	int _current_mesh;
 
 	Ref<Prop2DMesher> _prop_mesher;
 	Prop2DInstanceMerger *_prop_instace;
