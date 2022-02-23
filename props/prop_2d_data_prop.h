@@ -40,12 +40,6 @@ public:
 	Ref<Prop2DData> get_prop() const;
 	void set_prop(const Ref<Prop2DData> value);
 
-	bool get_snap_to_mesh();
-	void set_snap_to_mesh(bool value);
-
-	Vector3 get_snap_axis();
-	void set_snap_axis(Vector3 value);
-
 #if TEXTURE_PACKER_PRESENT
 	void _add_textures_into(Ref<TexturePacker> texture_packer);
 #endif

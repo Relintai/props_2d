@@ -41,19 +41,6 @@ void Prop2DData::set_id(const int value) {
 	_id = value;
 }
 
-bool Prop2DData::get_snap_to_mesh() const {
-	return _snap_to_mesh;
-}
-void Prop2DData::set_snap_to_mesh(const bool value) {
-	_snap_to_mesh = value;
-}
-
-Vector3 Prop2DData::get_snap_axis() const {
-	return _snap_axis;
-}
-void Prop2DData::set_snap_axis(const Vector3 &value) {
-	_snap_axis = value;
-}
 
 Ref<Prop2DDataEntry> Prop2DData::get_prop(const int index) const {
 	ERR_FAIL_INDEX_V(index, _props.size(), Ref<Prop2DDataEntry>());
@@ -154,14 +141,6 @@ Prop2DData::~Prop2DData() {
 }
 
 void Prop2DData::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_snap_to_mesh"), &Prop2DData::get_snap_to_mesh);
-	ClassDB::bind_method(D_METHOD("set_snap_to_mesh", "value"), &Prop2DData::set_snap_to_mesh);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "snap_to_mesh"), "set_snap_to_mesh", "get_snap_to_mesh");
-
-	ClassDB::bind_method(D_METHOD("get_snap_axis"), &Prop2DData::get_snap_axis);
-	ClassDB::bind_method(D_METHOD("set_snap_axis", "value"), &Prop2DData::set_snap_axis);
-	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "snap_axis"), "set_snap_axis", "get_snap_axis");
-
 	ClassDB::bind_method(D_METHOD("get_prop", "index"), &Prop2DData::get_prop);
 	ClassDB::bind_method(D_METHOD("set_prop", "index", "spell"), &Prop2DData::set_prop);
 	ClassDB::bind_method(D_METHOD("add_prop", "prop"), &Prop2DData::add_prop);

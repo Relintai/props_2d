@@ -35,12 +35,6 @@ public:
 	Ref<PackedScene> get_scene();
 	void set_scene(const Ref<PackedScene> &value);
 
-	bool get_snap_to_mesh();
-	void set_snap_to_mesh(bool value);
-
-	Vector3 get_snap_axis();
-	void set_snap_axis(Vector3 value);
-
 	bool _processor_handles(Node *node);
 	void _processor_process(Ref<Prop2DData> prop_data, Node *node, const Transform2D &transform);
 	Node *_processor_get_node_for(const Transform2D &transform);

@@ -32,20 +32,6 @@ void Prop2DDataScene::set_scene(const Ref<PackedScene> &value) {
 	_scene = value;
 }
 
-bool Prop2DDataScene::get_snap_to_mesh() {
-	return _snap_to_mesh;
-}
-void Prop2DDataScene::set_snap_to_mesh(bool value) {
-	_snap_to_mesh = value;
-}
-
-Vector3 Prop2DDataScene::get_snap_axis() {
-	return _snap_axis;
-}
-void Prop2DDataScene::set_snap_axis(Vector3 value) {
-	_snap_axis = value;
-}
-
 bool Prop2DDataScene::_processor_handles(Node *node) {
 	Prop2DSceneInstance *i = Object::cast_to<Prop2DSceneInstance>(node);
 
@@ -86,12 +72,4 @@ void Prop2DDataScene::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_scene"), &Prop2DDataScene::get_scene);
 	ClassDB::bind_method(D_METHOD("set_scene", "value"), &Prop2DDataScene::set_scene);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "scene", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"), "set_scene", "get_scene");
-
-	ClassDB::bind_method(D_METHOD("get_snap_to_mesh"), &Prop2DDataScene::get_snap_to_mesh);
-	ClassDB::bind_method(D_METHOD("set_snap_to_mesh", "value"), &Prop2DDataScene::set_snap_to_mesh);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "snap_to_mesh"), "set_snap_to_mesh", "get_snap_to_mesh");
-
-	ClassDB::bind_method(D_METHOD("get_snap_axis"), &Prop2DDataScene::get_snap_axis);
-	ClassDB::bind_method(D_METHOD("set_snap_axis", "value"), &Prop2DDataScene::set_snap_axis);
-	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "snap_axis"), "set_snap_axis", "get_snap_axis");
 }

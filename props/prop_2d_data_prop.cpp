@@ -32,20 +32,6 @@ void Prop2DDataProp2D::set_prop(const Ref<Prop2DData> value) {
 	_prop = value;
 }
 
-bool Prop2DDataProp2D::get_snap_to_mesh() {
-	return _snap_to_mesh;
-}
-void Prop2DDataProp2D::set_snap_to_mesh(bool value) {
-	_snap_to_mesh = value;
-}
-
-Vector3 Prop2DDataProp2D::get_snap_axis() {
-	return _snap_axis;
-}
-void Prop2DDataProp2D::set_snap_axis(Vector3 value) {
-	_snap_axis = value;
-}
-
 #if TEXTURE_PACKER_PRESENT
 void Prop2DDataProp2D::_add_textures_into(Ref<TexturePacker> texture_packer) {
 	if (get_prop().is_valid()) {
@@ -94,14 +80,6 @@ void Prop2DDataProp2D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_prop"), &Prop2DDataProp2D::get_prop);
 	ClassDB::bind_method(D_METHOD("set_prop", "value"), &Prop2DDataProp2D::set_prop);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "prop", PROPERTY_HINT_RESOURCE_TYPE, "Prop2DData"), "set_prop", "get_prop");
-
-	ClassDB::bind_method(D_METHOD("get_snap_to_mesh"), &Prop2DDataProp2D::get_snap_to_mesh);
-	ClassDB::bind_method(D_METHOD("set_snap_to_mesh", "value"), &Prop2DDataProp2D::set_snap_to_mesh);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "snap_to_mesh"), "set_snap_to_mesh", "get_snap_to_mesh");
-
-	ClassDB::bind_method(D_METHOD("get_snap_axis"), &Prop2DDataProp2D::get_snap_axis);
-	ClassDB::bind_method(D_METHOD("set_snap_axis", "value"), &Prop2DDataProp2D::set_snap_axis);
-	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "snap_axis"), "set_snap_axis", "get_snap_axis");
 
 #if TEXTURE_PACKER_PRESENT
 	ClassDB::bind_method(D_METHOD("_add_textures_into", "texture_packer"), &Prop2DDataProp2D::_add_textures_into);
