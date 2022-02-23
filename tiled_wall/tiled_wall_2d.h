@@ -55,6 +55,8 @@ public:
 	PoolVector<Face3> get_faces(uint32_t p_usage_flags) const;
 
 #ifdef TOOLS_ENABLED
+	virtual bool _edit_is_selected_on_click(const Point2 &p_point, double p_tolerance) const;
+
 	virtual bool _edit_use_rect() const;
 	virtual Rect2 _edit_get_rect() const;
 #endif
@@ -88,6 +90,12 @@ private:
 	Rect2 _rect;
 
 	Array _mesh_array;
+
+	Transform2D _mesh_transform;
+	
+#ifdef TOOLS_ENABLED
+	Vector<Point2> _editor_selection_points;
+#endif
 };
 
 #endif

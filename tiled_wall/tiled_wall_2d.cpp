@@ -26,6 +26,7 @@
 #include "tiled_wall_2d_data.h"
 
 #include "../lights/prop_2d_light.h"
+#include "core/math/geometry.h"
 
 int TiledWall2D::get_width() const {
 	return _width;
@@ -99,6 +100,14 @@ PoolVector<Face3> TiledWall2D::get_faces(uint32_t p_usage_flags) const {
 }
 
 #ifdef TOOLS_ENABLED
+bool TiledWall2D::_edit_is_selected_on_click(const Point2 &p_point, double p_tolerance) const {
+	if (_editor_selection_points.size() == 0) {
+		return false;
+	}
+
+	return Geometry::is_point_in_polygon(p_point, _editor_selection_points);
+}
+
 bool TiledWall2D::_edit_use_rect() const {
 	return true;
 }
@@ -184,8 +193,15 @@ void TiledWall2D::generate_mesh() {
 	l->set_color(Color(1, 0, 0, 1));
 	l->set_size(100);
 
+	//Vector2 x(1, 0);
+	//x = x.rotated(Math::deg2rad(45.0));
+	//_mesh_transform = Transform2D(x.x, x.y, 0, 1, 0, 0);
+
+	//t.rotate(Math::deg2rad(45.0));
+	//t.scale_basis(Vector2(1, 0.5));
+
 	_mesher->add_light(l);
-	_mesher->add_tiled_wall_simple(_width, _height, Transform2D(), _data, _cache);
+	_mesher->add_tiled_wall_simple(_width, _height, _mesh_transform, _data, _cache);
 	_mesher->bake_colors();
 
 	_rect = _mesher->calculate_rect();
@@ -198,6 +214,17 @@ void TiledWall2D::generate_mesh() {
 	}
 
 	PoolVector<Vector2> vertices = _mesh_array[Mesh::ARRAY_VERTEX];
+
+#ifdef TOOLS_ENABLED
+	Vector<Vector2> editor_point_vertices;
+	editor_point_vertices.resize(vertices.size());
+
+	for (int i = 0; i < vertices.size(); ++i) {
+		editor_point_vertices.set(i, vertices[i]);
+	}
+
+	_editor_selection_points = Geometry::convex_hull_2d(editor_point_vertices);
+#endif
 
 	if (vertices.size() == 0) {
 		update();
