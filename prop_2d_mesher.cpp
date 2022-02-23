@@ -284,16 +284,12 @@ void Prop2DMesher::remove_doubles() {
 			}
 		}
 	}
-
-	//print_error("after " + String::num(_vertices.size())+ " " + String::num(duration.count()));
 }
 
 //lot faster that normal remove_doubles, but false positives can happen curtesy of hash collisions
 void Prop2DMesher::remove_doubles_hashed() {
 	if (_vertices.size() == 0)
 		return;
-
-	//print_error("before " + String::num(_vertices.size()));
 
 	PoolVector<uint32_t> hashes;
 	hashes.resize(_vertices.size());
@@ -337,8 +333,6 @@ void Prop2DMesher::remove_doubles_hashed() {
 			}
 		}
 	}
-
-	//print_error("after " + String::num(_vertices.size()) + " " + String::num(duration.count()));
 }
 
 void Prop2DMesher::reset() {
