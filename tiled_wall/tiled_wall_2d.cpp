@@ -139,9 +139,10 @@ void TiledWall2D::refresh() {
 		_cache->mutex_unlock();
 	}
 
-	//canvas_item_set_material TODO  (use canvas item's property)
-	//Remove material arrays, only have one optional
-	//Add tile widht, height
+	Ref<Material> mat = _cache->material_get();
+	if (mat != get_material()) {
+		set_material(mat);
+	}
 
 	Ref<Texture> tex = _cache->texture_get_merged();
 
@@ -191,12 +192,6 @@ void TiledWall2D::generate_mesh() {
 	}
 
 	VisualServer::get_singleton()->mesh_add_surface_from_arrays(_mesh_rid, VisualServer::PRIMITIVE_TRIANGLES, _mesh_array);
-
-	//Ref<Material> material = _cache->material_lod_get(0);
-
-	//if (material.is_valid()) {
-	//	VisualServer::get_singleton()->mesh_surface_set_material(_mesh_rid, 0, material->get_rid());
-	//}
 
 	_aabb.size = Vector3(_width, _height, 0);
 
