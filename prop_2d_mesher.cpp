@@ -784,6 +784,24 @@ PoolVector<Vector2> Prop2DMesher::build_collider() const {
 	return face_points;
 }
 
+Rect2 Prop2DMesher::calculate_rect() {
+	int size = _vertices.size();
+
+	if (size == 0) {
+		return Rect2();
+	} 
+
+	Rect2 rect;
+
+	rect.position = _vertices[0].vertex;
+
+	for (int i = 1; i < size; ++i) {
+		rect.expand_to(_vertices[i].vertex);
+	}
+
+	return rect;
+}
+
 void Prop2DMesher::bake_colors() {
 	if ((get_build_flags() & Prop2DMesher::BUILD_FLAG_USE_LIGHTING) == 0) {
 		return;

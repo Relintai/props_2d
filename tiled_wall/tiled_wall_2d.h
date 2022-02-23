@@ -51,8 +51,13 @@ public:
 	Ref<TiledWall2DData> get_data();
 	void set_data(const Ref<TiledWall2DData> &data);
 
-	AABB get_aabb() const;
+	Rect2 get_rect() const;
 	PoolVector<Face3> get_faces(uint32_t p_usage_flags) const;
+
+#ifdef TOOLS_ENABLED
+	virtual bool _edit_use_rect() const;
+	virtual Rect2 _edit_get_rect() const;
+#endif
 
 	void refresh();
 	void generate_mesh();
@@ -79,6 +84,8 @@ private:
 
 	RID _mesh_rid;
 	RID _texture_rid;
+
+	Rect2 _rect;
 
 	Array _mesh_array;
 };

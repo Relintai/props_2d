@@ -157,6 +157,8 @@ public:
 
 	PoolVector<Vector2> build_collider() const;
 
+	Rect2 calculate_rect();
+
 	void bake_colors();
 	void bake_colors_rao();
 	void bake_colors_lights_rao();

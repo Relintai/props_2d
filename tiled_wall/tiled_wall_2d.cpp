@@ -64,8 +64,8 @@ void TiledWall2D::set_data(const Ref<TiledWall2DData> &data) {
 	call_deferred("refresh");
 }
 
-AABB TiledWall2D::get_aabb() const {
-	return AABB();
+Rect2 TiledWall2D::get_rect() const {
+	return _rect;
 }
 
 PoolVector<Face3> TiledWall2D::get_faces(uint32_t p_usage_flags) const {
@@ -97,6 +97,17 @@ PoolVector<Face3> TiledWall2D::get_faces(uint32_t p_usage_flags) const {
 
 	return faces;
 }
+
+#ifdef TOOLS_ENABLED
+bool TiledWall2D::_edit_use_rect() const {
+	return true;
+}
+
+Rect2 TiledWall2D::_edit_get_rect() const {
+	return get_rect();
+}
+
+#endif
 
 void TiledWall2D::refresh() {
 	if (!is_inside_tree()) {
@@ -176,6 +187,8 @@ void TiledWall2D::generate_mesh() {
 	_mesher->add_light(l);
 	_mesher->add_tiled_wall_simple(_width, _height, Transform2D(), _data, _cache);
 	_mesher->bake_colors();
+
+	_rect = _mesher->calculate_rect();
 
 	_mesh_array = _mesher->build_mesh();
 
