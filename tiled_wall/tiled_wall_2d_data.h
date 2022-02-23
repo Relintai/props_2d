@@ -93,14 +93,8 @@ public:
 	void set_flavour_chance(const float value);
 
 	//materials
-	void material_add(const Ref<Material> &value);
-	void material_set(const int index, const Ref<Material> &value);
-	void material_remove(const int index);
-	int material_get_num() const;
-	void materials_clear();
-
-	Vector<Variant> materials_get();
-	void materials_set(const Vector<Variant> &materials);
+	Ref<Material> material_get();
+	void material_set(const Ref<Material> &value);
 
 #if TEXTURE_PACKER_PRESENT
 	void add_textures_into(Ref<TexturePacker> texture_packer);
@@ -126,7 +120,7 @@ private:
 	Vector<Ref<Texture>> _flavour_textures;
 	float _flavour_chance;
 
-	Vector<Ref<Material>> _materials;
+	Ref<Material> _material;
 };
 
 VARIANT_ENUM_CAST(TiledWall2DData::TiledWall2DTilingType);

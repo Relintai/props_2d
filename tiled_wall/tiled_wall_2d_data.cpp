@@ -175,46 +175,13 @@ void TiledWall2DData::set_flavour_chance(const float value) {
 }
 
 //materials
-void TiledWall2DData::material_add(const Ref<Material> &value) {
-	ERR_FAIL_COND(!value.is_valid());
 
-	_materials.push_back(value);
+Ref<Material> TiledWall2DData::material_get() {
+	return _material;
 }
 
-void TiledWall2DData::material_set(const int index, const Ref<Material> &value) {
-	ERR_FAIL_INDEX(index, _materials.size());
-
-	_materials.set(index, value);
-
-	emit_changed();
-}
-
-void TiledWall2DData::material_remove(const int index) {
-	_materials.remove(index);
-
-	emit_changed();
-}
-
-int TiledWall2DData::material_get_num() const {
-	return _materials.size();
-}
-
-void TiledWall2DData::materials_clear() {
-	_materials.clear();
-}
-
-Vector<Variant> TiledWall2DData::materials_get() {
-	VARIANT_ARRAY_GET(_materials);
-}
-
-void TiledWall2DData::materials_set(const Vector<Variant> &materials) {
-	_materials.clear();
-
-	for (int i = 0; i < materials.size(); i++) {
-		Ref<Material> material = Ref<Material>(materials[i]);
-
-		_materials.push_back(material);
-	}
+void TiledWall2DData::material_set(const Ref<Material> &value) {
+	_material = value;
 
 	emit_changed();
 }
@@ -247,16 +214,10 @@ void TiledWall2DData::setup_cache(Ref<Prop2DMaterialCache> cache) {
 	call("_setup_cache", cache);
 }
 void TiledWall2DData::_setup_cache(Ref<Prop2DMaterialCache> cache) {
-	if (!cache->material_get().is_valid()) {
-		for (int i = 0; i < _materials.size(); ++i) {
-			const Ref<Material> &m = _materials[i];
+	if (_material.is_valid() && !cache->material_get().is_valid()) {
+		Ref<Material> nm = _material->duplicate();
 
-			if (m.is_valid()) {
-				Ref<Material> nm = m->duplicate();
-
-				cache->material_set(nm);
-			}
-		}
+		cache->material_set(nm);
 	}
 
 	for (int i = 0; i < _textures.size(); ++i) {
@@ -303,7 +264,7 @@ TiledWall2DData::TiledWall2DData() {
 TiledWall2DData::~TiledWall2DData() {
 	_textures.clear();
 	_flavour_textures.clear();
-	_materials.clear();
+	_material.unref();
 }
 
 void TiledWall2DData::_bind_methods() {
@@ -340,15 +301,9 @@ void TiledWall2DData::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "flavour_chance"), "set_flavour_chance", "get_flavour_chance");
 
 	//materials
-	ClassDB::bind_method(D_METHOD("material_add", "value"), &TiledWall2DData::material_add);
-	ClassDB::bind_method(D_METHOD("material_set", "index", "value"), &TiledWall2DData::material_set);
-	ClassDB::bind_method(D_METHOD("material_remove", "index"), &TiledWall2DData::material_remove);
-	ClassDB::bind_method(D_METHOD("material_get_num"), &TiledWall2DData::material_get_num);
-	ClassDB::bind_method(D_METHOD("materials_clear"), &TiledWall2DData::materials_clear);
-
-	ClassDB::bind_method(D_METHOD("materials_get"), &TiledWall2DData::materials_get);
-	ClassDB::bind_method(D_METHOD("materials_set"), &TiledWall2DData::materials_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "materials", PROPERTY_HINT_NONE, "17/17:Material", PROPERTY_USAGE_DEFAULT, "Material"), "materials_set", "materials_get");
+	ClassDB::bind_method(D_METHOD("material_get"), &TiledWall2DData::material_get);
+	ClassDB::bind_method(D_METHOD("material_set", "value"), &TiledWall2DData::material_set);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "material", PROPERTY_HINT_RESOURCE_TYPE, "Material"), "material_set", "material_get");
 
 #if TEXTURE_PACKER_PRESENT
 	ClassDB::bind_method(D_METHOD("add_textures_into", "texture_packer"), &TiledWall2DData::add_textures_into);
