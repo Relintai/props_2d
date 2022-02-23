@@ -76,20 +76,13 @@ public:
 	void set_margin(const int margin);
 #endif
 
-	PoolStringArray material_paths_get() const;
-	void material_paths_set(const PoolStringArray &array);
+	String material_path_get() const;
+	void material_path_set(const String &array);
 
-	void material_add(const Ref<Material> &value);
-	Ref<Material> material_get(const int index);
-	void material_set(const int index, const Ref<Material> &value);
-	void material_remove(const int index);
-	int material_get_num() const;
-	void materials_clear();
-	void materials_load();
-	void ensure_materials_loaded();
-
-	Vector<Variant> materials_get();
-	void materials_set(const Vector<Variant> &materials);
+	Ref<Material> material_get();
+	void material_set(const Ref<Material> &value);
+	void material_load();
+	void ensure_material_loaded();
 
 	Ref<Prop2DMaterialCache> material_cache_get(const Ref<Prop2DData> &prop);
 	void material_cache_unref(const Ref<Prop2DData> &prop);
@@ -130,8 +123,8 @@ protected:
 	int _margin;
 #endif
 
-	PoolStringArray _material_paths;
-	Vector<Ref<Material>> _materials;
+	String _material_path;
+	Ref<Material> _material;
 };
 
 #endif

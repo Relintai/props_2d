@@ -116,77 +116,41 @@ void Prop2DCache::set_margin(const int margin) {
 }
 #endif
 
-PoolStringArray Prop2DCache::material_paths_get() const {
-	return _material_paths;
+String Prop2DCache::material_path_get() const {
+	return _material_path;
 }
-void Prop2DCache::material_paths_set(const PoolStringArray &value) {
-	_material_paths = value;
-}
-
-void Prop2DCache::material_add(const Ref<Material> &value) {
-	ERR_FAIL_COND(!value.is_valid());
-
-	_materials.push_back(value);
+void Prop2DCache::material_path_set(const String &value) {
+	_material_path = value;
 }
 
-Ref<Material> Prop2DCache::material_get(const int index) {
-	ERR_FAIL_INDEX_V(index, _materials.size(), Ref<Material>());
-
-	return _materials[index];
+Ref<Material> Prop2DCache::material_get() {
+	return _material;
 }
 
-void Prop2DCache::material_set(const int index, const Ref<Material> &value) {
-	ERR_FAIL_INDEX(index, _materials.size());
-
-	_materials.set(index, value);
+void Prop2DCache::material_set(const Ref<Material> &value) {
+	_material = value;
 }
 
-void Prop2DCache::material_remove(const int index) {
-	_materials.remove(index);
-}
+void Prop2DCache::material_load() {
+	_material.unref();
 
-int Prop2DCache::material_get_num() const {
-	return _materials.size();
-}
-
-void Prop2DCache::materials_clear() {
-	_materials.clear();
-}
-
-void Prop2DCache::materials_load() {
-	_materials.clear();
-
-	for (int i = 0; i < _material_paths.size(); ++i) {
-		StringName path = _material_paths[i];
-
-		ERR_CONTINUE(path == "");
-
-		Ref<Material> d = load_resource(path, "Material");
-
-		ERR_CONTINUE(!d.is_valid());
-
-		_materials.push_back(d);
+	if (_material_path == "") {
+		return;
 	}
+
+	Ref<Material> d = load_resource(_material_path, "Material");
+
+	ERR_FAIL_COND(!d.is_valid());
+
+	_material = d;
 }
 
-void Prop2DCache::ensure_materials_loaded() {
-	if (_materials.size() != _material_paths.size()) {
-		materials_load();
+void Prop2DCache::ensure_material_loaded() {
+	if (_material_path == "" || _material.is_valid()) {
+		return;
 	}
-}
 
-Vector<Variant> Prop2DCache::materials_get() {
-	VARIANT_ARRAY_GET(_materials);
-}
-
-void Prop2DCache::materials_set(const Vector<Variant> &materials) {
-	_materials.clear();
-
-	for (int i = 0; i < materials.size(); i++) {
-		Ref<Material> material = Ref<Material>(materials[i]);
-
-		_materials.push_back(material);
-	}
+	material_load();
 }
 
 Ref<Prop2DMaterialCache> Prop2DCache::material_cache_get(const Ref<Prop2DData> &prop) {
@@ -369,25 +333,25 @@ Prop2DCache::Prop2DCache() {
 	_instance = this;
 
 #if TEXTURE_PACKER_PRESENT
-	_default_prop_material_cache_class = GLOBAL_DEF("props/default_prop_material_cache_class", "Prop2DMaterialCachePCM");
+	_default_prop_material_cache_class = GLOBAL_DEF("props_2d/default_prop_material_cache_class", "Prop2DMaterialCachePCM");
 #else
-	_default_prop_material_cache_class = GLOBAL_DEF("props/default_prop_material_cache_class", "Prop2DMaterialCache");
+	_default_prop_material_cache_class = GLOBAL_DEF("props_2d/default_prop_material_cache_class", "Prop2DMaterialCache");
 #endif
 
 #ifdef TEXTURE_PACKER_PRESENT
 #if VERSION_MAJOR < 4
-	_texture_flags = GLOBAL_DEF("props/texture_flags", Texture::FLAG_MIPMAPS | Texture::FLAG_FILTER);
+	_texture_flags = GLOBAL_DEF("props_2d/texture_flags", Texture::FLAG_MIPMAPS | Texture::FLAG_FILTER);
 #else
-	_texture_flags = GLOBAL_DEF("props/texture_flags", 0);
+	_texture_flags = GLOBAL_DEF("props_2d/texture_flags", 0);
 #endif
 
-	_max_atlas_size = GLOBAL_DEF("props/max_atlas_size", 1024);
-	_keep_original_atlases = GLOBAL_DEF("props/keep_original_atlases", false);
-	_background_color = GLOBAL_DEF("props/background_color", Color());
-	_margin = GLOBAL_DEF("props/margin", 0);
+	_max_atlas_size = GLOBAL_DEF("props_2d/max_atlas_size", 1024);
+	_keep_original_atlases = GLOBAL_DEF("props_2d/keep_original_atlases", false);
+	_background_color = GLOBAL_DEF("props_2d/background_color", Color());
+	_margin = GLOBAL_DEF("props_2d/margin", 0);
 #endif
 
-	_material_paths = GLOBAL_DEF("props/material_paths", PoolStringArray());
+	_material_path = GLOBAL_DEF("props_2d/material_path", "");
 }
 
 Prop2DCache::~Prop2DCache() {
@@ -421,22 +385,16 @@ void Prop2DCache::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "margin"), "set_margin", "get_margin");
 #endif
 
-	ClassDB::bind_method(D_METHOD("material_paths_get"), &Prop2DCache::material_paths_get);
-	ClassDB::bind_method(D_METHOD("material_paths_set", "value"), &Prop2DCache::material_paths_set);
-	ADD_PROPERTY(PropertyInfo(Variant::POOL_STRING_ARRAY, "material_paths"), "material_paths_set", "material_paths_get");
+	ClassDB::bind_method(D_METHOD("material_path_get"), &Prop2DCache::material_path_get);
+	ClassDB::bind_method(D_METHOD("material_path_set", "value"), &Prop2DCache::material_path_set);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "material_path"), "material_path_set", "material_path_get");
 
-	ClassDB::bind_method(D_METHOD("material_add", "value"), &Prop2DCache::material_add);
-	ClassDB::bind_method(D_METHOD("material_get", "index"), &Prop2DCache::material_get);
-	ClassDB::bind_method(D_METHOD("material_set", "index", "value"), &Prop2DCache::material_set);
-	ClassDB::bind_method(D_METHOD("material_remove", "index"), &Prop2DCache::material_remove);
-	ClassDB::bind_method(D_METHOD("material_get_num"), &Prop2DCache::material_get_num);
-	ClassDB::bind_method(D_METHOD("materials_clear"), &Prop2DCache::materials_clear);
-	ClassDB::bind_method(D_METHOD("materials_load"), &Prop2DCache::materials_load);
-	ClassDB::bind_method(D_METHOD("ensure_materials_loaded"), &Prop2DCache::ensure_materials_loaded);
+	ClassDB::bind_method(D_METHOD("material_get"), &Prop2DCache::material_get);
+	ClassDB::bind_method(D_METHOD("material_set", "value"), &Prop2DCache::material_set);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "material", PROPERTY_HINT_RESOURCE_TYPE, "Material"), "material_set", "material_get");
 
-	ClassDB::bind_method(D_METHOD("materials_get"), &Prop2DCache::materials_get);
-	ClassDB::bind_method(D_METHOD("materials_set"), &Prop2DCache::materials_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "materials", PROPERTY_HINT_NONE, "17/17:Material", PROPERTY_USAGE_DEFAULT, "Material"), "materials_set", "materials_get");
+	ClassDB::bind_method(D_METHOD("material_load"), &Prop2DCache::material_load);
+	ClassDB::bind_method(D_METHOD("ensure_material_loaded"), &Prop2DCache::ensure_material_loaded);
 
 	ClassDB::bind_method(D_METHOD("material_cache_get", "prop"), &Prop2DCache::material_cache_get);
 	ClassDB::bind_method(D_METHOD("material_cache_unref", "prop"), &Prop2DCache::material_cache_unref);
