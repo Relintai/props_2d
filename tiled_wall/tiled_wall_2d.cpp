@@ -196,21 +196,6 @@ void TiledWall2D::generate_mesh() {
 		return;
 	}
 
-	Ref<Prop2DLight> l;
-	l.instance();
-
-	l->set_position(Vector2(600, 600));
-	l->set_color(Color(1, 0, 0, 1));
-	l->set_size(100);
-
-	//Vector2 x(1, 0);
-	//x = x.rotated(Math::deg2rad(45.0));
-	//_mesh_transform = Transform2D(x.x, x.y, 0, 1, 0, 0);
-
-	//t.rotate(Math::deg2rad(45.0));
-	//t.scale_basis(Vector2(1, 0.5));
-
-	_mesher->add_light(l);
 	_mesher->add_tiled_wall_simple(_width, _height, _mesh_transform, _data, _cache);
 	_mesher->bake_colors();
 
