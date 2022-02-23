@@ -48,6 +48,16 @@ void TiledWall2D::set_heigth(const int value) {
 	generate_mesh();
 }
 
+Transform2D TiledWall2D::get_mesh_transform() const {
+	return _mesh_transform;
+}
+void TiledWall2D::set_mesh_transform(const Transform2D &value) {
+	_mesh_transform = value;
+
+	clear_mesh();
+	generate_mesh();
+}
+
 Ref<TiledWall2DData> TiledWall2D::get_data() {
 	return _data;
 }
@@ -313,6 +323,10 @@ void TiledWall2D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_data"), &TiledWall2D::get_data);
 	ClassDB::bind_method(D_METHOD("set_data", "value"), &TiledWall2D::set_data);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "TiledWall2DData"), "set_data", "get_data");
+
+	ClassDB::bind_method(D_METHOD("get_mesh_transform"), &TiledWall2D::get_mesh_transform);
+	ClassDB::bind_method(D_METHOD("set_mesh_transform", "value"), &TiledWall2D::set_mesh_transform);
+	ADD_PROPERTY(PropertyInfo(Variant::TRANSFORM2D, "mesh_transform"), "set_mesh_transform", "get_mesh_transform");
 
 	//ADD_GROUP("Collision", "collision_");
 	//ADD_PROPERTY(PropertyInfo(Variant::INT, "collision_layer", PROPERTY_HINT_LAYERS_3D_PHYSICS), "set_collision_layer", "get_collision_layer");
