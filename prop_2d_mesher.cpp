@@ -277,39 +277,6 @@ void Prop2DMesher::build_mesh_into(RID mesh) {
 		VS::get_singleton()->mesh_surface_set_material(mesh, 0, _material->get_rid());
 }
 
-void Prop2DMesher::generate_normals(bool p_flip) {
-	_format = _format | VisualServer::ARRAY_FORMAT_NORMAL;
-
-	for (int i = 0; i < _indices.size(); i += 3) {
-		int i0 = _indices[i];
-		int i1 = _indices[i + 1];
-		int i2 = _indices[i + 2];
-
-		ERR_FAIL_INDEX(i0, _vertices.size());
-		ERR_FAIL_INDEX(i1, _vertices.size());
-		ERR_FAIL_INDEX(i2, _vertices.size());
-
-		Vertex v0 = _vertices.get(i0);
-		Vertex v1 = _vertices.get(i1);
-		Vertex v2 = _vertices.get(i2);
-
-/*
-		Vector3 normal;
-		if (!p_flip)
-			normal = Plane(v0.vertex, v1.vertex, v2.vertex).normal;
-		else
-			normal = Plane(v2.vertex, v1.vertex, v0.vertex).normal;
-*/
-//		v0.normal = normal;
-//		v1.normal = normal;
-//		v2.normal = normal;
-
-		_vertices.set(i0, v0);
-		_vertices.set(i1, v1);
-		_vertices.set(i2, v2);
-	}
-}
-
 void Prop2DMesher::remove_doubles() {
 	if (_vertices.size() == 0)
 		return;
@@ -617,7 +584,6 @@ void Prop2DMesher::add_mesh_data_resource_transform(Ref<MeshDataResource> mesh, 
 	const Array &arr = mesh->get_array();
 
 	PoolVector2Array vertices = arr[Mesh::ARRAY_VERTEX];
-	PoolVector3Array normals = arr[Mesh::ARRAY_NORMAL];
 	PoolVector2Array uvs = arr[Mesh::ARRAY_TEX_UV];
 	PoolColorArray colors = arr[Mesh::ARRAY_COLOR];
 	PoolIntArray indices = arr[Mesh::ARRAY_INDEX];
@@ -628,10 +594,7 @@ void Prop2DMesher::add_mesh_data_resource_transform(Ref<MeshDataResource> mesh, 
 	int orig_vert_size = _vertices.size();
 
 	for (int i = 0; i < vertices.size(); ++i) {
-		if (normals.size() > 0)
-			add_normal(transform.basis.xform(normals[i]));
-
-		if (normals.size() > 0) {
+		if (uvs.size() > 0) {
 			Vector2 uv = uvs[i];
 
 			uv.x = uv_rect.size.width * uv.x + uv_rect.position.x;
@@ -661,7 +624,6 @@ void Prop2DMesher::add_mesh_data_resource_transform_colored(Ref<MeshDataResource
 	const Array &arr = mesh->get_array();
 
 	PoolVector2Array vertices = arr[Mesh::ARRAY_VERTEX];
-	PoolVector3Array normals = arr[Mesh::ARRAY_NORMAL];
 	PoolVector2Array uvs = arr[Mesh::ARRAY_TEX_UV];
 	PoolIntArray indices = arr[Mesh::ARRAY_INDEX];
 
@@ -671,10 +633,7 @@ void Prop2DMesher::add_mesh_data_resource_transform_colored(Ref<MeshDataResource
 	int orig_vert_size = _vertices.size();
 
 	for (int i = 0; i < vertices.size(); ++i) {
-		if (normals.size() > 0)
-			add_normal(transform.basis.xform(normals[i]));
-
-		if (normals.size() > 0) {
+		if (uvs.size() > 0) {
 			Vector2 uv = uvs[i];
 
 			uv.x = uv_rect.size.width * uv.x + uv_rect.position.x;
@@ -780,15 +739,6 @@ Color Prop2DMesher::get_light_color_at(const Vector2 &position, const Vector3 &n
 
 		value *= light->get_size();
 		v_lightDiffuse += value;
-
-		/*
-                    float dist2 = Mathf.Clamp(Vector3.Distance(transformedLights[i], vertices), 0f, 15f);
-                    dist2 /= 35f;
-
-                    Vector3 value = Vector3.one;
-                    value *= ((float) lights[i].Strength) / 255f;
-                    value *= (1 - dist2);
-                    v_lightDiffuse += value;*/
 	}
 
 	return Color(v_lightDiffuse.x, v_lightDiffuse.y, v_lightDiffuse.z);
@@ -1084,37 +1034,6 @@ void Prop2DMesher::remove_vertex(const int idx) {
 	_vertices.remove(idx);
 }
 
-PoolVector<Vector3> Prop2DMesher::get_normals() const {
-	PoolVector<Vector3> arr;
-
-	arr.resize(_vertices.size());
-	for (int i = 0; i < _vertices.size(); ++i) {
-		arr.set(i, _vertices.get(i).normal);
-	}
-
-	return arr;
-}
-
-void Prop2DMesher::set_normals(const PoolVector<Vector3> &values) {
-	ERR_FAIL_COND(values.size() != _vertices.size());
-
-	for (int i = 0; i < _vertices.size(); ++i) {
-		Vertex v = _vertices[i];
-
-		v.normal = values[i];
-
-		_vertices.set(i, v);
-	}
-}
-
-void Prop2DMesher::add_normal(const Vector3 &normal) {
-	_last_normal = normal;
-}
-
-Vector3 Prop2DMesher::get_normal(int idx) const {
-	return _vertices.get(idx).normal;
-}
-
 PoolVector<Color> Prop2DMesher::get_colors() const {
 	PoolVector<Color> arr;
 
@@ -1175,37 +1094,6 @@ void Prop2DMesher::add_uv(const Vector2 &uv) {
 
 Vector2 Prop2DMesher::get_uv(const int idx) const {
 	return _vertices.get(idx).uv;
-}
-
-PoolVector<Vector2> Prop2DMesher::get_uv2s() const {
-	PoolVector<Vector2> arr;
-
-	arr.resize(_vertices.size());
-	for (int i = 0; i < _vertices.size(); ++i) {
-		arr.set(i, _vertices.get(i).uv2);
-	}
-
-	return arr;
-}
-
-void Prop2DMesher::set_uv2s(const PoolVector<Vector2> &values) {
-	ERR_FAIL_COND(values.size() != _vertices.size());
-
-	for (int i = 0; i < _vertices.size(); ++i) {
-		Vertex v = _vertices[i];
-
-		v.uv2 = values[i];
-
-		_vertices.set(i, v);
-	}
-}
-
-void Prop2DMesher::add_uv2(const Vector2 &uv) {
-	_last_uv2 = uv;
-}
-
-Vector2 Prop2DMesher::get_uv2(const int idx) const {
-	return _vertices.get(idx).uv2;
 }
 
 PoolVector<int> Prop2DMesher::get_indices() const {
@@ -1332,11 +1220,6 @@ void Prop2DMesher::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("remove_vertex", "idx"), &Prop2DMesher::remove_vertex);
 	ClassDB::bind_method(D_METHOD("add_vertex", "vertex"), &Prop2DMesher::add_vertex);
 
-	ClassDB::bind_method(D_METHOD("get_normals"), &Prop2DMesher::get_normals);
-	ClassDB::bind_method(D_METHOD("set_normals", "values"), &Prop2DMesher::set_normals);
-	ClassDB::bind_method(D_METHOD("get_normal", "idx"), &Prop2DMesher::get_normal);
-	ClassDB::bind_method(D_METHOD("add_normal", "normal"), &Prop2DMesher::add_normal);
-
 	ClassDB::bind_method(D_METHOD("get_colors"), &Prop2DMesher::get_colors);
 	ClassDB::bind_method(D_METHOD("set_colors", "values"), &Prop2DMesher::set_colors);
 	ClassDB::bind_method(D_METHOD("get_color", "idx"), &Prop2DMesher::get_color);
@@ -1346,11 +1229,6 @@ void Prop2DMesher::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_uvs", "values"), &Prop2DMesher::set_uvs);
 	ClassDB::bind_method(D_METHOD("get_uv", "idx"), &Prop2DMesher::get_uv);
 	ClassDB::bind_method(D_METHOD("add_uv", "uv"), &Prop2DMesher::add_uv);
-
-	ClassDB::bind_method(D_METHOD("get_uv2s"), &Prop2DMesher::get_uv2s);
-	ClassDB::bind_method(D_METHOD("set_uv2s", "values"), &Prop2DMesher::set_uv2s);
-	ClassDB::bind_method(D_METHOD("get_uv2", "idx"), &Prop2DMesher::get_uv2);
-	ClassDB::bind_method(D_METHOD("add_uv2", "uv"), &Prop2DMesher::add_uv2);
 
 	ClassDB::bind_method(D_METHOD("get_indices"), &Prop2DMesher::get_indices);
 	ClassDB::bind_method(D_METHOD("set_indices", "values"), &Prop2DMesher::set_indices);
@@ -1368,8 +1246,6 @@ void Prop2DMesher::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("build_collider"), &Prop2DMesher::build_collider);
 
 	ClassDB::bind_method(D_METHOD("bake_colors"), &Prop2DMesher::bake_colors);
-
-	ClassDB::bind_method(D_METHOD("generate_normals", "flip"), &Prop2DMesher::generate_normals, DEFVAL(false));
 
 	ClassDB::bind_method(D_METHOD("remove_doubles"), &Prop2DMesher::remove_doubles);
 	ClassDB::bind_method(D_METHOD("remove_doubles_hashed"), &Prop2DMesher::remove_doubles_hashed);

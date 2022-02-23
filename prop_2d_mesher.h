@@ -179,7 +179,6 @@ public:
 	Array build_mesh();
 	void build_mesh_into(RID mesh);
 
-	void generate_normals(bool p_flip = false);
 	void remove_doubles();
 	void remove_doubles_hashed();
 
@@ -190,11 +189,6 @@ public:
 	void remove_vertex(const int idx);
 	void add_vertex(const Vector2 &vertex);
 
-	PoolVector<Vector3> get_normals() const;
-	void set_normals(const PoolVector<Vector3> &values);
-	Vector3 get_normal(const int idx) const;
-	void add_normal(const Vector3 &normal);
-
 	PoolVector<Color> get_colors() const;
 	void set_colors(const PoolVector<Color> &values);
 	Color get_color(const int idx) const;
@@ -204,11 +198,6 @@ public:
 	void set_uvs(const PoolVector<Vector2> &values);
 	Vector2 get_uv(const int idx) const;
 	void add_uv(const Vector2 &vector);
-
-	PoolVector<Vector2> get_uv2s() const;
-	void set_uv2s(const PoolVector<Vector2> &values);
-	Vector2 get_uv2(const int idx) const;
-	void add_uv2(const Vector2 &vector);
 
 	PoolVector<int> get_indices() const;
 	void set_indices(const PoolVector<int> &values);
