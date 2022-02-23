@@ -547,13 +547,14 @@ void Prop2DInstanceMerger::_build() {
 
 	Ref<Prop2DMaterialCache> cache = Prop2DCache::get_singleton()->material_cache_get(_prop_data);
 
-	if (cache->material_get_num() == 0) {
+	//TODO this needs to be changed
+	if (!cache->material_get().is_valid()) {
 		//lock it!
 		cache->mutex_lock();
 
 		//check again, this thread might have gotten here after an another one already did the initialization!
 		//this check might not be needed here
-		if (cache->material_get_num() == 0) {
+		if (!cache->material_get().is_valid()) {
 			//this will set up materials, and settings
 			//needs to be called from the main thread!
 			cache->initial_setup_default();

@@ -86,62 +86,12 @@ void Prop2DMaterialCache::dec_ref_count() {
 }
 
 //Materials
-Ref<Material> Prop2DMaterialCache::material_get(const int index) {
-	ERR_FAIL_INDEX_V(index, _materials.size(), Ref<Material>(NULL));
-
-	return _materials[index];
+Ref<Material> Prop2DMaterialCache::material_get() {
+	return _material;
 }
 
-Ref<Material> Prop2DMaterialCache::material_lod_get(const int index) {
-	ERR_FAIL_COND_V(_materials.size() == 0, Ref<Material>(NULL));
-
-	if (index < 0) {
-		return _materials[0];
-	}
-
-	if (index >= _materials.size()) {
-		return _materials[_materials.size() - 1];
-	}
-
-	return _materials[index];
-}
-
-void Prop2DMaterialCache::material_add(const Ref<Material> &value) {
-	ERR_FAIL_COND(!value.is_valid());
-
-	_materials.push_back(value);
-}
-
-void Prop2DMaterialCache::material_set(const int index, const Ref<Material> &value) {
-	ERR_FAIL_INDEX(index, _materials.size());
-
-	_materials.set(index, value);
-}
-
-void Prop2DMaterialCache::material_remove(const int index) {
-	_materials.remove(index);
-}
-
-int Prop2DMaterialCache::material_get_num() const {
-	return _materials.size();
-}
-
-void Prop2DMaterialCache::materials_clear() {
-	_materials.clear();
-}
-
-Vector<Variant> Prop2DMaterialCache::materials_get() {
-	VARIANT_ARRAY_GET(_materials);
-}
-
-void Prop2DMaterialCache::materials_set(const Vector<Variant> &materials) {
-	_materials.clear();
-
-	for (int i = 0; i < materials.size(); i++) {
-		Ref<Material> material = Ref<Material>(materials[i]);
-
-		_materials.push_back(material);
-	}
+void Prop2DMaterialCache::material_set(const Ref<Material> &value) {
+	_material = value;
 }
 
 void Prop2DMaterialCache::texture_add(const Ref<Texture> &texture) {
@@ -301,7 +251,7 @@ void Prop2DMaterialCache::initial_setup_default() {
 
 		Ref<Material> md = m->duplicate();
 
-		_materials.push_back(md);
+		_material = md;
 	}
 }
 
@@ -317,7 +267,6 @@ Prop2DMaterialCache::Prop2DMaterialCache() {
 }
 
 Prop2DMaterialCache::~Prop2DMaterialCache() {
-	_materials.clear();
 }
 
 void Prop2DMaterialCache::_bind_methods() {
@@ -337,17 +286,9 @@ void Prop2DMaterialCache::_bind_methods() {
 
 	BIND_VMETHOD(MethodInfo("_setup_material_albedo", PropertyInfo(Variant::OBJECT, "texture", PROPERTY_HINT_RESOURCE_TYPE, "Texture")));
 
-	ClassDB::bind_method(D_METHOD("material_get", "index"), &Prop2DMaterialCache::material_get);
-	ClassDB::bind_method(D_METHOD("material_lod_get", "index"), &Prop2DMaterialCache::material_lod_get);
-	ClassDB::bind_method(D_METHOD("material_add", "value"), &Prop2DMaterialCache::material_add);
-	ClassDB::bind_method(D_METHOD("material_set", "index", "value"), &Prop2DMaterialCache::material_set);
-	ClassDB::bind_method(D_METHOD("material_remove", "index"), &Prop2DMaterialCache::material_remove);
-	ClassDB::bind_method(D_METHOD("material_get_num"), &Prop2DMaterialCache::material_get_num);
-	ClassDB::bind_method(D_METHOD("materials_clear"), &Prop2DMaterialCache::materials_clear);
-
-	ClassDB::bind_method(D_METHOD("materials_get"), &Prop2DMaterialCache::materials_get);
-	ClassDB::bind_method(D_METHOD("materials_set"), &Prop2DMaterialCache::materials_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "materials", PROPERTY_HINT_NONE, "17/17:Material", PROPERTY_USAGE_DEFAULT, "Material"), "materials_set", "materials_get");
+	ClassDB::bind_method(D_METHOD("material_get"), &Prop2DMaterialCache::material_get);
+	ClassDB::bind_method(D_METHOD("material_set", "value"), &Prop2DMaterialCache::material_set);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "material", PROPERTY_HINT_RESOURCE_TYPE, "Material"), "material_set", "material_get");
 
 	ClassDB::bind_method(D_METHOD("texture_add", "texture"), &Prop2DMaterialCache::texture_add);
 	ClassDB::bind_method(D_METHOD("texture_remove", "texture"), &Prop2DMaterialCache::texture_remove);

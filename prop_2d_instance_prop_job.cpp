@@ -384,7 +384,7 @@ void Prop2DInstanceProp2DJob::step_type_normal() {
 
 	VS::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, VisualServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
 
-	Ref<Material> lmat = _material_cache->material_lod_get(0);
+	Ref<Material> lmat = _material_cache->material_get();
 
 	if (lmat.is_valid()) {
 		VisualServer::get_singleton()->mesh_surface_set_material(mesh_rid, 0, lmat->get_rid());

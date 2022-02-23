@@ -247,14 +247,14 @@ void TiledWall2DData::setup_cache(Ref<Prop2DMaterialCache> cache) {
 	call("_setup_cache", cache);
 }
 void TiledWall2DData::_setup_cache(Ref<Prop2DMaterialCache> cache) {
-	if (cache->material_get_num() == 0) {
+	if (!cache->material_get().is_valid()) {
 		for (int i = 0; i < _materials.size(); ++i) {
 			const Ref<Material> &m = _materials[i];
 
 			if (m.is_valid()) {
 				Ref<Material> nm = m->duplicate();
 
-				cache->material_add(nm);
+				cache->material_set(nm);
 			}
 		}
 	}
