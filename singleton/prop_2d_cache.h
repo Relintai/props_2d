@@ -56,6 +56,9 @@ class Prop2DCache : public Object {
 public:
 	static Prop2DCache *get_singleton();
 
+	float get_default_pixels_per_unit() const;
+	void set_default_pixels_per_unit(const float value);
+
 	StringName get_default_prop_material_cache_class();
 	void set_default_prop_material_cache_class(const StringName &cls_name);
 
@@ -104,6 +107,8 @@ public:
 
 protected:
 	static void _bind_methods();
+
+	float _default_pixels_per_unit;
 
 	StringName _default_prop_material_cache_class;
 

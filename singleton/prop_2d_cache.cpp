@@ -72,6 +72,13 @@ Prop2DCache *Prop2DCache::get_singleton() {
 	return _instance;
 }
 
+float Prop2DCache::get_default_pixels_per_unit() const {
+	return _default_pixels_per_unit;
+}
+void Prop2DCache::set_default_pixels_per_unit(const float value) {
+	_default_pixels_per_unit = value;
+}
+
 StringName Prop2DCache::get_default_prop_material_cache_class() {
 	return _default_prop_material_cache_class;
 }
@@ -332,6 +339,8 @@ Ref<Resource> Prop2DCache::load_resource(const String &path, const String &type_
 Prop2DCache::Prop2DCache() {
 	_instance = this;
 
+	_default_pixels_per_unit = GLOBAL_DEF("props_2d/default_pixels_per_unit", 64);
+
 #if TEXTURE_PACKER_PRESENT
 	_default_prop_material_cache_class = GLOBAL_DEF("props_2d/default_prop_material_cache_class", "Prop2DMaterialCachePCM");
 #else
@@ -359,6 +368,10 @@ Prop2DCache::~Prop2DCache() {
 }
 
 void Prop2DCache::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_default_pixels_per_unit"), &Prop2DCache::get_default_pixels_per_unit);
+	ClassDB::bind_method(D_METHOD("set_default_pixels_per_unit", "value"), &Prop2DCache::set_default_pixels_per_unit);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "default_pixels_per_unit"), "set_default_pixels_per_unit", "get_default_pixels_per_unit");
+
 	ClassDB::bind_method(D_METHOD("get_default_prop_material_cache_class"), &Prop2DCache::get_default_prop_material_cache_class);
 	ClassDB::bind_method(D_METHOD("set_default_prop_material_cache_class", "cls_name"), &Prop2DCache::set_default_prop_material_cache_class);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "default_prop_material_cache_class"), "set_default_prop_material_cache_class", "get_default_prop_material_cache_class");
