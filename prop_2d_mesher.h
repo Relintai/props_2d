@@ -84,11 +84,7 @@ public:
 	struct Vertex {
 		Vector2 vertex;
 		Color color;
-		Vector3 normal; // normal, binormal, tangent
-		Vector3 binormal;
-		Vector3 tangent;
 		Vector2 uv;
-		Vector2 uv2;
 		Vector<int> bones;
 		Vector<float> weights;
 
@@ -110,15 +106,6 @@ public:
 	};
 
 public:
-	int get_channel_index_type() const;
-	void set_channel_index_type(const int value);
-
-	int get_channel_index_isolevel() const;
-	void set_channel_index_isolevel(const int value);
-
-	int get_mesher_index() const;
-	void set_mesher_index(const int value);
-
 	int get_format() const;
 	void set_format(const int value);
 
@@ -157,7 +144,7 @@ public:
 
 	void generate_ao();
 	float get_random_ao(const Vector2 &position);
-	Color get_light_color_at(const Vector2 &position, const Vector3 &normal);
+	Color get_light_color_at(const Vector2 &position);
 
 	void add_mesher(const Ref<Prop2DMesher> &mesher);
 	void _add_mesher(const Ref<Prop2DMesher> &mesher);
@@ -215,8 +202,6 @@ protected:
 	int _channel_index_type;
 	int _channel_index_isolevel;
 
-	int _mesher_index;
-
 	int _format;
 
 	int _texture_scale;
@@ -226,12 +211,9 @@ protected:
 	Vector<Ref<Prop2DLight>> _lights;
 
 	Color _last_color;
-	Vector3 _last_normal;
 	Vector2 _last_uv;
-	Vector2 _last_uv2;
 	Vector<int> _last_bones;
 	Vector<float> _last_weights;
-	Plane _last_tangent;
 
 	Ref<Material> _material;
 

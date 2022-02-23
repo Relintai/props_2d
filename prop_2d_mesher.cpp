@@ -37,15 +37,6 @@ bool Prop2DMesher::Vertex::operator==(const Vertex &p_vertex) const {
 	if (uv != p_vertex.uv)
 		return false;
 
-	if (uv2 != p_vertex.uv2)
-		return false;
-
-	if (normal != p_vertex.normal)
-		return false;
-
-	if (binormal != p_vertex.binormal)
-		return false;
-
 	if (color != p_vertex.color)
 		return false;
 
@@ -67,36 +58,11 @@ bool Prop2DMesher::Vertex::operator==(const Vertex &p_vertex) const {
 
 uint32_t Prop2DMesher::VertexHasher::hash(const Vertex &p_vtx) {
 	uint32_t h = hash_djb2_buffer((const uint8_t *)&p_vtx.vertex, sizeof(real_t) * 3);
-	h = hash_djb2_buffer((const uint8_t *)&p_vtx.normal, sizeof(real_t) * 3, h);
-	h = hash_djb2_buffer((const uint8_t *)&p_vtx.binormal, sizeof(real_t) * 3, h);
-	h = hash_djb2_buffer((const uint8_t *)&p_vtx.tangent, sizeof(real_t) * 3, h);
 	h = hash_djb2_buffer((const uint8_t *)&p_vtx.uv, sizeof(real_t) * 2, h);
-	h = hash_djb2_buffer((const uint8_t *)&p_vtx.uv2, sizeof(real_t) * 2, h);
 	h = hash_djb2_buffer((const uint8_t *)&p_vtx.color, sizeof(real_t) * 4, h);
 	h = hash_djb2_buffer((const uint8_t *)p_vtx.bones.ptr(), p_vtx.bones.size() * sizeof(int), h);
 	h = hash_djb2_buffer((const uint8_t *)p_vtx.weights.ptr(), p_vtx.weights.size() * sizeof(float), h);
 	return h;
-}
-
-int Prop2DMesher::get_channel_index_type() const {
-	return _channel_index_type;
-}
-void Prop2DMesher::set_channel_index_type(const int value) {
-	_channel_index_type = value;
-}
-
-int Prop2DMesher::get_channel_index_isolevel() const {
-	return _channel_index_isolevel;
-}
-void Prop2DMesher::set_channel_index_isolevel(const int value) {
-	_channel_index_isolevel = value;
-}
-
-int Prop2DMesher::get_mesher_index() const {
-	return _mesher_index;
-}
-void Prop2DMesher::set_mesher_index(const int value) {
-	_mesher_index = value;
 }
 
 int Prop2DMesher::get_format() const {
@@ -380,12 +346,9 @@ void Prop2DMesher::reset() {
 	_indices.resize(0);
 
 	_last_color = Color();
-	_last_normal = Vector3();
 	_last_uv = Vector2();
-	_last_uv2 = Vector2();
 	_last_bones.clear();
 	_last_weights.clear();
-	_last_tangent = Plane();
 }
 
 void Prop2DMesher::add_tiled_wall_simple(const int width, const int height, const Transform2D &transform, const Ref<TiledWall2DData> &tiled_wall_data, Ref<Prop2DMaterialCache> cache) {
@@ -711,7 +674,7 @@ float Prop2DMesher::get_random_ao(const Vector2 &position) {
 	return val;
 }
 
-Color Prop2DMesher::get_light_color_at(const Vector2 &position, const Vector3 &normal) {
+Color Prop2DMesher::get_light_color_at(const Vector2 &position) {
 	Vector3 v_lightDiffuse;
 
 	//calculate the lights value
@@ -724,18 +687,10 @@ Color Prop2DMesher::get_light_color_at(const Vector2 &position, const Vector3 &n
 		//inverse sqrt
 		lightDir *= (1.0 / sqrt(dist2));
 
-		float NdotL = 1.0;//normal.dot(lightDir);
-
-		if (NdotL > 1.0) {
-			NdotL = 1.0;
-		} else if (NdotL < 0.0) {
-			NdotL = 0.0;
-		}
-
 		Color cc = light->get_color();
 		Vector3 cv(cc.r, cc.g, cc.b);
 
-		Vector3 value = cv * (NdotL / (1.0 + dist2));
+		Vector3 value = cv * (1.0 / (1.0 + dist2));
 
 		value *= light->get_size();
 		v_lightDiffuse += value;
@@ -855,7 +810,7 @@ void Prop2DMesher::bake_colors_lights_rao() {
 		Vertex vertex = _vertices[i];
 		Vector2 vert = vertex.vertex;
 
-		Color light = get_light_color_at(vert, vertex.normal);
+		Color light = get_light_color_at(vert);
 
 		float rao = get_random_ao(vert) * _ao_strength;
 
@@ -883,7 +838,7 @@ void Prop2DMesher::bake_colors_lights() {
 		Vertex vertex = _vertices[i];
 		Vector2 vert = vertex.vertex;
 
-		Color light = get_light_color_at(vert, vertex.normal);
+		Color light = get_light_color_at(vert);
 
 		light.r += _base_light_value;
 		light.g += _base_light_value;
@@ -1014,14 +969,10 @@ void Prop2DMesher::add_vertex(const Vector2 &vertex) {
 	Vertex vtx;
 	vtx.vertex = vertex;
 	vtx.color = _last_color;
-	vtx.normal = _last_normal;
 	vtx.uv = _last_uv;
-	vtx.uv2 = _last_uv2;
 	// Todo?
 	//	vtx.weights = _last_weights;
 	//	vtx.bones = _last_bones;
-	//	vtx.tangent = _last_tangent.normal;
-	//	vtx.binormal = _last_normal.cross(_last_tangent.normal).normalized() * _last_tangent.d;
 
 	_vertices.push_back(vtx);
 }
@@ -1121,14 +1072,11 @@ void Prop2DMesher::remove_index(const int idx) {
 }
 
 Prop2DMesher::Prop2DMesher() {
-	_mesher_index = 0;
 	_voxel_scale = 1;
 	_ao_strength = 0.25;
 	_base_light_value = 0.5;
 	_uv_margin = Rect2(0, 0, 1, 1);
 	_format = 0;
-	_channel_index_type = 0;
-	_channel_index_isolevel = 0;
 	_texture_scale = 1;
 
 	_build_flags = 0;
@@ -1149,18 +1097,6 @@ Prop2DMesher::~Prop2DMesher() {
 }
 
 void Prop2DMesher::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_channel_index_type"), &Prop2DMesher::get_channel_index_type);
-	ClassDB::bind_method(D_METHOD("set_channel_index_type", "value"), &Prop2DMesher::set_channel_index_type);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "channel_index_type"), "set_channel_index_type", "get_channel_index_type");
-
-	ClassDB::bind_method(D_METHOD("get_channel_index_isolevel"), &Prop2DMesher::get_channel_index_isolevel);
-	ClassDB::bind_method(D_METHOD("set_channel_index_isolevel", "value"), &Prop2DMesher::set_channel_index_isolevel);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "channel_index_isolevel"), "set_channel_index_isolevel", "get_channel_index_isolevel");
-
-	ClassDB::bind_method(D_METHOD("get_mesher_index"), &Prop2DMesher::get_mesher_index);
-	ClassDB::bind_method(D_METHOD("set_mesher_index", "value"), &Prop2DMesher::set_mesher_index);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "mesher_index"), "set_mesher_index", "get_mesher_index");
-
 	ClassDB::bind_method(D_METHOD("get_format"), &Prop2DMesher::get_format);
 	ClassDB::bind_method(D_METHOD("set_format", "value"), &Prop2DMesher::set_format);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "format"), "set_format", "get_format");
