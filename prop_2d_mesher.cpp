@@ -247,8 +247,6 @@ void Prop2DMesher::remove_doubles() {
 	if (_vertices.size() == 0)
 		return;
 
-	//print_error("before " + String::num(_vertices.size()));
-
 	for (int i = 0; i < _vertices.size(); ++i) {
 		Vertex vert = _vertices[i];
 		PoolVector<int> indices;
@@ -1075,7 +1073,7 @@ Prop2DMesher::Prop2DMesher() {
 
 	_build_flags = 0;
 
-	_format = VisualServer::ARRAY_FORMAT_NORMAL | VisualServer::ARRAY_FORMAT_TEX_UV;
+	_format = VisualServer::ARRAY_FORMAT_TEX_UV;
 
 	_noise.instance();
 	//todo add properties for these if needed
