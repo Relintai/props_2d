@@ -569,19 +569,19 @@ void Prop2DMesher::add_tiled_wall_mesh_rect_simple(const int x, const int y, con
 	int vc = get_vertex_count();
 
 	//x + 1, y
-	add_uv(transform_uv(Vector2(1, 1), texture_rect));
+	add_uv(transform_uv(Vector2(1, 0), texture_rect));
 	add_vertex(transform.xform(Vector2(x + 1, y)));
 
 	//x, y
-	add_uv(transform_uv(Vector2(0, 1), texture_rect));
+	add_uv(transform_uv(Vector2(0, 0), texture_rect));
 	add_vertex(transform.xform(Vector2(x, y)));
 
 	//x, y + 1
-	add_uv(transform_uv(Vector2(0, 0), texture_rect));
+	add_uv(transform_uv(Vector2(0, 1), texture_rect));
 	add_vertex(transform.xform(Vector2(x, y + 1)));
 
 	//x + 1, y + 1
-	add_uv(transform_uv(Vector2(1, 0), texture_rect));
+	add_uv(transform_uv(Vector2(1, 1), texture_rect));
 	add_vertex(transform.xform(Vector2(x + 1, y + 1)));
 
 	add_indices(vc + 2);
