@@ -27,6 +27,7 @@ SOFTWARE.
 
 #include "material_cache/prop_2d_material_cache.h"
 #include "tiled_wall/tiled_wall_2d_data.h"
+#include "./singleton/prop_2d_cache.h"
 
 const String Prop2DMesher::BINDING_STRING_BUILD_FLAGS = "Use Lighting,Use AO,Use RAO,Bake Lights";
 
@@ -84,6 +85,13 @@ Ref<Material> Prop2DMesher::get_material() {
 }
 void Prop2DMesher::set_material(const Ref<Material> &material) {
 	_material = material;
+}
+
+float Prop2DMesher::get_pixels_per_unit() const {
+	return _pixels_per_unit;
+}
+void Prop2DMesher::set_pixels_per_unit(const float value) {
+	_pixels_per_unit = value;
 }
 
 float Prop2DMesher::get_ao_strength() const {
@@ -709,7 +717,7 @@ Color Prop2DMesher::get_light_color_at(const Vector2 &position) {
 		Color cc = light->get_color();
 		Vector3 cv(cc.r, cc.g, cc.b);
 
-		Vector3 value = cv * (1.0 / (1.0 + dist2));
+		Vector3 value = cv * (_pixels_per_unit / (_pixels_per_unit + dist2));
 
 		value *= light->get_size();
 		v_lightDiffuse += value;
@@ -1097,6 +1105,7 @@ Prop2DMesher::Prop2DMesher() {
 	_uv_margin = Rect2(0, 0, 1, 1);
 	_format = 0;
 	_texture_scale = 1;
+	_pixels_per_unit = Prop2DCache::get_singleton()->get_default_pixels_per_unit();
 
 	_build_flags = 0;
 
@@ -1127,6 +1136,10 @@ void Prop2DMesher::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_material"), &Prop2DMesher::get_material);
 	ClassDB::bind_method(D_METHOD("set_material", "value"), &Prop2DMesher::set_material);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "material", PROPERTY_HINT_RESOURCE_TYPE, "Material"), "set_material", "get_material");
+
+	ClassDB::bind_method(D_METHOD("get_pixels_per_unit"), &Prop2DMesher::get_pixels_per_unit);
+	ClassDB::bind_method(D_METHOD("set_pixels_per_unit", "value"), &Prop2DMesher::set_pixels_per_unit);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "pixels_per_unit"), "set_pixels_per_unit", "get_pixels_per_unit");
 
 	ClassDB::bind_method(D_METHOD("get_voxel_scale"), &Prop2DMesher::get_voxel_scale);
 	ClassDB::bind_method(D_METHOD("set_voxel_scale", "value"), &Prop2DMesher::set_voxel_scale);

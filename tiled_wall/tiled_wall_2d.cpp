@@ -168,9 +168,9 @@ void TiledWall2D::generate_mesh() {
 	Ref<Prop2DLight> l;
 	l.instance();
 
-	l->set_position(Vector2(10, 10));
+	l->set_position(Vector2(600, 600));
 	l->set_color(Color(1, 0, 0, 1));
-	l->set_size(3);
+	l->set_size(100);
 
 	_mesher->add_light(l);
 	_mesher->add_tiled_wall_simple(_width, _height, Transform2D(), _data, _cache);

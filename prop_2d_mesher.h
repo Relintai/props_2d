@@ -115,6 +115,9 @@ public:
 	Ref<Material> get_material();
 	void set_material(const Ref<Material> &material);
 
+	float get_pixels_per_unit() const;
+	void set_pixels_per_unit(const float value);
+
 	float get_ao_strength() const;
 	void set_ao_strength(const float value);
 
@@ -227,6 +230,8 @@ protected:
 	Ref<OpenSimplexNoise> _noise;
 	float _rao_scale_factor;
 	int _rao_seed;
+
+	float _pixels_per_unit;
 };
 
 VARIANT_ENUM_CAST(Prop2DMesher::BuildFlags);
