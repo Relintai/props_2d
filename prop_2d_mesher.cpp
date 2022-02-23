@@ -358,12 +358,15 @@ void Prop2DMesher::add_tiled_wall_simple(const int width, const int height, cons
 	//collect rects
 	Vector<Rect2> normal_rects;
 	Vector<Rect2> flavour_rects;
+	Vector<Vector2> normal_sizes;
+	Vector<Vector2> flavour_sizes;
 
 	for (int i = 0; i < tiled_wall_data->get_texture_count(); ++i) {
 		const Ref<Texture> &t = tiled_wall_data->get_texture(i);
 
 		if (t.is_valid()) {
 			normal_rects.push_back(cache->texture_get_uv_rect(t));
+			normal_sizes.push_back(cache->texture_get_rect(t).size);
 		}
 	}
 
@@ -372,26 +375,27 @@ void Prop2DMesher::add_tiled_wall_simple(const int width, const int height, cons
 
 		if (t.is_valid()) {
 			flavour_rects.push_back(cache->texture_get_uv_rect(t));
+			flavour_sizes.push_back(cache->texture_get_rect(t).size);
 		}
 	}
 
 	//fallback
 	if (normal_rects.size() == 0) {
 		normal_rects.push_back(Rect2(0, 0, 1, 1));
+		normal_sizes.push_back(Vector2(1, 1));
 	}
 
 	TiledWall2DData::TiledWall2DTilingType tiling_type = tiled_wall_data->get_tiling_type();
 
-	//todo implement flavour!
-
 	if (tiling_type == TiledWall2DData::TILED_WALL_TILING_TYPE_NONE) {
 		Rect2 r = normal_rects[0];
+		Vector2 rs = normal_sizes[0];
 
 		if (flavour_rects.size() == 0) {
 			//no flavours
 			for (int x = 0; x < width; ++x) {
 				for (int y = 0; y < height; ++y) {
-					add_tiled_wall_mesh_rect_simple(x, y, transform, r);
+					add_tiled_wall_mesh_rect_simple(x, y, transform, r, rs);
 				}
 			}
 		} else {
@@ -399,87 +403,107 @@ void Prop2DMesher::add_tiled_wall_simple(const int width, const int height, cons
 			for (int x = 0; x < width; ++x) {
 				for (int y = 0; y < height; ++y) {
 					if (Math::randf() > flavour_chance) {
-						add_tiled_wall_mesh_rect_simple(x, y, transform, r);
+						add_tiled_wall_mesh_rect_simple(x, y, transform, r, rs);
 					} else {
-						add_tiled_wall_mesh_rect_simple(x, y, transform, flavour_rects[Math::rand() % flavour_rects.size()]);
+						int ind = Math::rand() % flavour_rects.size();
+
+						add_tiled_wall_mesh_rect_simple(x, y, transform, flavour_rects[ind], flavour_sizes[ind]);
 					}
 				}
 			}
 		}
 	} else if (tiling_type == TiledWall2DData::TILED_WALL_TILING_TYPE_HORIZONTAL) {
 		Rect2 r;
+		Vector2 rs;
 
 		if (flavour_rects.size() == 0) {
 			//no flavours
 			for (int x = 0; x < width; ++x) {
-				r = normal_rects[x % normal_rects.size()];
+				int ind = x % normal_rects.size();
+				r = normal_rects[ind];
+				rs = normal_sizes[ind];
 
 				for (int y = 0; y < height; ++y) {
-					add_tiled_wall_mesh_rect_simple(x, y, transform, r);
+					add_tiled_wall_mesh_rect_simple(x, y, transform, r, rs);
 				}
 			}
 		} else {
 			//has flavours
 			for (int x = 0; x < width; ++x) {
-				r = normal_rects[x % normal_rects.size()];
+				int ind = x % normal_rects.size();
+				r = normal_rects[ind];
+				rs = normal_sizes[ind];
 
 				for (int y = 0; y < height; ++y) {
 					if (Math::randf() > flavour_chance) {
-						add_tiled_wall_mesh_rect_simple(x, y, transform, r);
+						add_tiled_wall_mesh_rect_simple(x, y, transform, r, rs);
 					} else {
-						add_tiled_wall_mesh_rect_simple(x, y, transform, flavour_rects[Math::rand() % flavour_rects.size()]);
+						int find = Math::rand() % flavour_rects.size();
+						add_tiled_wall_mesh_rect_simple(x, y, transform, flavour_rects[find], flavour_sizes[find]);
 					}
 				}
 			}
 		}
 	} else if (tiling_type == TiledWall2DData::TILED_WALL_TILING_TYPE_VERTICAL) {
 		Rect2 r;
+		Vector2 rs;
 
 		if (flavour_rects.size() == 0) {
 			//no flavours
 			for (int x = 0; x < width; ++x) {
 				for (int y = 0; y < height; ++y) {
-					r = normal_rects[y % normal_rects.size()];
+					int ind = y % normal_rects.size();
+					r = normal_rects[ind];
+					rs = normal_sizes[ind];
 
-					add_tiled_wall_mesh_rect_simple(x, y, transform, r);
+					add_tiled_wall_mesh_rect_simple(x, y, transform, r, rs);
 				}
 			}
 		} else {
 			//has flavours
 			for (int x = 0; x < width; ++x) {
 				for (int y = 0; y < height; ++y) {
-					r = normal_rects[y % normal_rects.size()];
+					int ind = y % normal_rects.size();
+					r = normal_rects[ind];
+					rs = normal_sizes[ind];
 
 					if (Math::randf() > flavour_chance) {
-						add_tiled_wall_mesh_rect_simple(x, y, transform, r);
+						add_tiled_wall_mesh_rect_simple(x, y, transform, r, rs);
 					} else {
-						add_tiled_wall_mesh_rect_simple(x, y, transform, flavour_rects[Math::rand() % flavour_rects.size()]);
+						int find = Math::rand() % flavour_rects.size();
+						add_tiled_wall_mesh_rect_simple(x, y, transform, flavour_rects[find], flavour_sizes[find]);
 					}
 				}
 			}
 		}
 	} else if (tiling_type == TiledWall2DData::TILED_WALL_TILING_TYPE_BOTH) {
 		Rect2 r;
+		Vector2 rs;
 
 		if (flavour_rects.size() == 0) {
 			//no flavours
 			for (int x = 0; x < width; ++x) {
 				for (int y = 0; y < height; ++y) {
-					r = normal_rects[(x + y) % normal_rects.size()];
+					int ind = (x + y) % normal_rects.size();
+					r = normal_rects[ind];
+					rs = normal_sizes[ind];
 
-					add_tiled_wall_mesh_rect_simple(x, y, transform, r);
+					add_tiled_wall_mesh_rect_simple(x, y, transform, r, rs);
 				}
 			}
 		} else {
 			//has flavours
 			for (int x = 0; x < width; ++x) {
 				for (int y = 0; y < height; ++y) {
-					r = normal_rects[(x + y) % normal_rects.size()];
+					int ind = (x + y) % normal_rects.size();
+					r = normal_rects[ind];
+					rs = normal_sizes[ind];
 
 					if (Math::randf() > flavour_chance) {
-						add_tiled_wall_mesh_rect_simple(x, y, transform, r);
+						add_tiled_wall_mesh_rect_simple(x, y, transform, r, rs);
 					} else {
-						add_tiled_wall_mesh_rect_simple(x, y, transform, flavour_rects[Math::rand() % flavour_rects.size()]);
+						int find = Math::rand() % flavour_rects.size();
+						add_tiled_wall_mesh_rect_simple(x, y, transform, flavour_rects[find], flavour_sizes[find]);
 					}
 				}
 			}
@@ -487,24 +511,27 @@ void Prop2DMesher::add_tiled_wall_simple(const int width, const int height, cons
 	}
 }
 
-void Prop2DMesher::add_tiled_wall_mesh_rect_simple(const int x, const int y, const Transform2D &transform, const Rect2 &texture_rect) {
+void Prop2DMesher::add_tiled_wall_mesh_rect_simple(const int x, const int y, const Transform2D &transform, const Rect2 &texture_uv_rect, const Vector2 &size) {
 	int vc = get_vertex_count();
 
+	int sx = x * size.x;
+	int sy = y * size.y;
+
 	//x + 1, y
-	add_uv(transform_uv(Vector2(1, 0), texture_rect));
-	add_vertex(transform.xform(Vector2(x + 1, y)));
+	add_uv(transform_uv(Vector2(1, 0), texture_uv_rect));
+	add_vertex(transform.xform(Vector2(sx + size.x, sy)));
 
 	//x, y
-	add_uv(transform_uv(Vector2(0, 0), texture_rect));
-	add_vertex(transform.xform(Vector2(x, y)));
+	add_uv(transform_uv(Vector2(0, 0), texture_uv_rect));
+	add_vertex(transform.xform(Vector2(sx, sy)));
 
 	//x, y + 1
-	add_uv(transform_uv(Vector2(0, 1), texture_rect));
-	add_vertex(transform.xform(Vector2(x, y + 1)));
+	add_uv(transform_uv(Vector2(0, 1), texture_uv_rect));
+	add_vertex(transform.xform(Vector2(sx, sy + size.y)));
 
 	//x + 1, y + 1
-	add_uv(transform_uv(Vector2(1, 1), texture_rect));
-	add_vertex(transform.xform(Vector2(x + 1, y + 1)));
+	add_uv(transform_uv(Vector2(1, 1), texture_uv_rect));
+	add_vertex(transform.xform(Vector2(sx + size.x, sy + size.y)));
 
 	add_indices(vc + 2);
 	add_indices(vc + 1);

@@ -129,6 +129,15 @@ Ref<AtlasTexture> Prop2DMaterialCache::texture_get_atlas(const int index) {
 Ref<AtlasTexture> Prop2DMaterialCache::texture_get_atlas_tex(const Ref<Texture> &texture) {
 	return Ref<AtlasTexture>();
 }
+Rect2 Prop2DMaterialCache::texture_get_rect(const Ref<Texture> &texture) {
+	Ref<AtlasTexture> at = texture_get_atlas_tex(texture);
+
+	if (!at.is_valid()) {
+		return Rect2();
+	}
+
+	return at->get_region();
+}
 Rect2 Prop2DMaterialCache::texture_get_uv_rect(const Ref<Texture> &texture) {
 	return Rect2(0, 0, 1, 1);
 }

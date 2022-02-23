@@ -68,6 +68,7 @@ public:
 	virtual Ref<Texture> texture_get(const int index);
 	virtual Ref<AtlasTexture> texture_get_atlas(const int index);
 	virtual Ref<AtlasTexture> texture_get_atlas_tex(const Ref<Texture> &texture);
+	virtual Rect2 texture_get_rect(const Ref<Texture> &texture);
 	virtual Rect2 texture_get_uv_rect(const Ref<Texture> &texture);
 
 	virtual Ref<Texture> texture_get_merged();
