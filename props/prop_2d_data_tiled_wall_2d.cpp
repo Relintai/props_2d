@@ -61,7 +61,7 @@ bool Prop2DDataTiledWall2D::_processor_handles(Node *node) {
 	return t;
 }
 
-void Prop2DDataTiledWall2D::_processor_process(Ref<Prop2DData> prop_data, Node *node, const Transform2D &transform) {
+void Prop2DDataTiledWall2D::_processor_process(Ref<Prop2DData> prop_data, Node *node, const Transform2D &transform, Ref<Prop2DDataEntry> entry) {
 	TiledWall2D *t = Object::cast_to<TiledWall2D>(node);
 
 	ERR_FAIL_COND(!t);
@@ -77,7 +77,7 @@ void Prop2DDataTiledWall2D::_processor_process(Ref<Prop2DData> prop_data, Node *
 	prop_data->add_prop(tw);
 }
 
-Node *Prop2DDataTiledWall2D::_processor_get_node_for(const Transform2D &transform) {
+Node *Prop2DDataTiledWall2D::_processor_get_node_for(const Transform2D &transform, Node *node) {
 	TiledWall2D *t = memnew(TiledWall2D);
 
 	t->set_width(get_width());

@@ -38,6 +38,8 @@ SOFTWARE.
 #include "core/resource.h"
 #endif
 
+#include "scene/resources/material.h"
+
 class Prop2DData;
 class Prop2DMesher;
 class TexturePacker;
@@ -52,6 +54,33 @@ public:
 	Transform2D get_transform_2d() const;
 	void set_transform_2d(const Transform2D &value);
 
+	int get_z_index() const;
+	void set_z_index(const int value);
+
+	bool get_z_as_relative() const;
+	void set_z_as_relative(const bool value);
+
+	bool get_visible() const;
+	void set_visible(const bool value);
+
+	Color get_modulate() const;
+	void set_modulate(const Color &value);
+
+	Color get_self_modulate() const;
+	void set_self_modulate(const Color &value);
+
+	bool get_show_behind_parent() const;
+	void set_show_behind_parent(const bool value);
+
+	int get_light_mask() const;
+	void set_light_mask(const int value);
+
+	Ref<Material> get_material() const;
+	void set_material(const Ref<Material> &value);
+
+	bool get_use_parent_material() const;
+	void set_use_parent_material(const bool value);
+
 #if TEXTURE_PACKER_PRESENT
 	void add_textures_into(Ref<TexturePacker> texture_packer);
 #endif
@@ -62,8 +91,8 @@ public:
 	bool processor_evaluate_children();
 
 	virtual bool _processor_handles(Node *node);
-	virtual void _processor_process(Ref<Prop2DData> prop_data, Node *node, const Transform2D &transform);
-	virtual Node *_processor_get_node_for(const Transform2D &transform);
+	virtual void _processor_process(Ref<Prop2DData> prop_data, Node *node, const Transform2D &transform, Ref<Prop2DDataEntry> entry = Ref<Prop2DDataEntry>());
+	virtual Node *_processor_get_node_for(const Transform2D &transform, Node *node = nullptr);
 	virtual bool _processor_evaluate_children();
 
 	Prop2DDataEntry();
@@ -73,8 +102,19 @@ protected:
 	static void _bind_methods();
 
 private:
-	Transform _transform;
-	Transform2D _transform_2d;
+	Transform2D _transform;
+	int _z_index;
+	bool _z_as_relative;
+
+	bool _visible;
+	Color _modulate;
+	Color _self_modulate;
+	bool _show_behind_parent;
+
+	int _light_mask;
+
+	Ref<Material> _material;
+	bool _use_parent_material;
 };
 
 #endif

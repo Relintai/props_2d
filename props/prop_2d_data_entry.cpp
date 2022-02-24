@@ -26,32 +26,88 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#if VERSION_MAJOR < 4
-#include "scene/3d/spatial.h"
-#else
-#include "scene/3d/node_3d.h"
-#define Spatial Node3D
-#endif
+#include "scene/2d/node_2d.h"
 
 #if TEXTURE_PACKER_PRESENT
 #include "../../texture_packer/texture_packer.h"
 #endif
 
-
 #include "../prop_2d_mesher.h"
 
 Transform Prop2DDataEntry::get_transform() const {
-	return _transform;
+	return Transform();
 }
 void Prop2DDataEntry::set_transform(const Transform &value) {
-	_transform = value;
 }
 
 Transform2D Prop2DDataEntry::get_transform_2d() const {
-	return _transform_2d;
+	return _transform;
 }
 void Prop2DDataEntry::set_transform_2d(const Transform2D &value) {
-	_transform_2d = value;
+	_transform = value;
+}
+
+int Prop2DDataEntry::get_z_index() const {
+	return _z_index;
+}
+void Prop2DDataEntry::set_z_index(const int value) {
+	_z_index = value;
+}
+
+bool Prop2DDataEntry::get_z_as_relative() const {
+	return _z_as_relative;
+}
+void Prop2DDataEntry::set_z_as_relative(const bool value) {
+	_z_as_relative = value;
+}
+
+bool Prop2DDataEntry::get_visible() const {
+	return _visible;
+}
+void Prop2DDataEntry::set_visible(const bool value) {
+	_visible = value;
+}
+
+Color Prop2DDataEntry::get_modulate() const {
+	return _modulate;
+}
+void Prop2DDataEntry::set_modulate(const Color &value) {
+	_modulate = value;
+}
+
+Color Prop2DDataEntry::get_self_modulate() const {
+	return _self_modulate;
+}
+void Prop2DDataEntry::set_self_modulate(const Color &value) {
+	_self_modulate = value;
+}
+
+bool Prop2DDataEntry::get_show_behind_parent() const {
+	return _show_behind_parent;
+}
+void Prop2DDataEntry::set_show_behind_parent(const bool value) {
+	_show_behind_parent = value;
+}
+
+int Prop2DDataEntry::get_light_mask() const {
+	return _light_mask;
+}
+void Prop2DDataEntry::set_light_mask(const int value) {
+	_light_mask = value;
+}
+
+Ref<Material> Prop2DDataEntry::get_material() const {
+	return _material;
+}
+void Prop2DDataEntry::set_material(const Ref<Material> &value) {
+	_material = value;
+}
+
+bool Prop2DDataEntry::get_use_parent_material() const {
+	return _use_parent_material;
+}
+void Prop2DDataEntry::set_use_parent_material(const bool value) {
+	_use_parent_material = value;
 }
 
 #if TEXTURE_PACKER_PRESENT
@@ -77,16 +133,72 @@ bool Prop2DDataEntry::processor_evaluate_children() {
 bool Prop2DDataEntry::_processor_handles(Node *node) {
 	return false;
 }
-void Prop2DDataEntry::_processor_process(Ref<Prop2DData> prop_data, Node *node, const Transform2D &transform) {
+void Prop2DDataEntry::_processor_process(Ref<Prop2DData> prop_data, Node *node, const Transform2D &transform, Ref<Prop2DDataEntry> entry) {
+	Node2D *n = Object::cast_to<Node2D>(node);
+
+	ERR_FAIL_COND(!n);
+
+	Ref<Prop2DDataEntry> e;
+
+	if (entry.is_valid()) {
+		e = entry;
+	} else {
+		e.instance();
+	}
+
+	e->set_transform_2d(transform * n->get_transform());
+	e->set_z_index(n->get_z_index());
+	e->set_z_as_relative(n->is_z_relative());
+	e->set_visible(n->is_visible());
+	e->set_modulate(n->get_modulate());
+	e->set_self_modulate(n->get_self_modulate());
+	e->set_show_behind_parent(n->is_draw_behind_parent_enabled());
+	e->set_light_mask(n->get_light_mask());
+	e->set_material(n->get_material());
+	e->set_use_parent_material(n->get_use_parent_material());
+
+	prop_data->add_prop(e);
 }
-Node *Prop2DDataEntry::_processor_get_node_for(const Transform2D &transform) {
-	return NULL;
+Node *Prop2DDataEntry::_processor_get_node_for(const Transform2D &transform, Node *node) {
+	Node2D *n;
+
+	if (node) {
+		n = Object::cast_to<Node2D>(node);
+	} else {
+		n = memnew(Node2D());
+	}
+
+	n->set_transform(transform * get_transform_2d());
+
+	n->set_z_index(get_z_index());
+	n->set_z_as_relative(get_z_as_relative());
+	n->set_visible(get_visible());
+	n->set_modulate(get_modulate());
+	n->set_self_modulate(get_self_modulate());
+	n->set_draw_behind_parent(get_show_behind_parent());
+
+	n->set_light_mask(get_light_mask());
+	n->set_material(get_material());
+	n->set_use_parent_material(get_use_parent_material());
+
+	return n;
 }
 bool Prop2DDataEntry::_processor_evaluate_children() {
 	return true;
 }
 
 Prop2DDataEntry::Prop2DDataEntry() {
+	_z_index = 0;
+	_z_as_relative = true;
+
+	_visible = true;
+	_modulate = Color(1, 1, 1, 1);
+	_self_modulate = Color(1, 1, 1, 1);
+	_show_behind_parent = false;
+
+	_light_mask = 1;
+
+	_use_parent_material = false;
 }
 Prop2DDataEntry::~Prop2DDataEntry() {
 }
@@ -99,6 +211,42 @@ void Prop2DDataEntry::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_transform_2d"), &Prop2DDataEntry::get_transform_2d);
 	ClassDB::bind_method(D_METHOD("set_transform_2d", "value"), &Prop2DDataEntry::set_transform_2d);
 	ADD_PROPERTY(PropertyInfo(Variant::TRANSFORM2D, "transform_2d"), "set_transform_2d", "get_transform_2d");
+
+	ClassDB::bind_method(D_METHOD("get_z_index"), &Prop2DDataEntry::get_z_index);
+	ClassDB::bind_method(D_METHOD("set_z_index", "value"), &Prop2DDataEntry::set_z_index);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "z_index"), "set_z_index", "get_z_index");
+
+	ClassDB::bind_method(D_METHOD("get_z_as_relative"), &Prop2DDataEntry::get_z_as_relative);
+	ClassDB::bind_method(D_METHOD("set_z_as_relative", "value"), &Prop2DDataEntry::set_z_as_relative);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "z_as_relative"), "set_z_as_relative", "get_z_as_relative");
+
+	ClassDB::bind_method(D_METHOD("get_visible"), &Prop2DDataEntry::get_visible);
+	ClassDB::bind_method(D_METHOD("set_visible", "value"), &Prop2DDataEntry::set_visible);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "visible"), "set_visible", "get_visible");
+
+	ClassDB::bind_method(D_METHOD("get_modulate"), &Prop2DDataEntry::get_modulate);
+	ClassDB::bind_method(D_METHOD("set_modulate", "value"), &Prop2DDataEntry::set_modulate);
+	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "modulate"), "set_modulate", "get_modulate");
+
+	ClassDB::bind_method(D_METHOD("get_self_modulate"), &Prop2DDataEntry::get_self_modulate);
+	ClassDB::bind_method(D_METHOD("set_self_modulate", "value"), &Prop2DDataEntry::set_self_modulate);
+	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "self_modulate"), "set_self_modulate", "get_self_modulate");
+
+	ClassDB::bind_method(D_METHOD("get_show_behind_parent"), &Prop2DDataEntry::get_show_behind_parent);
+	ClassDB::bind_method(D_METHOD("set_show_behind_parent", "value"), &Prop2DDataEntry::set_show_behind_parent);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "show_behind_parent"), "set_show_behind_parent", "get_show_behind_parent");
+
+	ClassDB::bind_method(D_METHOD("get_light_mask"), &Prop2DDataEntry::get_light_mask);
+	ClassDB::bind_method(D_METHOD("set_light_mask", "value"), &Prop2DDataEntry::set_light_mask);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "light_mask"), "set_light_mask", "get_light_mask");
+
+	ClassDB::bind_method(D_METHOD("get_material"), &Prop2DDataEntry::get_material);
+	ClassDB::bind_method(D_METHOD("set_material", "value"), &Prop2DDataEntry::set_material);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "material"), "set_material", "get_material");
+
+	ClassDB::bind_method(D_METHOD("get_use_parent_material"), &Prop2DDataEntry::get_use_parent_material);
+	ClassDB::bind_method(D_METHOD("set_use_parent_material", "value"), &Prop2DDataEntry::set_use_parent_material);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "use_parent_material"), "set_use_parent_material", "get_use_parent_material");
 
 #if TEXTURE_PACKER_PRESENT
 	BIND_VMETHOD(MethodInfo("_add_textures_into", PropertyInfo(Variant::OBJECT, "texture_packer", PROPERTY_HINT_RESOURCE_TYPE, "TexturePacker")));

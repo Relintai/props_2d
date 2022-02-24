@@ -47,8 +47,8 @@ public:
 	void set_points(const PoolVector<Vector2> &p_points);
 
 	bool _processor_handles(Node *node);
-	void _processor_process(Ref<Prop2DData> prop_data, Node *node, const Transform2D &transform);
-	Node *_processor_get_node_for(const Transform2D &transform);
+	void _processor_process(Ref<Prop2DData> prop_data, Node *node, const Transform2D &transform, Ref<Prop2DDataEntry> entry = Ref<Prop2DDataEntry>());
+	Node *_processor_get_node_for(const Transform2D &transform, Node *node = nullptr);
 
 	Prop2DDataPortal();
 	~Prop2DDataPortal();

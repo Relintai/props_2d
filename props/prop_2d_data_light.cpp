@@ -52,7 +52,7 @@ bool Prop2DDataLight::_processor_handles(Node *node) {
 	return i;
 }
 
-void Prop2DDataLight::_processor_process(Ref<Prop2DData> prop_data, Node *node, const Transform2D &transform) {
+void Prop2DDataLight::_processor_process(Ref<Prop2DData> prop_data, Node *node, const Transform2D &transform, Ref<Prop2DDataEntry> entry) {
 	OmniLight *i = Object::cast_to<OmniLight>(node);
 
 	ERR_FAIL_COND(!i);
@@ -65,7 +65,7 @@ void Prop2DDataLight::_processor_process(Ref<Prop2DData> prop_data, Node *node, 
 	prop_data->add_prop(l);
 }
 
-Node *Prop2DDataLight::_processor_get_node_for(const Transform2D &transform) {
+Node *Prop2DDataLight::_processor_get_node_for(const Transform2D &transform, Node *node) {
 	OmniLight *i = memnew(OmniLight);
 
 	i->set_color(get_light_color());
