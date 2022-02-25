@@ -37,7 +37,7 @@ Ref<Texture> Prop2DDataSprite::get_normal_map() const {
 	return _normal_map;
 }
 void Prop2DDataSprite::set_normal_map(const Ref<Texture> &value) {
-	_texture = _normal_map;
+	_normal_map = _normal_map;
 }
 
 bool Prop2DDataSprite::get_centered() const {
@@ -154,7 +154,7 @@ void Prop2DDataSprite::_processor_process(Ref<Prop2DData> prop_data, Node *node,
 	l->set_region(s->get_region_rect());
 	l->set_filter_clip(s->is_region_filter_clip_enabled());
 
-	Prop2DDataEntry::_processor_process(prop_data, node, transform, entry);
+	Prop2DDataEntry::_processor_process(prop_data, node, transform, l);
 }
 
 Node *Prop2DDataSprite::_processor_get_node_for(const Transform2D &transform, Node *node) {
