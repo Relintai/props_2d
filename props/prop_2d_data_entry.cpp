@@ -258,10 +258,12 @@ void Prop2DDataEntry::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_processor_process",
 			PropertyInfo(Variant::OBJECT, "prop_data", PROPERTY_HINT_RESOURCE_TYPE, "Prop2DData"),
 			PropertyInfo(Variant::OBJECT, "node", PROPERTY_HINT_RESOURCE_TYPE, "Node"),
-			PropertyInfo(Variant::TRANSFORM, "transform")));
+			PropertyInfo(Variant::TRANSFORM, "transform"),
+			PropertyInfo(Variant::OBJECT, "entry", PROPERTY_HINT_RESOURCE_TYPE, "Prop2DDataEntry")));
 
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "node", PROPERTY_HINT_RESOURCE_TYPE, "Node"), "_processor_get_node_for",
-			PropertyInfo(Variant::TRANSFORM, "transform")));
+			PropertyInfo(Variant::TRANSFORM, "transform"),
+			PropertyInfo(Variant::OBJECT, "node", PROPERTY_HINT_RESOURCE_TYPE, "Node")));
 
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "evaluate"), "_processor_evaluate_children"));
 
@@ -271,7 +273,7 @@ void Prop2DDataEntry::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("processor_evaluate_children"), &Prop2DDataEntry::processor_evaluate_children);
 
 	ClassDB::bind_method(D_METHOD("_processor_handles", "node"), &Prop2DDataEntry::_processor_handles);
-	ClassDB::bind_method(D_METHOD("_processor_process", "prop_data", "node", "transform"), &Prop2DDataEntry::_processor_process);
-	ClassDB::bind_method(D_METHOD("_processor_get_node_for", "transform"), &Prop2DDataEntry::_processor_get_node_for);
+	ClassDB::bind_method(D_METHOD("_processor_process", "prop_data", "node", "transform", "entry"), &Prop2DDataEntry::_processor_process, Ref<Prop2DDataEntry>());
+	ClassDB::bind_method(D_METHOD("_processor_get_node_for", "transform", "node"), &Prop2DDataEntry::_processor_get_node_for, NULL);
 	ClassDB::bind_method(D_METHOD("_processor_evaluate_children"), &Prop2DDataEntry::_processor_evaluate_children);
 }
