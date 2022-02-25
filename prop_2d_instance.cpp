@@ -200,7 +200,7 @@ void Prop2DInstance::_prop_preprocess(Transform transform, const Ref<Prop2DData>
 			OmniLight *light = memnew(OmniLight);
 			add_child(light);
 			light->set_color(light_data->get_light_color());
-			light->set_param(Light::PARAM_RANGE, light_data->get_light_size());
+			//light->set_param(Light::PARAM_RANGE, light_data->get_light_size());
 			light->set_transform(t);
 
 			continue;

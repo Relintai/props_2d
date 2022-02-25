@@ -674,7 +674,7 @@ void Prop2DInstanceMerger::_prop_preprocess(Transform transform, const Ref<Prop2
 
 			//light->set_position(v);
 			light->set_color(light_data->get_light_color());
-			light->set_size(light_data->get_light_size());
+			//light->set_size(light_data->get_light_size());
 
 			_job->add_light(light);
 
