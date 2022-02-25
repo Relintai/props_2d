@@ -52,19 +52,30 @@ void Prop2DDataProp2D::_processor_process(Ref<Prop2DData> prop_data, Node *node,
 	ERR_FAIL_COND(!i);
 
 	Ref<Prop2DDataProp2D> l;
-	l.instance();
+
+	if (entry.is_valid()) {
+		l = entry;
+	} else {
+		l.instance();
+	}
+
 	l->set_prop(i->get_prop_data());
-	//l->set_transform(transform * i->get_transform());
-	prop_data->add_prop(l);
+
+	Prop2DDataEntry::_processor_process(prop_data, node, transform, l);
 }
 
 Node *Prop2DDataProp2D::_processor_get_node_for(const Transform2D &transform, Node *node) {
-	Prop2DInstance *i = memnew(Prop2DInstance);
+	Prop2DInstance *i = nullptr;
+
+	if (!node) {
+		i = memnew(Prop2DInstance);
+	} else {
+		i = Object::cast_to<Prop2DInstance>(node);
+	}
 
 	i->set_prop_data(get_prop());
-	//i->set_transform(get_transform());
 
-	return i;
+	return Prop2DDataEntry::_processor_get_node_for(transform, i);
 }
 
 Prop2DDataProp2D::Prop2DDataProp2D() {
