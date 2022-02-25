@@ -23,6 +23,7 @@
 #include "./props/prop_2d_data_light.h"
 #include "./props/prop_2d_data_prop.h"
 #include "./props/prop_2d_data_scene.h"
+#include "./props/prop_2d_data_sprite.h"
 #include "./props/prop_2d_data_tiled_wall_2d.h"
 
 #include "tiled_wall/tiled_wall_2d.h"
@@ -42,13 +43,6 @@ void Prop2DInstance::set_prop_data(const Ref<Prop2DData> &data) {
 	} else {
 		call_deferred("build");
 	}
-}
-
-Ref<Material> Prop2DInstance::get_material() {
-	return _material;
-}
-void Prop2DInstance::set_material(const Ref<Material> &material) {
-	_material = material;
 }
 
 uint32_t Prop2DInstance::get_collision_layer() const {
@@ -115,7 +109,7 @@ void Prop2DInstance::_build() {
 	if (!_prop_data.is_valid())
 		return;
 
-	prop_preprocess(Transform(), _prop_data);
+	prop_preprocess(Transform2D(), _prop_data);
 }
 
 void Prop2DInstance::_build_finished() {
@@ -126,11 +120,11 @@ void Prop2DInstance::_build_finished() {
 	}
 }
 
-void Prop2DInstance::prop_preprocess(Transform transform, const Ref<Prop2DData> &prop) {
+void Prop2DInstance::prop_preprocess(Transform2D transform, const Ref<Prop2DData> &prop) {
 	call("_prop_preprocess", transform, prop);
 }
 
-void Prop2DInstance::_prop_preprocess(Transform transform, const Ref<Prop2DData> &prop) {
+void Prop2DInstance::_prop_preprocess(Transform2D transform, const Ref<Prop2DData> &prop) {
 	//don't set owners, to help working with the editor
 
 	ERR_FAIL_COND(!prop.is_valid());
@@ -142,7 +136,7 @@ void Prop2DInstance::_prop_preprocess(Transform transform, const Ref<Prop2DData>
 		if (!e.is_valid())
 			continue;
 
-		Transform t = transform * e->get_transform();
+		Transform2D t = transform * e->get_transform_2d();
 
 		Ref<Prop2DDataProp2D> prop_entry_data = e;
 
@@ -160,14 +154,7 @@ void Prop2DInstance::_prop_preprocess(Transform transform, const Ref<Prop2DData>
 		Ref<Prop2DDataTiledWall2D> tiled_wall_data = e;
 
 		if (tiled_wall_data.is_valid()) {
-			TiledWall2D *twn = memnew(TiledWall2D);
-
-			twn->set_width(tiled_wall_data->get_width());
-			twn->set_heigth(tiled_wall_data->get_heigth());
-			twn->set_data(tiled_wall_data->get_data());
-			//twn->set_collision(tiled_wall_data->get_collision());
-
-			//twn->set_transform(t);
+			Node *twn = tiled_wall_data->_processor_get_node_for(t);
 
 			add_child(twn);
 
@@ -185,10 +172,10 @@ void Prop2DInstance::_prop_preprocess(Transform transform, const Ref<Prop2DData>
 			Node *n = sc->instance();
 			add_child(n);
 
-			Spatial *sp = Object::cast_to<Spatial>(n);
+			Node2D *n2d = Object::cast_to<Node2D>(n);
 
-			if (sp) {
-				sp->set_transform(t);
+			if (n2d) {
+				n2d->set_transform(t);
 			}
 
 			continue;
@@ -197,16 +184,26 @@ void Prop2DInstance::_prop_preprocess(Transform transform, const Ref<Prop2DData>
 		Ref<Prop2DDataLight> light_data = e;
 
 		if (light_data.is_valid()) {
-			OmniLight *light = memnew(OmniLight);
+			Node *light = light_data->_processor_get_node_for(t);
+
 			add_child(light);
-			light->set_color(light_data->get_light_color());
-			//light->set_param(Light::PARAM_RANGE, light_data->get_light_size());
-			light->set_transform(t);
+
+			continue;
+		}
+
+		Ref<Prop2DDataSprite> sprite_data = e;
+
+		if (sprite_data.is_valid()) {
+			Node *sp = sprite_data->_processor_get_node_for(t);
+
+			add_child(sp);
 
 			continue;
 		}
 
 #if MESH_DATA_RESOURCE_PRESENT
+//TODO
+/*
 		Ref<Prop2DDataMeshData> mesh_data = e;
 
 		if (mesh_data.is_valid()) {
@@ -224,22 +221,6 @@ void Prop2DInstance::_prop_preprocess(Transform transform, const Ref<Prop2DData>
 				Ref<Material> mat = _material->duplicate();
 
 				Ref<Texture> texture = mdi->get_texture();
-
-				if (texture.is_valid()) {
-					//texture is valid, try to set it into the material
-					Ref<SpatialMaterial> spmat = mat;
-
-					if (spmat.is_valid()) {
-						spmat->set_texture(SpatialMaterial::TEXTURE_ALBEDO, texture);
-					} else {
-						Ref<ShaderMaterial> shmat = mat;
-
-						if (shmat.is_valid()) {
-							shmat->set_shader_param("texture_albedo", texture);
-						}
-					}
-				}
-
 				mdi->set_material(mat);
 			}
 
@@ -247,6 +228,7 @@ void Prop2DInstance::_prop_preprocess(Transform transform, const Ref<Prop2DData>
 
 			continue;
 		}
+		*/
 #endif
 	}
 }
@@ -279,10 +261,6 @@ void Prop2DInstance::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_prop_data"), &Prop2DInstance::get_prop_data);
 	ClassDB::bind_method(D_METHOD("set_prop_data", "value"), &Prop2DInstance::set_prop_data);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "prop_data", PROPERTY_HINT_RESOURCE_TYPE, "Prop2DData"), "set_prop_data", "get_prop_data");
-
-	ClassDB::bind_method(D_METHOD("get_material"), &Prop2DInstance::get_material);
-	ClassDB::bind_method(D_METHOD("set_material", "material"), &Prop2DInstance::set_material);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "material", PROPERTY_HINT_RESOURCE_TYPE, "Material"), "set_material", "get_material");
 
 	ClassDB::bind_method(D_METHOD("get_collision_layer"), &Prop2DInstance::get_collision_layer);
 	ClassDB::bind_method(D_METHOD("set_collision_layer", "layer"), &Prop2DInstance::set_collision_layer);

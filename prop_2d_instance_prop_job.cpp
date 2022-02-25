@@ -24,12 +24,6 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#if VERSION_MAYOR > 3
-#define GET_WORLD get_world_3d
-#else
-#define GET_WORLD get_world
-#endif
-
 #include "lights/prop_2d_light.h"
 #include "material_cache/prop_2d_material_cache.h"
 #include "prop_2d_instance.h"
@@ -67,7 +61,7 @@ void Prop2DInstanceProp2DJob::set_material_cache(const Ref<Prop2DMaterialCache> 
 	_material_cache = cache;
 }
 
-void Prop2DInstanceProp2DJob::add_collision_shape(const Ref<Shape> &shape, const Transform &transform, const bool owns_shape) {
+void Prop2DInstanceProp2DJob::add_collision_shape(const Ref<Shape2D> &shape, const Transform2D &transform, const bool owns_shape) {
 	CollisionShapeEntry e;
 
 	e.shape = shape;
@@ -99,7 +93,7 @@ void Prop2DInstanceProp2DJob::set_prop_mesher(const Ref<Prop2DMesher> &mesher) {
 }
 
 #if MESH_DATA_RESOURCE_PRESENT
-void Prop2DInstanceProp2DJob::add_mesh(const Ref<Prop2DDataMeshData> &mesh_data, const Transform &base_transform) {
+void Prop2DInstanceProp2DJob::add_mesh(const Ref<Prop2DDataMeshData> &mesh_data, const Transform2D &base_transform) {
 	PMDREntry e;
 	e.mesh_data = mesh_data;
 	e.base_transform = base_transform;
@@ -112,7 +106,7 @@ void Prop2DInstanceProp2DJob::clear_meshes() {
 }
 #endif
 
-void Prop2DInstanceProp2DJob::add_tiled_wall(const Ref<Prop2DDataTiledWall2D> &data, const Transform &base_transform) {
+void Prop2DInstanceProp2DJob::add_tiled_wall(const Ref<Prop2DDataTiledWall2D> &data, const Transform2D &base_transform) {
 	PTWEntry e;
 	e.data = data;
 	e.base_transform = base_transform;
@@ -194,7 +188,7 @@ void Prop2DInstanceProp2DJob::phase_physics_process() {
 
 	_prop_instace->free_colliders();
 	_prop_instace->colliders_clear();
-
+/*
 	for (int i = 0; i < _collision_shapes.size(); ++i) {
 		CollisionShapeEntry &e = _collision_shapes.write[i];
 
@@ -211,7 +205,7 @@ void Prop2DInstanceProp2DJob::phase_physics_process() {
 		PhysicsServer::get_singleton()->body_set_collision_mask(body, _prop_instace->get_collision_mask());
 
 		if (_prop_instace->is_inside_tree() && _prop_instace->is_inside_world()) {
-			Ref<World> world = _prop_instace->GET_WORLD();
+			Ref<World2D> world = _prop_instace->get_world_2d();
 
 			if (world.is_valid() && world->get_space() != RID()) {
 				PhysicsServer::get_singleton()->body_set_space(body, world->get_space());
@@ -222,11 +216,14 @@ void Prop2DInstanceProp2DJob::phase_physics_process() {
 
 		_prop_instace->collider_add(e.transform, e.shape, e.shape->get_rid(), body, e.owns_shape);
 	}
+*/
 
 #if TOOLS_ENABLED
+/*
 	if (SceneTree::get_singleton()->is_debugging_collisions_hint() && _prop_instace->collider_get_num() > 0) {
 		_prop_instace->draw_debug_mdr_colliders();
 	}
+	*/
 #endif
 
 	set_build_phase_type(BUILD_PHASE_TYPE_NORMAL);
@@ -297,7 +294,7 @@ void Prop2DInstanceProp2DJob::phase_prop() {
 
 			Ref<Prop2DDataTiledWall2D> pdtw = e.data;
 			//Transform t = pdtw->get_transform();
-			Transform t = e.base_transform;
+			Transform2D t = e.base_transform;
 
 			//_prop_mesher->add_tiled_wall_simple(pdtw->get_width(), pdtw->get_heigth(), t, pdtw->get_data(), _material_cache);
 		}

@@ -25,13 +25,7 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#if VERSION_MAJOR < 4
-#include "scene/3d/spatial.h"
-#else
-#include "scene/3d/node_3d.h"
-
-#define Spatial Node3D
-#endif
+#include "scene/2d/node_2d.h"
 
 #include "scene/resources/material.h"
 
@@ -39,15 +33,12 @@ SOFTWARE.
 
 #include "props/prop_2d_data.h"
 
-class Prop2DInstance : public Spatial {
-	GDCLASS(Prop2DInstance, Spatial);
+class Prop2DInstance : public Node2D {
+	GDCLASS(Prop2DInstance, Node2D);
 
 public:
 	Ref<Prop2DData> get_prop_data();
 	void set_prop_data(const Ref<Prop2DData> &data);
-
-	Ref<Material> get_material();
-	void set_material(const Ref<Material> &material);
 
 	uint32_t get_collision_layer() const;
 	void set_collision_layer(uint32_t p_layer);
@@ -68,8 +59,8 @@ public:
 	virtual void _build();
 	virtual void _build_finished();
 
-	void prop_preprocess(Transform tarnsform, const Ref<Prop2DData> &prop);
-	virtual void _prop_preprocess(Transform tarnsform, const Ref<Prop2DData> &prop);
+	void prop_preprocess(Transform2D tarnsform, const Ref<Prop2DData> &prop);
+	virtual void _prop_preprocess(Transform2D tarnsform, const Ref<Prop2DData> &prop);
 
 	Prop2DInstance();
 	~Prop2DInstance();
@@ -80,7 +71,6 @@ protected:
 
 protected:
 	Ref<Prop2DData> _prop_data;
-	Ref<Material> _material;
 
 	uint32_t _collision_layer;
 	uint32_t _collision_mask;

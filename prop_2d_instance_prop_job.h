@@ -25,6 +25,8 @@ SOFTWARE.
 
 #include "prop_2d_instance_job.h"
 
+#include "scene/resources/shape_2d.h"
+
 class Prop2DMesher;
 class Prop2DInstance;
 class Prop2DInstanceMerger;
@@ -45,7 +47,7 @@ public:
 	Ref<Prop2DMaterialCache> get_material_cache();
 	void set_material_cache(const Ref<Prop2DMaterialCache> &cache);
 
-	void add_collision_shape(const Ref<Shape> &shape, const Transform &transform, const bool owns_shape = false);
+	void add_collision_shape(const Ref<Shape2D> &shape, const Transform2D &transform, const bool owns_shape = false);
 	void clear_collision_shapes();
 
 	Prop2DInstanceMerger *get_prop_instace();
@@ -56,11 +58,11 @@ public:
 	void set_prop_mesher(const Ref<Prop2DMesher> &mesher);
 
 #if MESH_DATA_RESOURCE_PRESENT
-	void add_mesh(const Ref<Prop2DDataMeshData> &mesh_data, const Transform &base_transform);
+	void add_mesh(const Ref<Prop2DDataMeshData> &mesh_data, const Transform2D &base_transform);
 	void clear_meshes();
 #endif
 
-	void add_tiled_wall(const Ref<Prop2DDataTiledWall2D> &data, const Transform &base_transform);
+	void add_tiled_wall(const Ref<Prop2DDataTiledWall2D> &data, const Transform2D &base_transform);
 	void clear_tiled_walls();
 
 	void add_light(const Ref<Prop2DLight> &light);
@@ -92,18 +94,18 @@ protected:
 #if MESH_DATA_RESOURCE_PRESENT
 	struct PMDREntry {
 		Ref<Prop2DDataMeshData> mesh_data;
-		Transform base_transform;
+		Transform2D base_transform;
 	};
 #endif
 
 	struct PTWEntry {
 		Ref<Prop2DDataTiledWall2D> data;
-		Transform base_transform;
+		Transform2D base_transform;
 	};
 
 	struct CollisionShapeEntry {
-		Ref<Shape> shape;
-		Transform transform;
+		Ref<Shape2D> shape;
+		Transform2D transform;
 		bool owns_shape;
 
 		CollisionShapeEntry() {
