@@ -40,6 +40,7 @@ sources = [
     "props/prop_2d_data_light.cpp",
     "props/prop_2d_data_prop.cpp",
     "props/prop_2d_data_tiled_wall_2d.cpp",
+    "props/prop_2d_data_sprite.cpp",
 
     "clutter/ground_clutter_2d.cpp",
     "clutter/ground_clutter_2d_foliage.cpp",

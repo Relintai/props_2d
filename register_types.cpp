@@ -38,6 +38,7 @@ SOFTWARE.
 #include "props/prop_2d_data_light.h"
 #include "props/prop_2d_data_prop.h"
 #include "props/prop_2d_data_scene.h"
+#include "props/prop_2d_data_sprite.h"
 #include "props/prop_2d_data_tiled_wall_2d.h"
 
 #if VERSION_MINOR >= 4
@@ -88,6 +89,7 @@ void register_props_2d_types() {
 	ClassDB::register_class<Prop2DDataLight>();
 	ClassDB::register_class<Prop2DDataProp2D>();
 	ClassDB::register_class<Prop2DDataTiledWall2D>();
+	ClassDB::register_class<Prop2DDataSprite>();
 
 #if VERSION_MINOR >= 4
 	ClassDB::register_class<Prop2DDataPortal>();
@@ -140,6 +142,9 @@ void register_props_2d_types() {
 
 	Ref<Prop2DDataTiledWall2D> tiled_wall_processor = Ref<Prop2DDataTiledWall2D>(memnew(Prop2DDataTiledWall2D));
 	Prop2DUtils::add_processor(tiled_wall_processor);
+
+	Ref<Prop2DDataSprite> sprite_processor = Ref<Prop2DDataSprite>(memnew(Prop2DDataSprite));
+	Prop2DUtils::add_processor(sprite_processor);
 
 #ifdef TOOLS_ENABLED
 	EditorPlugins::add_by_type<Prop2DEditorPlugin>();
