@@ -25,31 +25,17 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#if VERSION_MAJOR < 4
-#include "scene/3d/spatial.h"
-#else
-#include "scene/3d/node_3d.h"
-
-#define Spatial Node3D
-#endif
-
-#include "core/math/vector3.h"
+#include "scene/2d/node_2d.h"
 
 #include "props/prop_2d_data.h"
 #include "scene/resources/packed_scene.h"
 
-class Prop2DSceneInstance : public Spatial {
-	GDCLASS(Prop2DSceneInstance, Spatial);
+class Prop2DSceneInstance : public Node2D {
+	GDCLASS(Prop2DSceneInstance, Node2D);
 
 public:
 	Ref<PackedScene> get_scene();
 	void set_scene(const Ref<PackedScene> &data);
-
-	bool get_snap_to_mesh() const;
-	void set_snap_to_mesh(const bool value);
-
-	Vector3 get_snap_axis() const;
-	void set_snap_axis(const Vector3 &value);
 
 	void build();
 
@@ -62,8 +48,6 @@ protected:
 
 private:
 	Ref<PackedScene> _scene;
-	bool _snap_to_mesh;
-	Vector3 _snap_axis;
 };
 
 #endif
