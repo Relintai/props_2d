@@ -118,19 +118,13 @@ Prop2DEditorPlugin::Prop2DEditorPlugin(EditorNode *p_node) {
 #else
 #endif
 
-	HBoxContainer *container = memnew(HBoxContainer);
-
-	container->add_child(memnew(VSeparator));
-
 	Button *b = memnew(Button);
-	container->add_child(b);
-	b->set_flat(true);
 
 	b->CONNECT("pressed", this, Prop2DEditorPlugin, _quick_convert_button_pressed);
 	b->set_text("To Prop2D");
 	b->set_shortcut(ED_SHORTCUT("spatial_editor/quick_prop_convert", "Quick convert scene to Prop2DData.", KEY_MASK_ALT + KEY_U));
 
-	add_control_to_container(EditorPlugin::CONTAINER_SPATIAL_EDITOR_MENU, container);
+	add_control_to_container(EditorPlugin::CONTAINER_CANVAS_EDITOR_MENU, b);
 }
 
 Prop2DEditorPlugin::~Prop2DEditorPlugin() {
