@@ -23,7 +23,9 @@ SOFTWARE.
 #ifndef PROPS_2D_REGISTER_TYPES_H
 #define PROPS_2D_REGISTER_TYPES_H
 
-void register_props_2d_types();
-void unregister_props_2d_types();
+#include "modules/register_module_types.h"
+
+void initialize_props_2d_module(ModuleInitializationLevel p_level);
+void uninitialize_props_2d_module(ModuleInitializationLevel p_level);
 
 #endif
