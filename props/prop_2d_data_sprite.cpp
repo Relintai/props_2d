@@ -133,7 +133,7 @@ void Prop2DDataSprite::_processor_process(Ref<Prop2DData> prop_data, Node *node,
 	if (entry.is_valid()) {
 		l = entry;
 	} else {
-		l.instance();
+		l.instantiate();
 	}
 
 	l->set_texture(s->get_texture());

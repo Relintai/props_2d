@@ -48,7 +48,7 @@ void Prop2DDataScene::_processor_process(Ref<Prop2DData> prop_data, Node *node, 
 	if (entry.is_valid()) {
 		l = entry;
 	} else {
-		l.instance();
+		l.instantiate();
 	}
 
 	l->set_scene(i->get_scene());

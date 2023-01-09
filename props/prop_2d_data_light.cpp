@@ -84,7 +84,7 @@ void Prop2DDataLight::_processor_process(Ref<Prop2DData> prop_data, Node *node, 
 	if (entry.is_valid()) {
 		l = entry;
 	} else {
-		l.instance();
+		l.instantiate();
 	}
 
 	l->set_light_color(i->get_color());

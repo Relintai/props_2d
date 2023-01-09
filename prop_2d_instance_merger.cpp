@@ -420,7 +420,7 @@ void Prop2DInstanceMerger::_prop_preprocess(Transform2D transform, const Ref<Pro
 
 			if (tiled_wall_data->get_collision()) {
 				Ref<BoxShape> tws;
-				tws.instance();
+				tws.instantiate();
 
 				float hew = tiled_wall_data->get_width() / 2.0;
 				float heh = tiled_wall_data->get_heigth() / 2.0;
@@ -464,7 +464,7 @@ void Prop2DInstanceMerger::_prop_preprocess(Transform2D transform, const Ref<Pro
 
 		if (light_data.is_valid()) {
 			Ref<Prop2DLight> light;
-			light.instance();
+			light.instantiate();
 
 			Vector2 v = t.xform(Vector2());
 

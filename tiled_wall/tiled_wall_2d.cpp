@@ -267,7 +267,7 @@ TiledWall2D::TiledWall2D() {
 	_width = 1;
 	_height = 1;
 
-	_mesher.instance();
+	_mesher.instantiate();
 	//_mesher->set_build_flags(Prop2DMesher::BUILD_FLAG_USE_LIGHTING | Prop2DMesher::BUILD_FLAG_USE_AO | Prop2DMesher::BUILD_FLAG_USE_RAO | Prop2DMesher::BUILD_FLAG_BAKE_LIGHTS);
 }
 TiledWall2D::~TiledWall2D() {

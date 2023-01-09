@@ -143,7 +143,7 @@ void Prop2DDataEntry::_processor_process(Ref<Prop2DData> prop_data, Node *node, 
 	if (entry.is_valid()) {
 		e = entry;
 	} else {
-		e.instance();
+		e.instantiate();
 	}
 
 	e->set_transform_2d(transform * n->get_transform());

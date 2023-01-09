@@ -58,7 +58,7 @@ void Prop2DData::add_prop(const Ref<Prop2DDataEntry> prop) {
 void Prop2DData::remove_prop(const int index) {
 	ERR_FAIL_INDEX(index, _props.size());
 
-	_props.remove(index);
+	_props.remove_at(index);
 }
 
 int Prop2DData::get_prop_count() const {
@@ -162,7 +162,7 @@ void Prop2DData::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_room_bounds"), &Prop2DData::get_room_bounds);
 	ClassDB::bind_method(D_METHOD("set_room_bounds", "value"), &Prop2DData::set_room_bounds);
-	ADD_PROPERTY(PropertyInfo(Variant::POOL_VECTOR3_ARRAY, "room_bounds"), "set_room_bounds", "get_room_bounds");
+	ADD_PROPERTY(PropertyInfo(Variant::PACKED_VECTOR3_ARRAY, "room_bounds"), "set_room_bounds", "get_room_bounds");
 
 	ClassDB::bind_method(D_METHOD("copy_from", "prop_data"), &Prop2DData::copy_from);
 }

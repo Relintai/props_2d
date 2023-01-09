@@ -268,7 +268,7 @@ void Prop2DMesher::remove_doubles() {
 		for (int j = 0; j < indices.size(); ++j) {
 			int index = indices[j];
 
-			_vertices.remove(index);
+			_vertices.remove_at(index);
 
 			//make all indices that were bigger than the one we replaced one lower
 			for (int k = 0; k < _indices.size(); ++k) {
@@ -317,7 +317,7 @@ void Prop2DMesher::remove_doubles_hashed() {
 			int index = indices[j];
 
 			hashes.remove(index);
-			_vertices.remove(index);
+			_vertices.remove_at(index);
 
 			//make all indices that were bigger than the one we replaced one lower
 			for (int k = 0; k < _indices.size(); ++k) {
@@ -1129,7 +1129,7 @@ Prop2DMesher::Prop2DMesher() {
 
 	_format = VisualServer::ARRAY_FORMAT_TEX_UV;
 
-	_noise.instance();
+	_noise.instantiate();
 	//todo add properties for these if needed
 	_noise->set_octaves(4);
 	_noise->set_period(30);

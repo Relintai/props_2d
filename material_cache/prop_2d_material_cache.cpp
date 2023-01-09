@@ -108,7 +108,7 @@ void Prop2DMaterialCache::texture_remove(const Ref<Texture> &texture) {
 void Prop2DMaterialCache::texture_remove_index(const int index) {
 	ERR_FAIL_INDEX(index, _textures.size());
 
-	_textures.remove(index);
+	_textures.remove_at(index);
 }
 void Prop2DMaterialCache::textures_clear() {
 	_textures.clear();

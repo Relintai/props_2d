@@ -88,7 +88,7 @@ void TiledWall2DData::add_texture(const Ref<Texture> &texture) {
 void TiledWall2DData::remove_texture(const int index) {
 	ERR_FAIL_INDEX(index, _textures.size());
 
-	_textures.remove(index);
+	_textures.remove_at(index);
 
 	emit_changed();
 }
@@ -136,7 +136,7 @@ void TiledWall2DData::add_flavour_texture(const Ref<Texture> &texture) {
 void TiledWall2DData::remove_flavour_texture(const int index) {
 	ERR_FAIL_INDEX(index, _flavour_textures.size());
 
-	_flavour_textures.remove(index);
+	_flavour_textures.remove_at(index);
 
 	emit_changed();
 }
@@ -298,7 +298,7 @@ void TiledWall2DData::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_flavour_chance"), &TiledWall2DData::get_flavour_chance);
 	ClassDB::bind_method(D_METHOD("set_flavour_chance", "texture"), &TiledWall2DData::set_flavour_chance);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "flavour_chance"), "set_flavour_chance", "get_flavour_chance");
+	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "flavour_chance"), "set_flavour_chance", "get_flavour_chance");
 
 	//materials
 	ClassDB::bind_method(D_METHOD("material_get"), &TiledWall2DData::material_get);
@@ -309,7 +309,7 @@ void TiledWall2DData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("add_textures_into", "texture_packer"), &TiledWall2DData::add_textures_into);
 #endif
 
-	BIND_VMETHOD(MethodInfo("_setup_cache", PropertyInfo(Variant::OBJECT, "cache", PROPERTY_HINT_RESOURCE_TYPE, "Prop2DMaterialCache")));
+	//BIND_VMETHOD(MethodInfo("_setup_cache", PropertyInfo(Variant::OBJECT, "cache", PROPERTY_HINT_RESOURCE_TYPE, "Prop2DMaterialCache")));
 
 	ClassDB::bind_method(D_METHOD("setup_cache", "cache"), &TiledWall2DData::setup_cache);
 	ClassDB::bind_method(D_METHOD("_setup_cache", "cache"), &TiledWall2DData::_setup_cache);

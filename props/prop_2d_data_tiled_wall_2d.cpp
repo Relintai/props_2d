@@ -71,7 +71,7 @@ void Prop2DDataTiledWall2D::_processor_process(Ref<Prop2DData> prop_data, Node *
 	if (entry.is_valid()) {
 		tw = entry;
 	} else {
-		tw.instance();
+		tw.instantiate();
 	}
 
 	tw->set_width(t->get_width());

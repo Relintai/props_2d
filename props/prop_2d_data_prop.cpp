@@ -56,7 +56,7 @@ void Prop2DDataProp2D::_processor_process(Ref<Prop2DData> prop_data, Node *node,
 	if (entry.is_valid()) {
 		l = entry;
 	} else {
-		l.instance();
+		l.instantiate();
 	}
 
 	l->set_prop(i->get_prop_data());

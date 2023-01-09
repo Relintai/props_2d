@@ -35,7 +35,7 @@ SOFTWARE.
 #else
 #include "core/reference.h"
 #include "core/vector.h"
-#include "core/math/transform.h"
+#include "core/math/transform_3d.h"
 #endif
 
 #include "core/math/rect2.h"
@@ -74,8 +74,8 @@ public:
 	bool get_is_room() const;
 	void set_is_room(const bool value);
 
-	PoolVector3Array get_room_bounds();
-	void set_room_bounds(const PoolVector3Array &bounds);
+	PackedVector3Array get_room_bounds();
+	void set_room_bounds(const PackedVector3Array &bounds);
 
 	void copy_from(const Ref<Prop2DData> &prop_data);
 
@@ -93,7 +93,7 @@ private:
 	Vector<Ref<Prop2DDataEntry>> _props;
 
 	bool _is_room;
-	PoolVector3Array _room_bounds;
+	PackedVector3Array _room_bounds;
 };
 
 #endif

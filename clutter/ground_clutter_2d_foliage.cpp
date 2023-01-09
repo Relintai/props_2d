@@ -33,7 +33,7 @@ Ref<Texture> GroundClutter2DFoliage::get_texture(const int index) {
 void GroundClutter2DFoliage::remove_texture(const int index) {
 	ERR_FAIL_INDEX(index, _textures.size());
 
-	_textures.remove(index);
+	_textures.remove_at(index);
 }
 void GroundClutter2DFoliage::add_texture(Ref<Texture> texture) {
 	_textures.push_back(texture);

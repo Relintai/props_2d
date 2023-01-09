@@ -77,7 +77,7 @@ void Prop2DDataPortal::_processor_process(Ref<Prop2DData> prop_data, Node *node,
 	if (entry.is_valid()) {
 		l = entry;
 	} else {
-		l.instance();
+		l.instantiate();
 	}
 
 	l->set_is_active(p->get_portal_active());

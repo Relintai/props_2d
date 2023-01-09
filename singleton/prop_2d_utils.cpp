@@ -61,7 +61,7 @@ Ref<Prop2DData> Prop2DUtils::convert_tree(Node *root) {
 #endif
 
 	Ref<Prop2DData> data;
-	data.instance();
+	data.instantiate();
 	Transform2D t;
 
 	_convert_tree(data, root, t);

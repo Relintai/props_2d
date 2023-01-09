@@ -521,7 +521,7 @@ Prop2DInstanceProp2DJob::Prop2DInstanceProp2DJob() {
 	_prop_instace = NULL;
 
 	//todo allocate this in a virtual method
-	_prop_mesher.instance();
+	_prop_mesher.instantiate();
 	_prop_mesher->set_build_flags(Prop2DMesher::BUILD_FLAG_USE_LIGHTING | Prop2DMesher::BUILD_FLAG_USE_AO | Prop2DMesher::BUILD_FLAG_USE_RAO | Prop2DMesher::BUILD_FLAG_BAKE_LIGHTS);
 }
 
