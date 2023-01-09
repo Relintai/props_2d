@@ -35,8 +35,8 @@ SOFTWARE.
 #include "core/color.h"
 #endif
 
-class Prop2DLight : public Reference {
-	GDCLASS(Prop2DLight, Reference);
+class Prop2DLight : public RefCounted {
+	GDCLASS(Prop2DLight, RefCounted);
 
 public:
 	Vector2 get_position();

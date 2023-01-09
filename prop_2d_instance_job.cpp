@@ -26,8 +26,6 @@ SOFTWARE.
 
 #include "./props/prop_2d_data.h"
 
-#include "../opensimplex/open_simplex_noise.h"
-
 const String Prop2DInstanceJob::BINDING_STRING_ACTIVE_BUILD_PHASE_TYPE = "Normal,Process,Physics Process";
 
 Prop2DInstanceJob::ActiveBuildPhaseType Prop2DInstanceJob::get_build_phase_type() {
@@ -149,8 +147,8 @@ Prop2DInstanceJob::~Prop2DInstanceJob() {
 }
 
 void Prop2DInstanceJob::_bind_methods() {
-	BIND_VMETHOD(MethodInfo("_process", PropertyInfo(Variant::REAL, "delta")));
-	BIND_VMETHOD(MethodInfo("_physics_process", PropertyInfo(Variant::REAL, "delta")));
+	//BIND_VMETHOD(MethodInfo("_process", PropertyInfo(Variant::REAL, "delta")));
+	//BIND_VMETHOD(MethodInfo("_physics_process", PropertyInfo(Variant::REAL, "delta")));
 
 	ClassDB::bind_method(D_METHOD("get_build_phase_type"), &Prop2DInstanceJob::get_build_phase_type);
 	ClassDB::bind_method(D_METHOD("set_build_phase_type", "value"), &Prop2DInstanceJob::set_build_phase_type);
@@ -168,14 +166,14 @@ void Prop2DInstanceJob::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("finished"), &Prop2DInstanceJob::finished);
 
-	BIND_VMETHOD(MethodInfo("_reset"));
+	//BIND_VMETHOD(MethodInfo("_reset"));
 
 	ClassDB::bind_method(D_METHOD("reset"), &Prop2DInstanceJob::reset);
 	ClassDB::bind_method(D_METHOD("_reset"), &Prop2DInstanceJob::_reset);
 
 	ClassDB::bind_method(D_METHOD("_execute"), &Prop2DInstanceJob::_execute);
 
-	BIND_VMETHOD(MethodInfo("_execute_phase"));
+	//BIND_VMETHOD(MethodInfo("_execute_phase"));
 
 	ClassDB::bind_method(D_METHOD("execute_phase"), &Prop2DInstanceJob::execute_phase);
 	ClassDB::bind_method(D_METHOD("_execute_phase"), &Prop2DInstanceJob::_execute_phase);
@@ -204,7 +202,7 @@ void Prop2DInstanceJob::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("should_do", "just_check"), &Prop2DInstanceJob::should_do, DEFVAL(false));
 	ClassDB::bind_method(D_METHOD("should_return"), &Prop2DInstanceJob::should_return);
 
-	BIND_VMETHOD(MethodInfo("_execute"));
+	//BIND_VMETHOD(MethodInfo("_execute"));
 	ClassDB::bind_method(D_METHOD("execute"), &Prop2DInstanceJob::execute);
 
 	ADD_SIGNAL(MethodInfo("completed"));

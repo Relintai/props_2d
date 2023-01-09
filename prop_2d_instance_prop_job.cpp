@@ -29,7 +29,7 @@ SOFTWARE.
 #include "prop_2d_instance.h"
 #include "prop_2d_instance_merger.h"
 #include "prop_2d_mesher.h"
-#include "scene/resources/shape.h"
+#include "scene/resources/shape_3d.h"
 #include "singleton/prop_2d_cache.h"
 
 #ifdef MESH_DATA_RESOURCE_PRESENT
@@ -354,12 +354,8 @@ void Prop2DInstanceProp2DJob::phase_steps() {
 			for (int i = 0; i < count; ++i) {
 				RID mesh_rid = _prop_instace->mesh_get(i);
 
-				if (VS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0)
-#if !GODOT4
-					VS::get_singleton()->mesh_remove_surface(mesh_rid, 0);
-#else
-					VS::get_singleton()->mesh_clear(mesh_rid);
-#endif
+				if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0)
+					RS::get_singleton()->mesh_clear(mesh_rid);
 			}
 		}
 	}
@@ -379,23 +375,23 @@ void Prop2DInstanceProp2DJob::step_type_normal() {
 
 	RID mesh_rid = _prop_instace->mesh_get(0);
 
-	VS::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, VisualServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
+	RS::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, RenderingServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
 
 	Ref<Material> lmat = _material_cache->material_get();
 
 	if (lmat.is_valid()) {
-		VisualServer::get_singleton()->mesh_surface_set_material(mesh_rid, 0, lmat->get_rid());
+		RenderingServer::get_singleton()->mesh_surface_set_material(mesh_rid, 0, lmat->get_rid());
 	}
 }
 
 Array Prop2DInstanceProp2DJob::merge_mesh_array(Array arr) const {
-	ERR_FAIL_COND_V(arr.size() != VisualServer::ARRAY_MAX, arr);
+	ERR_FAIL_COND_V(arr.size() != RenderingServer::ARRAY_MAX, arr);
 
-	PoolVector3Array verts = arr[VisualServer::ARRAY_VERTEX];
-	PoolVector3Array normals = arr[VisualServer::ARRAY_NORMAL];
-	PoolVector2Array uvs = arr[VisualServer::ARRAY_TEX_UV];
-	PoolColorArray colors = arr[VisualServer::ARRAY_COLOR];
-	PoolIntArray indices = arr[VisualServer::ARRAY_INDEX];
+	PackedVector3Array verts = arr[RenderingServer::ARRAY_VERTEX];
+	PackedVector3Array normals = arr[RenderingServer::ARRAY_NORMAL];
+	PackedVector2Array uvs = arr[RenderingServer::ARRAY_TEX_UV];
+	PackedColorArray colors = arr[RenderingServer::ARRAY_COLOR];
+	PackedInt32Array indices = arr[RenderingServer::ARRAY_INDEX];
 
 	bool has_normals = normals.size() > 0;
 	bool has_uvs = uvs.size() > 0;
@@ -417,14 +413,14 @@ Array Prop2DInstanceProp2DJob::merge_mesh_array(Array arr) const {
 			int rem = equals[k];
 			int remk = rem - k;
 
-			verts.remove(remk);
+			verts.remove_at(remk);
 
 			if (has_normals)
-				normals.remove(remk);
+				normals.remove_at(remk);
 			if (has_uvs)
-				uvs.remove(remk);
+				uvs.remove_at(remk);
 			if (has_colors)
-				colors.remove(remk);
+				colors.remove_at(remk);
 
 			for (int j = 0; j < indices.size(); ++j) {
 				int indx = indices[j];
@@ -439,37 +435,37 @@ Array Prop2DInstanceProp2DJob::merge_mesh_array(Array arr) const {
 		++i;
 	}
 
-	arr[VisualServer::ARRAY_VERTEX] = verts;
+	arr[RenderingServer::ARRAY_VERTEX] = verts;
 
 	if (has_normals)
-		arr[VisualServer::ARRAY_NORMAL] = normals;
+		arr[RenderingServer::ARRAY_NORMAL] = normals;
 	if (has_uvs)
-		arr[VisualServer::ARRAY_TEX_UV] = uvs;
+		arr[RenderingServer::ARRAY_TEX_UV] = uvs;
 	if (has_colors)
-		arr[VisualServer::ARRAY_COLOR] = colors;
+		arr[RenderingServer::ARRAY_COLOR] = colors;
 
-	arr[VisualServer::ARRAY_INDEX] = indices;
+	arr[RenderingServer::ARRAY_INDEX] = indices;
 
 	return arr;
 }
 Array Prop2DInstanceProp2DJob::bake_mesh_array_uv(Array arr, Ref<Texture> tex, const float mul_color) const {
-	ERR_FAIL_COND_V(arr.size() != VisualServer::ARRAY_MAX, arr);
+	ERR_FAIL_COND_V(arr.size() != RenderingServer::ARRAY_MAX, arr);
 	ERR_FAIL_COND_V(!tex.is_valid(), arr);
 
-	Ref<Image> img = tex->get_data();
+	Ref<Image> img = tex->get_image();
 
 	ERR_FAIL_COND_V(!img.is_valid(), arr);
 
 	Vector2 imgsize = img->get_size();
 
-	PoolVector2Array uvs = arr[VisualServer::ARRAY_TEX_UV];
-	PoolColorArray colors = arr[VisualServer::ARRAY_COLOR];
+	PackedVector2Array uvs = arr[RenderingServer::ARRAY_TEX_UV];
+	PackedColorArray colors = arr[RenderingServer::ARRAY_COLOR];
 
 	if (colors.size() < uvs.size())
 		colors.resize(uvs.size());
 
 #if !GODOT4
-	img->lock();
+	//img->lock();
 #endif
 
 	for (int i = 0; i < uvs.size(); ++i) {
@@ -485,10 +481,10 @@ Array Prop2DInstanceProp2DJob::bake_mesh_array_uv(Array arr, Ref<Texture> tex, c
 	}
 
 #if !GODOT4
-	img->unlock();
+	//img->unlock();
 #endif
 
-	arr[VisualServer::ARRAY_COLOR] = colors;
+	arr[RenderingServer::ARRAY_COLOR] = colors;
 
 	return arr;
 }
@@ -505,12 +501,8 @@ void Prop2DInstanceProp2DJob::reset_meshes() {
 		for (int i = 0; i < count; ++i) {
 			RID mesh_rid = _prop_instace->mesh_get(i);
 
-			if (VS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0)
-#if !GODOT4
-				VS::get_singleton()->mesh_remove_surface(mesh_rid, 0);
-#else
-				VS::get_singleton()->mesh_clear(mesh_rid);
-#endif
+			if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0)
+				RS::get_singleton()->mesh_clear(mesh_rid);
 		}
 	}
 }

@@ -52,7 +52,7 @@ public:
 	void set_data(const Ref<TiledWall2DData> &data);
 
 	Rect2 get_rect() const;
-	PoolVector<Face3> get_faces(uint32_t p_usage_flags) const;
+	Vector<Face3> get_faces(uint32_t p_usage_flags) const;
 
 	Transform2D get_mesh_transform() const;
 	void set_mesh_transform(const Transform2D &value);

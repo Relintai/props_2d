@@ -26,7 +26,7 @@
 #include "tiled_wall_2d_data.h"
 
 #include "../lights/prop_2d_light.h"
-#include "core/math/geometry.h"
+#include "core/math/geometry_2d.h"
 
 int TiledWall2D::get_width() const {
 	return _width;
@@ -63,13 +63,13 @@ Ref<TiledWall2DData> TiledWall2D::get_data() {
 }
 void TiledWall2D::set_data(const Ref<TiledWall2DData> &data) {
 	if (_data.is_valid()) {
-		_data->disconnect(CoreStringNames::get_singleton()->changed, this, "refresh");
+		_data->disconnect(CoreStringNames::get_singleton()->changed, Callable(this, "refresh"));
 	}
 
 	_data = data;
 
 	if (_data.is_valid()) {
-		_data->connect(CoreStringNames::get_singleton()->changed, this, "refresh");
+		_data->connect(CoreStringNames::get_singleton()->changed, Callable(this, "refresh"));
 	}
 
 	call_deferred("refresh");
@@ -79,23 +79,21 @@ Rect2 TiledWall2D::get_rect() const {
 	return _rect;
 }
 
-PoolVector<Face3> TiledWall2D::get_faces(uint32_t p_usage_flags) const {
-	PoolVector<Face3> faces;
+Vector<Face3> TiledWall2D::get_faces(uint32_t p_usage_flags) const {
+	Vector<Face3> faces;
 
 	if (_mesh_array.size() != Mesh::ARRAY_MAX) {
 		return faces;
 	}
 
-	PoolVector<Vector3> vertices = _mesh_array[Mesh::ARRAY_VERTEX];
-	PoolVector<int> indices = _mesh_array[Mesh::ARRAY_INDEX];
+	Vector<Vector3> vertices = _mesh_array[Mesh::ARRAY_VERTEX];
+	Vector<int> indices = _mesh_array[Mesh::ARRAY_INDEX];
 
 	int ts = indices.size() / 3;
 	faces.resize(ts);
 
-	PoolVector<Face3>::Write w = faces.write();
-	PoolVector<Vector3>::Read rv = vertices.read();
-	PoolVector<int>::Read ri = indices.read();
-
+	Face3 *w = faces.ptrw();
+	const Vector3 *rv = vertices.ptr();
 	for (int i = 0; i < ts; i++) {
 		int im3 = (i * 3);
 
@@ -103,8 +101,6 @@ PoolVector<Face3> TiledWall2D::get_faces(uint32_t p_usage_flags) const {
 			w[i].vertex[j] = rv[indices[im3 + j]];
 		}
 	}
-
-	w.release();
 
 	return faces;
 }
@@ -115,7 +111,7 @@ bool TiledWall2D::_edit_is_selected_on_click(const Point2 &p_point, double p_tol
 		return false;
 	}
 
-	return Geometry::is_point_in_polygon(p_point, _editor_selection_points);
+	return Geometry2D::is_point_in_polygon(p_point, _editor_selection_points);
 }
 
 bool TiledWall2D::_edit_use_rect() const {
@@ -140,7 +136,7 @@ void TiledWall2D::refresh() {
 	}
 
 	if (_mesh_rid == RID()) {
-		_mesh_rid = VisualServer::get_singleton()->mesh_create();
+		_mesh_rid = RenderingServer::get_singleton()->mesh_create();
 	}
 
 	Ref<Prop2DMaterialCache> old_cache;
@@ -187,12 +183,12 @@ void TiledWall2D::refresh() {
 
 void TiledWall2D::generate_mesh() {
 	if (!_data.is_valid()) {
-		update();
+		queue_redraw();
 		return;
 	}
 
 	if (!_cache.is_valid()) {
-		update();
+		queue_redraw();
 		return;
 	}
 
@@ -204,7 +200,7 @@ void TiledWall2D::generate_mesh() {
 	_mesh_array = _mesher->build_mesh();
 
 	if (_mesh_array.size() != Mesh::ARRAY_MAX) {
-		update();
+		queue_redraw();
 		return;
 	}
 
@@ -222,15 +218,15 @@ void TiledWall2D::generate_mesh() {
 #endif
 
 	if (vertices.size() == 0) {
-		update();
+		queue_redraw();
 		return;
 	}
 
-	VisualServer::get_singleton()->mesh_add_surface_from_arrays(_mesh_rid, VisualServer::PRIMITIVE_TRIANGLES, _mesh_array);
+	RenderingServer::get_singleton()->mesh_add_surface_from_arrays(_mesh_rid, RenderingServer::PRIMITIVE_TRIANGLES, _mesh_array);
 
 	_aabb.size = Vector3(_width, _height, 0);
 
-	update();
+	queue_redraw();
 }
 
 void TiledWall2D::clear_mesh() {
@@ -239,18 +235,14 @@ void TiledWall2D::clear_mesh() {
 	_mesh_array.clear();
 
 	if (_mesh_rid != RID()) {
-		if (VS::get_singleton()->mesh_get_surface_count(_mesh_rid) > 0)
-#if VERSION_MAJOR < 4
-			VS::get_singleton()->mesh_remove_surface(_mesh_rid, 0);
-#else
-			VS::get_singleton()->mesh_clear(_mesh_rid);
-#endif
+		if (RS::get_singleton()->mesh_get_surface_count(_mesh_rid) > 0)
+			RS::get_singleton()->mesh_clear(_mesh_rid);
 	}
 }
 
 void TiledWall2D::free_mesh() {
 	if (_mesh_rid != RID()) {
-		VS::get_singleton()->free(_mesh_rid);
+		RS::get_singleton()->free(_mesh_rid);
 		_mesh_rid = RID();
 	}
 }
@@ -260,7 +252,7 @@ void TiledWall2D::draw() {
 		return;
 	}
 
-	VisualServer::get_singleton()->canvas_item_add_mesh(get_canvas_item(), _mesh_rid, get_transform(), Color(1, 1, 1, 1), _texture_rid, RID());
+	RenderingServer::get_singleton()->canvas_item_add_mesh(get_canvas_item(), _mesh_rid, get_transform(), Color(1, 1, 1, 1), _texture_rid, RID());
 }
 
 TiledWall2D::TiledWall2D() {

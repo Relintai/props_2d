@@ -23,7 +23,7 @@ SOFTWARE.
 #include "prop_2d_mesher.h"
 
 #include "lights/prop_2d_light.h"
-#include "modules/opensimplex/open_simplex_noise.h"
+#include "modules/noise/fastnoise_lite.h"
 
 #include "material_cache/prop_2d_material_cache.h"
 #include "tiled_wall/tiled_wall_2d_data.h"
@@ -129,15 +129,15 @@ _FORCE_INLINE_ void Prop2DMesher::set_build_flags(const int flags) {
 	_build_flags = flags;
 
 	if ((_build_flags & Prop2DMesher::BUILD_FLAG_USE_LIGHTING) != 0) {
-		_format |= VisualServer::ARRAY_FORMAT_COLOR;
+		_format |= RenderingServer::ARRAY_FORMAT_COLOR;
 	} else {
-		_format ^= VisualServer::ARRAY_FORMAT_COLOR;
+		_format ^= RenderingServer::ARRAY_FORMAT_COLOR;
 	}
 }
 
 Array Prop2DMesher::build_mesh() {
 	Array a;
-	a.resize(VisualServer::ARRAY_MAX);
+	a.resize(RenderingServer::ARRAY_MAX);
 
 	if (_vertices.size() == 0) {
 		//Nothing to do
@@ -147,87 +147,43 @@ Array Prop2DMesher::build_mesh() {
 	{
 		PoolVector<Vector2> array;
 		array.resize(_vertices.size());
-#if !GODOT4
-		PoolVector<Vector2>::Write w = array.write();
-#endif
-
 		for (int i = 0; i < _vertices.size(); ++i) {
-#if !GODOT4
-			w[i] = _vertices[i].vertex;
-#else
 			array.set(i, _vertices[i].vertex);
-#endif
 		}
 
-#if !GODOT4
-		w.release();
-#endif
-
-		a[VisualServer::ARRAY_VERTEX] = array;
+		a[RenderingServer::ARRAY_VERTEX] = array;
 	}
 
-	if ((_format & VisualServer::ARRAY_FORMAT_COLOR) != 0) {
+	if ((_format & RenderingServer::ARRAY_FORMAT_COLOR) != 0) {
 		PoolVector<Color> array;
 		array.resize(_vertices.size());
-#if !GODOT4
-		PoolVector<Color>::Write w = array.write();
-#endif
 
 		for (int i = 0; i < _vertices.size(); ++i) {
-#if !GODOT4
-			w[i] = _vertices[i].color;
-#else
 			array.set(i, _vertices[i].color);
-#endif
 		}
 
-#if !GODOT4
-		w.release();
-#endif
-		a[VisualServer::ARRAY_COLOR] = array;
+		a[RenderingServer::ARRAY_COLOR] = array;
 	}
 
-	if ((_format & VisualServer::ARRAY_FORMAT_TEX_UV) != 0) {
+	if ((_format & RenderingServer::ARRAY_FORMAT_TEX_UV) != 0) {
 		PoolVector<Vector2> array;
 		array.resize(_vertices.size());
-#if !GODOT4
-		PoolVector<Vector2>::Write w = array.write();
-#endif
 
 		for (int i = 0; i < _vertices.size(); ++i) {
-#if !GODOT4
-			w[i] = _vertices[i].uv;
-#else
 			array.set(i, _vertices[i].uv);
-#endif
 		}
 
-#if !GODOT4
-		w.release();
-#endif
-
-		a[VisualServer::ARRAY_TEX_UV] = array;
+		a[RenderingServer::ARRAY_TEX_UV] = array;
 	}
 
 	if (_indices.size() > 0) {
 		PoolVector<int> array;
 		array.resize(_indices.size());
-#if !GODOT4
-		PoolVector<int>::Write w = array.write();
-#endif
-
 		for (int i = 0; i < _indices.size(); ++i) {
-#if !GODOT4
-			w[i] = _indices[i];
-#else
 			array.set(i, _indices[i]);
-#endif
 		}
 
-#if !GODOT4
-		w.release();
-#endif
-		a[VisualServer::ARRAY_INDEX] = array;
+		a[RenderingServer::ARRAY_INDEX] = array;
 	}
 
 	return a;
@@ -236,7 +192,7 @@ Array Prop2DMesher::build_mesh() {
 void Prop2DMesher::build_mesh_into(RID mesh) {
 	ERR_FAIL_COND(mesh == RID());
 
-	VS::get_singleton()->mesh_clear(mesh);
+	RS::get_singleton()->mesh_clear(mesh);
 
 	if (_vertices.size() == 0) {
 		//Nothing to do
@@ -245,10 +201,10 @@ void Prop2DMesher::build_mesh_into(RID mesh) {
 
 	Array arr = build_mesh();
 
-	VS::get_singleton()->mesh_add_surface_from_arrays(mesh, VisualServer::PRIMITIVE_TRIANGLES, arr);
+	RS::get_singleton()->mesh_add_surface_from_arrays(mesh, RenderingServer::PRIMITIVE_TRIANGLES, arr);
 
 	if (_material.is_valid())
-		VS::get_singleton()->mesh_surface_set_material(mesh, 0, _material->get_rid());
+		RS::get_singleton()->mesh_surface_set_material(mesh, 0, _material->get_rid());
 }
 
 void Prop2DMesher::remove_doubles() {
@@ -316,7 +272,7 @@ void Prop2DMesher::remove_doubles_hashed() {
 		for (int j = 0; j < indices.size(); ++j) {
 			int index = indices[j];
 
-			hashes.remove(index);
+			hashes.remove_at(index);
 			_vertices.remove_at(index);
 
 			//make all indices that were bigger than the one we replaced one lower
@@ -1027,7 +983,7 @@ Vector2 Prop2DMesher::get_vertex(const int idx) const {
 }
 
 void Prop2DMesher::remove_vertex(const int idx) {
-	_vertices.remove(idx);
+	_vertices.remove_at(idx);
 }
 
 PoolVector<Color> Prop2DMesher::get_colors() const {
@@ -1113,7 +1069,7 @@ int Prop2DMesher::get_index(const int idx) const {
 }
 
 void Prop2DMesher::remove_index(const int idx) {
-	_indices.remove(idx);
+	_indices.remove_at(idx);
 }
 
 Prop2DMesher::Prop2DMesher() {
@@ -1127,13 +1083,13 @@ Prop2DMesher::Prop2DMesher() {
 
 	_build_flags = 0;
 
-	_format = VisualServer::ARRAY_FORMAT_TEX_UV;
+	_format = RenderingServer::ARRAY_FORMAT_TEX_UV;
 
 	_noise.instantiate();
 	//todo add properties for these if needed
-	_noise->set_octaves(4);
-	_noise->set_period(30);
-	_noise->set_persistence(0.3);
+	_noise->set_fractal_octaves(4);
+	_noise->set_frequency(30);
+	_noise->set_fractal_lacunarity(0.3);
 
 	_rao_scale_factor = 0.6;
 	_rao_seed = 2134;
@@ -1157,19 +1113,19 @@ void Prop2DMesher::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_pixels_per_unit"), &Prop2DMesher::get_pixels_per_unit);
 	ClassDB::bind_method(D_METHOD("set_pixels_per_unit", "value"), &Prop2DMesher::set_pixels_per_unit);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "pixels_per_unit"), "set_pixels_per_unit", "get_pixels_per_unit");
+	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "pixels_per_unit"), "set_pixels_per_unit", "get_pixels_per_unit");
 
 	ClassDB::bind_method(D_METHOD("get_voxel_scale"), &Prop2DMesher::get_voxel_scale);
 	ClassDB::bind_method(D_METHOD("set_voxel_scale", "value"), &Prop2DMesher::set_voxel_scale);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "voxel_scale"), "set_voxel_scale", "get_voxel_scale");
+	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "voxel_scale"), "set_voxel_scale", "get_voxel_scale");
 
 	ClassDB::bind_method(D_METHOD("get_ao_strength"), &Prop2DMesher::get_ao_strength);
 	ClassDB::bind_method(D_METHOD("set_ao_strength", "value"), &Prop2DMesher::set_ao_strength);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "ao_strength"), "set_ao_strength", "get_ao_strength");
+	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "ao_strength"), "set_ao_strength", "get_ao_strength");
 
 	ClassDB::bind_method(D_METHOD("get_base_light_value"), &Prop2DMesher::get_base_light_value);
 	ClassDB::bind_method(D_METHOD("set_base_light_value", "value"), &Prop2DMesher::set_base_light_value);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "base_light_value"), "set_base_light_value", "get_base_light_value");
+	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "base_light_value"), "set_base_light_value", "get_base_light_value");
 
 	ClassDB::bind_method(D_METHOD("get_uv_margin"), &Prop2DMesher::get_uv_margin);
 	ClassDB::bind_method(D_METHOD("set_uv_margin", "value"), &Prop2DMesher::set_uv_margin);
@@ -1192,7 +1148,7 @@ void Prop2DMesher::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("generate_ao"), &Prop2DMesher::generate_ao);
 	ClassDB::bind_method(D_METHOD("get_random_ao", "position"), &Prop2DMesher::get_random_ao);
 
-	BIND_VMETHOD(MethodInfo("_add_mesher", PropertyInfo(Variant::OBJECT, "mesher", PROPERTY_HINT_RESOURCE_TYPE, "Prop2DMesher")));
+	//BIND_VMETHOD(MethodInfo("_add_mesher", PropertyInfo(Variant::OBJECT, "mesher", PROPERTY_HINT_RESOURCE_TYPE, "Prop2DMesher")));
 	ClassDB::bind_method(D_METHOD("add_mesher", "mesher"), &Prop2DMesher::add_mesher);
 	ClassDB::bind_method(D_METHOD("_add_mesher", "mesher"), &Prop2DMesher::_add_mesher);
 

@@ -151,7 +151,7 @@ void Prop2DMaterialCachePCM::_setup_material_albedo(Ref<Texture> texture) {
 	Ref<ShaderMaterial> shmat = m;
 
 	if (shmat.is_valid()) {
-		shmat->set_shader_param("texture_albedo", texture);
+		shmat->set_shader_parameter("texture_albedo", texture);
 	}
 }
 

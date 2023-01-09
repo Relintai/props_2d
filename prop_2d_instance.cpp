@@ -102,7 +102,7 @@ void Prop2DInstance::_build() {
 
 		//this way we won't delete the user's nodes
 		if (n->get_owner() == NULL) {
-			n->queue_delete();
+			n->queue_free();
 		}
 	}
 
@@ -169,7 +169,7 @@ void Prop2DInstance::_prop_preprocess(Transform2D transform, const Ref<Prop2DDat
 			if (!sc.is_valid())
 				continue;
 
-			Node *n = sc->instance();
+			Node *n = sc->instantiate();
 			add_child(n);
 
 			Node2D *n2d = Object::cast_to<Node2D>(n);
@@ -272,15 +272,15 @@ void Prop2DInstance::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "collision_layer", PROPERTY_HINT_LAYERS_3D_PHYSICS), "set_collision_layer", "get_collision_layer");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "collision_mask", PROPERTY_HINT_LAYERS_3D_PHYSICS), "set_collision_mask", "get_collision_mask");
 
-	BIND_VMETHOD(MethodInfo("_prop_preprocess",
-			PropertyInfo(Variant::TRANSFORM, "tarnsform"),
-			PropertyInfo(Variant::OBJECT, "prop_data", PROPERTY_HINT_RESOURCE_TYPE, "Prop2DData")));
+	//BIND_VMETHOD(MethodInfo("_prop_preprocess",
+	//		PropertyInfo(Variant::TRANSFORM, "tarnsform"),
+	//		PropertyInfo(Variant::OBJECT, "prop_data", PROPERTY_HINT_RESOURCE_TYPE, "Prop2DData")));
 
 	ClassDB::bind_method(D_METHOD("prop_preprocess", "tarnsform", "prop"), &Prop2DInstance::prop_preprocess);
 	ClassDB::bind_method(D_METHOD("_prop_preprocess", "tarnsform", "prop"), &Prop2DInstance::_prop_preprocess);
 
 	//---
-	BIND_VMETHOD(MethodInfo("_init_materials"));
+	//BIND_VMETHOD(MethodInfo("_init_materials"));
 
 	ClassDB::bind_method(D_METHOD("init_materials"), &Prop2DInstance::init_materials);
 	ClassDB::bind_method(D_METHOD("_init_materials"), &Prop2DInstance::_init_materials);
@@ -290,8 +290,8 @@ void Prop2DInstance::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("queue_build"), &Prop2DInstance::queue_build);
 	ClassDB::bind_method(D_METHOD("build_finished"), &Prop2DInstance::build_finished);
 
-	BIND_VMETHOD(MethodInfo("_build"));
-	BIND_VMETHOD(MethodInfo("_build_finished"));
+	//BIND_VMETHOD(MethodInfo("_build"));
+	//BIND_VMETHOD(MethodInfo("_build_finished"));
 
 	ClassDB::bind_method(D_METHOD("_build"), &Prop2DInstance::_build);
 	ClassDB::bind_method(D_METHOD("_build_finished"), &Prop2DInstance::_build_finished);

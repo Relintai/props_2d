@@ -30,14 +30,14 @@ void Prop2DSceneInstance::build() {
 
 		//this way we won't delete the user's nodes
 		if (n->get_owner() == NULL) {
-			n->queue_delete();
+			n->queue_free();
 		}
 	}
 
 	if (!_scene.is_valid())
 		return;
 
-	Node *n = _scene->instance();
+	Node *n = _scene->instantiate();
 
 	add_child(n);
 

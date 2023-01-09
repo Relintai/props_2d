@@ -309,7 +309,7 @@ void TiledWall2DData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("add_textures_into", "texture_packer"), &TiledWall2DData::add_textures_into);
 #endif
 
-	//BIND_VMETHOD(MethodInfo("_setup_cache", PropertyInfo(Variant::OBJECT, "cache", PROPERTY_HINT_RESOURCE_TYPE, "Prop2DMaterialCache")));
+	////BIND_VMETHOD(MethodInfo("_setup_cache", PropertyInfo(Variant::OBJECT, "cache", PROPERTY_HINT_RESOURCE_TYPE, "Prop2DMaterialCache")));
 
 	ClassDB::bind_method(D_METHOD("setup_cache", "cache"), &TiledWall2DData::setup_cache);
 	ClassDB::bind_method(D_METHOD("_setup_cache", "cache"), &TiledWall2DData::_setup_cache);

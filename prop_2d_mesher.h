@@ -60,13 +60,13 @@ using PoolVector = Vector<N>;
 #include "../terraman_2d/data/terrain_2d_light.h"
 #endif
 
-class OpenSimplexNoise;
+class FastNoiseLite;
 class Prop2DLight;
 class Prop2DMaterialCache;
 class TiledWall2DData;
 
-class Prop2DMesher : public Reference {
-	GDCLASS(Prop2DMesher, Reference);
+class Prop2DMesher : public RefCounted {
+	GDCLASS(Prop2DMesher, RefCounted);
 
 public:
 	static const String BINDING_STRING_BUILD_FLAGS;
@@ -229,7 +229,7 @@ protected:
 	Rect2 _uv_margin;
 	int _build_flags;
 
-	Ref<OpenSimplexNoise> _noise;
+	Ref<FastNoiseLite> _noise;
 	float _rao_scale_factor;
 	int _rao_seed;
 

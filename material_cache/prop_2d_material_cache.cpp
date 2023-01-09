@@ -292,7 +292,7 @@ void Prop2DMaterialCache::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("inc_ref_count"), &Prop2DMaterialCache::inc_ref_count);
 	ClassDB::bind_method(D_METHOD("dec_ref_count"), &Prop2DMaterialCache::dec_ref_count);
 
-	BIND_VMETHOD(MethodInfo("_setup_material_albedo", PropertyInfo(Variant::OBJECT, "texture", PROPERTY_HINT_RESOURCE_TYPE, "Texture")));
+	//BIND_VMETHOD(MethodInfo("_setup_material_albedo", PropertyInfo(Variant::OBJECT, "texture", PROPERTY_HINT_RESOURCE_TYPE, "Texture")));
 
 	ClassDB::bind_method(D_METHOD("material_get"), &Prop2DMaterialCache::material_get);
 	ClassDB::bind_method(D_METHOD("material_set", "value"), &Prop2DMaterialCache::material_set);

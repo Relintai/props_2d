@@ -37,7 +37,6 @@ SOFTWARE.
 
 class Prop2DESSEntity : public Spatial {
 	GDCLASS(Prop2DESSEntity, Spatial);
-	OBJ_CATEGORY("Prop2Ds");
 
 public:
 	Prop2DESSEntity();

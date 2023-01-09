@@ -46,7 +46,7 @@ typedef class RenderingServer VS;
 #include "./props/prop_2d_data_scene.h"
 #include "lights/prop_2d_light.h"
 #include "material_cache/prop_2d_material_cache.h"
-#include "scene/3d/camera.h"
+#include "scene/3d/camera_3d.h"
 
 #if TEXTURE_PACKER_PRESENT
 #include "./singleton/prop_2d_cache.h"
@@ -60,7 +60,7 @@ typedef class RenderingServer VS;
 
 #include "tiled_wall/tiled_wall_2d_data.h"
 
-#include "scene/resources/box_shape.h"
+#include "scene/resources/box_shape_3d.h"
 
 bool Prop2DInstanceMerger::get_building() {
 	return _building;
@@ -325,7 +325,7 @@ void Prop2DInstanceMerger::_build() {
 
 		//this way we won't delete the user's nodes
 		if (n->get_owner() == NULL) {
-			n->queue_delete();
+			n->queue_free();
 		}
 	}
 
@@ -445,7 +445,7 @@ void Prop2DInstanceMerger::_prop_preprocess(Transform2D transform, const Ref<Pro
 			if (!sc.is_valid())
 				continue;
 
-			Node *n = sc->instance();
+			Node *n = sc->instantiate();
 			add_child(n);
 			n->set_owner(this);
 
@@ -640,7 +640,7 @@ void Prop2DInstanceMerger::_notification(int p_what) {
 }
 
 void Prop2DInstanceMerger::_bind_methods() {
-	BIND_VMETHOD(MethodInfo("_create_job"));
+	//BIND_VMETHOD(MethodInfo("_create_job"));
 	ClassDB::bind_method(D_METHOD("_create_job"), &Prop2DInstanceMerger::_create_job);
 
 	ClassDB::bind_method(D_METHOD("get_job"), &Prop2DInstanceMerger::get_job);
