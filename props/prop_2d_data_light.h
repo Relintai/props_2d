@@ -52,8 +52,8 @@ public:
 	float get_energy() const;
 	void set_energy(const float value);
 
-	Ref<Texture> get_texture() const;
-	void set_texture(const Ref<Texture> value);
+	Ref<Texture2D> get_texture() const;
+	void set_texture(const Ref<Texture2D> value);
 
 	bool _processor_handles(Node *node);
 	void _processor_process(Ref<Prop2DData> prop_data, Node *node, const Transform2D &transform, Ref<Prop2DDataEntry> entry = Ref<Prop2DDataEntry>());
@@ -71,7 +71,7 @@ private:
 	int _light_size_y;
 	float _texture_scale;
 	float _energy;
-	Ref<Texture> _texture;
+	Ref<Texture2D> _texture;
 };
 
 #endif

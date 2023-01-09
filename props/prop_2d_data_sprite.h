@@ -39,11 +39,11 @@ class Prop2DDataSprite : public Prop2DDataEntry {
 	GDCLASS(Prop2DDataSprite, Prop2DDataEntry);
 
 public:
-	Ref<Texture> get_texture() const;
-	void set_texture(const Ref<Texture> &value);
+	Ref<Texture2D> get_texture() const;
+	void set_texture(const Ref<Texture2D> &value);
 
-	Ref<Texture> get_normal_map() const;
-	void set_normal_map(const Ref<Texture> &value);
+	Ref<Texture2D> get_normal_map() const;
+	void set_normal_map(const Ref<Texture2D> &value);
 
 	bool get_centered() const;
 	void set_centered(const bool value);
@@ -89,8 +89,8 @@ protected:
 	static void _bind_methods();
 
 private:
-	Ref<Texture> _texture;
-	Ref<Texture> _normal_map;
+	Ref<Texture2D> _texture;
+	Ref<Texture2D> _normal_map;
 
 	bool _centered;
 	Vector2 _offset;

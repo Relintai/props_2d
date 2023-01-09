@@ -80,7 +80,7 @@ public:
 	void step_type_normal();
 
 	Array merge_mesh_array(Array arr) const;
-	Array bake_mesh_array_uv(Array arr, Ref<Texture> tex, float mul_color = 0.7) const;
+	Array bake_mesh_array_uv(Array arr, Ref<Texture2D> tex, float mul_color = 0.7) const;
 
 	void reset_meshes();
 

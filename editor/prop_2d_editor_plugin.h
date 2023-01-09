@@ -53,7 +53,7 @@ public:
 	void _convert_selected_scene_to_prop_data(Variant param);
 	void _quick_convert_button_pressed();
 
-	Prop2DEditorPlugin(EditorNode *p_node);
+	Prop2DEditorPlugin();
 	~Prop2DEditorPlugin();
 };
 

@@ -76,7 +76,7 @@ public:
 	bool debug_mesh_has();
 	void debug_mesh_clear();
 	void debug_mesh_array_clear();
-	void debug_mesh_add_vertices_to(const PoolVector2Array &arr);
+	void debug_mesh_add_vertices_to(const PackedVector2Array &arr);
 	void debug_mesh_send();
 	void draw_debug_mdr_colliders();
 
@@ -128,7 +128,7 @@ private:
 
 	//debug
 	RID _debug_mesh_rid;
-	PoolVector2Array _debug_mesh_array;
+	PackedVector2Array _debug_mesh_array;
 };
 
 #endif

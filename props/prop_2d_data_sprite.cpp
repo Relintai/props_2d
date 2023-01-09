@@ -24,19 +24,19 @@ SOFTWARE.
 
 #include "prop_2d_data.h"
 
-#include "scene/2d/sprite.h"
+#include "scene/2d/sprite_2d.h"
 
-Ref<Texture> Prop2DDataSprite::get_texture() const {
+Ref<Texture2D> Prop2DDataSprite::get_texture() const {
 	return _texture;
 }
-void Prop2DDataSprite::set_texture(const Ref<Texture> &value) {
+void Prop2DDataSprite::set_texture(const Ref<Texture2D> &value) {
 	_texture = value;
 }
 
-Ref<Texture> Prop2DDataSprite::get_normal_map() const {
+Ref<Texture2D> Prop2DDataSprite::get_normal_map() const {
 	return _normal_map;
 }
-void Prop2DDataSprite::set_normal_map(const Ref<Texture> &value) {
+void Prop2DDataSprite::set_normal_map(const Ref<Texture2D> &value) {
 	_normal_map = _normal_map;
 }
 
@@ -118,13 +118,13 @@ void Prop2DDataSprite::set_filter_clip(const bool value) {
 }
 
 bool Prop2DDataSprite::_processor_handles(Node *node) {
-	Sprite *s = Object::cast_to<Sprite>(node);
+	Sprite2D *s = Object::cast_to<Sprite2D>(node);
 
 	return s;
 }
 
 void Prop2DDataSprite::_processor_process(Ref<Prop2DData> prop_data, Node *node, const Transform2D &transform, Ref<Prop2DDataEntry> entry) {
-	Sprite *s = Object::cast_to<Sprite>(node);
+	Sprite2D *s = Object::cast_to<Sprite2D>(node);
 
 	ERR_FAIL_COND(!s);
 
@@ -137,7 +137,7 @@ void Prop2DDataSprite::_processor_process(Ref<Prop2DData> prop_data, Node *node,
 	}
 
 	l->set_texture(s->get_texture());
-	l->set_normal_map(s->get_normal_map());
+	//l->set_normal_map(s->get_normal_map());
 
 	l->set_centered(s->is_centered());
 	l->set_offset(s->get_offset());
@@ -150,7 +150,7 @@ void Prop2DDataSprite::_processor_process(Ref<Prop2DData> prop_data, Node *node,
 	l->set_animation_frame(s->get_frame());
 	l->set_animation_frame_coords(s->get_frame_coords());
 
-	l->set_region_enabled(s->is_region());
+	//l->set_region_enabled(s->is_region());
 	l->set_region(s->get_region_rect());
 	l->set_filter_clip(s->is_region_filter_clip_enabled());
 
@@ -158,16 +158,16 @@ void Prop2DDataSprite::_processor_process(Ref<Prop2DData> prop_data, Node *node,
 }
 
 Node *Prop2DDataSprite::_processor_get_node_for(const Transform2D &transform, Node *node) {
-	Sprite *n;
+	Sprite2D *n;
 
 	if (node) {
-		n = Object::cast_to<Sprite>(node);
+		n = Object::cast_to<Sprite2D>(node);
 	} else {
-		n = memnew(Sprite());
+		n = memnew(Sprite2D());
 	}
 
 	n->set_texture(get_texture());
-	n->set_normal_map(get_normal_map());
+	//n->set_normal_map(get_normal_map());
 	n->set_centered(get_centered());
 	n->set_offset(get_offset());
 
@@ -179,9 +179,9 @@ Node *Prop2DDataSprite::_processor_get_node_for(const Transform2D &transform, No
 	n->set_frame(get_animation_frame());
 	n->set_frame_coords(get_animation_frame_coords());
 
-	n->set_region(get_region_enabled());
+	//n->set_region(get_region_enabled());
 	n->set_region_rect(get_region());
-	n->set_region_filter_clip(get_filter_clip());
+	//n->set_region_filter_clip(get_filter_clip());
 
 	return Prop2DDataEntry::_processor_get_node_for(transform, n);
 }

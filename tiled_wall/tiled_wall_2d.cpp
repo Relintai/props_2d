@@ -214,7 +214,7 @@ void TiledWall2D::generate_mesh() {
 		editor_point_vertices.set(i, vertices[i]);
 	}
 
-	_editor_selection_points = Geometry::convex_hull_2d(editor_point_vertices);
+	_editor_selection_points = Geometry2D::convex_hull(editor_point_vertices);
 #endif
 
 	if (vertices.size() == 0) {
@@ -252,7 +252,7 @@ void TiledWall2D::draw() {
 		return;
 	}
 
-	RenderingServer::get_singleton()->canvas_item_add_mesh(get_canvas_item(), _mesh_rid, get_transform(), Color(1, 1, 1, 1), _texture_rid, RID());
+	RenderingServer::get_singleton()->canvas_item_add_mesh(get_canvas_item(), _mesh_rid, get_transform(), Color(1, 1, 1, 1), _texture_rid);
 }
 
 TiledWall2D::TiledWall2D() {

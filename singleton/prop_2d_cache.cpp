@@ -164,7 +164,7 @@ Ref<Prop2DMaterialCache> Prop2DCache::material_cache_get(const Ref<Prop2DData> &
 	ERR_FAIL_COND_V(!prop.is_valid(), Ref<Prop2DMaterialCache>());
 
 	//get pointer's value as uint64
-	uint64_t k = make_uint64_t<const Prop2DData *>(*prop);
+	uint64_t k = hash_make_uint64_t<const Prop2DData *>(*prop);
 
 	_material_cache_mutex.lock();
 
@@ -178,7 +178,7 @@ Ref<Prop2DMaterialCache> Prop2DCache::material_cache_get(const Ref<Prop2DData> &
 		return m;
 	}
 
-	Prop2DMaterialCache *p = Object::cast_to<Prop2DMaterialCache>(ClassDB::instance(_default_prop_material_cache_class));
+	Prop2DMaterialCache *p = Object::cast_to<Prop2DMaterialCache>(ClassDB::instantiate(_default_prop_material_cache_class));
 
 	if (!p) {
 		ERR_PRINT("Can't instance the given Prop2DMaterialCache! class_name: " + String(_default_prop_material_cache_class));
@@ -194,7 +194,7 @@ Ref<Prop2DMaterialCache> Prop2DCache::material_cache_get(const Ref<Prop2DData> &
 }
 void Prop2DCache::material_cache_unref(const Ref<Prop2DData> &prop) {
 	//get pointer's value as uint64
-	uint64_t k = make_uint64_t<const Prop2DData *>(*prop);
+	uint64_t k = hash_make_uint64_t<const Prop2DData *>(*prop);
 
 	_material_cache_mutex.lock();
 
@@ -220,7 +220,7 @@ Ref<Prop2DMaterialCache> Prop2DCache::tiled_wall_material_cache_get(const Ref<Ti
 	ERR_FAIL_COND_V(!twd.is_valid(), Ref<Prop2DMaterialCache>());
 
 	//get pointer's value as uint64
-	uint64_t k = make_uint64_t<const TiledWall2DData *>(*twd);
+	uint64_t k = hash_make_uint64_t<const TiledWall2DData *>(*twd);
 
 	_tiled_wall_material_cache_mutex.lock();
 
@@ -234,7 +234,7 @@ Ref<Prop2DMaterialCache> Prop2DCache::tiled_wall_material_cache_get(const Ref<Ti
 		return m;
 	}
 
-	Prop2DMaterialCache *p = Object::cast_to<Prop2DMaterialCache>(ClassDB::instance(_default_prop_material_cache_class));
+	Prop2DMaterialCache *p = Object::cast_to<Prop2DMaterialCache>(ClassDB::instantiate(_default_prop_material_cache_class));
 
 	if (!p) {
 		ERR_PRINT("Can't instance the given Prop2DMaterialCache! class_name: " + String(_default_prop_material_cache_class));
@@ -250,7 +250,7 @@ Ref<Prop2DMaterialCache> Prop2DCache::tiled_wall_material_cache_get(const Ref<Ti
 }
 void Prop2DCache::tiled_wall_material_cache_unref(const Ref<TiledWall2DData> &twd) {
 	//get pointer's value as uint64
-	uint64_t k = make_uint64_t<const TiledWall2DData *>(*twd);
+	uint64_t k = hash_make_uint64_t<const TiledWall2DData *>(*twd);
 
 	_tiled_wall_material_cache_mutex.lock();
 
@@ -285,7 +285,7 @@ Ref<Prop2DMaterialCache> Prop2DCache::material_cache_custom_key_get(const uint64
 		return m;
 	}
 
-	Prop2DMaterialCache *p = Object::cast_to<Prop2DMaterialCache>(ClassDB::instance(_default_prop_material_cache_class));
+	Prop2DMaterialCache *p = Object::cast_to<Prop2DMaterialCache>(ClassDB::instantiate(_default_prop_material_cache_class));
 
 	if (!p) {
 		ERR_PRINT("Can't instance the given Prop2DMaterialCache! class_name: " + String(_default_prop_material_cache_class));
@@ -321,19 +321,7 @@ void Prop2DCache::material_cache_custom_key_unref(const uint64_t key) {
 }
 
 Ref<Resource> Prop2DCache::load_resource(const String &path, const String &type_hint) {
-	_ResourceLoader *rl = _ResourceLoader::get_singleton();
-
-#if VERSION_MAJOR < 4
-	Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, type_hint);
-
-	ERR_FAIL_COND_V(!resl.is_valid(), Ref<Resource>());
-
-	resl->wait();
-
-	return resl->get_resource();
-#else
-	return rl->load(path, type_hint);
-#endif
+	return ResourceLoader::load(path, type_hint);
 }
 
 Prop2DCache::Prop2DCache() {
@@ -370,7 +358,7 @@ Prop2DCache::~Prop2DCache() {
 void Prop2DCache::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_default_pixels_per_unit"), &Prop2DCache::get_default_pixels_per_unit);
 	ClassDB::bind_method(D_METHOD("set_default_pixels_per_unit", "value"), &Prop2DCache::set_default_pixels_per_unit);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "default_pixels_per_unit"), "set_default_pixels_per_unit", "get_default_pixels_per_unit");
+	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "default_pixels_per_unit"), "set_default_pixels_per_unit", "get_default_pixels_per_unit");
 
 	ClassDB::bind_method(D_METHOD("get_default_prop_material_cache_class"), &Prop2DCache::get_default_prop_material_cache_class);
 	ClassDB::bind_method(D_METHOD("set_default_prop_material_cache_class", "cls_name"), &Prop2DCache::set_default_prop_material_cache_class);

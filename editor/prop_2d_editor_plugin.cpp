@@ -25,6 +25,7 @@ SOFTWARE.
 #include "../props/prop_2d_data.h"
 #include "../singleton/prop_2d_utils.h"
 #include "core/os/keyboard.h"
+#include "editor/editor_settings.h"
 
 #include "core/version.h"
 
@@ -72,12 +73,12 @@ void Prop2DEditorPlugin::convert_scene(Node *root, const String &path) {
 		res->copy_from(data);
 
 		ResourceSaver s;
-		s.save(path, res);
+		s.save(res, path);
 
 		res.unref();
 	} else {
 		ResourceSaver s;
-		s.save(path, data);
+		s.save(data, path);
 	}
 }
 
@@ -106,8 +107,8 @@ void Prop2DEditorPlugin::_convert_selected_scene_to_prop_data(Variant param) {
 	convert_selected_scene_to_prop_data();
 }
 
-Prop2DEditorPlugin::Prop2DEditorPlugin(EditorNode *p_node) {
-	editor = p_node;
+Prop2DEditorPlugin::Prop2DEditorPlugin() {
+	editor = EditorNode::get_singleton();
 
 #if VERSION_MAJOR < 4
 	editor->add_tool_menu_item("Convert active scene to Prop2DData", this, "convert_active_scene_to_prop_data");
@@ -122,7 +123,7 @@ Prop2DEditorPlugin::Prop2DEditorPlugin(EditorNode *p_node) {
 
 	b->CONNECT("pressed", this, Prop2DEditorPlugin, _quick_convert_button_pressed);
 	b->set_text("To Prop2D");
-	b->set_shortcut(ED_SHORTCUT("spatial_editor/quick_prop_convert", "Quick convert scene to Prop2DData.", KEY_MASK_ALT + KEY_U));
+	b->set_shortcut(ED_SHORTCUT("spatial_editor/quick_prop_convert", "Quick convert scene to Prop2DData.", KeyModifierMask::ALT + Key::U));
 
 	add_control_to_container(EditorPlugin::CONTAINER_CANVAS_EDITOR_MENU, b);
 }

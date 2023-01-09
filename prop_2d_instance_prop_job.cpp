@@ -53,6 +53,7 @@ SOFTWARE.
 
 #include "props/prop_2d_data_tiled_wall_2d.h"
 #include "tiled_wall/tiled_wall_2d_data.h"
+#include "scene/resources/world_2d.h"
 
 Ref<Prop2DMaterialCache> Prop2DInstanceProp2DJob::get_material_cache() {
 	return _material_cache;
@@ -289,15 +290,15 @@ void Prop2DInstanceProp2DJob::phase_prop() {
 		}
 #endif
 
-		for (int i = 0; i < _prop_tiled_wall_datas.size(); ++i) {
-			PTWEntry &e = _prop_tiled_wall_datas.write[i];
+		//for (int i = 0; i < _prop_tiled_wall_datas.size(); ++i) {
+		//	PTWEntry &e = _prop_tiled_wall_datas.write[i];
 
-			Ref<Prop2DDataTiledWall2D> pdtw = e.data;
+			//Ref<Prop2DDataTiledWall2D> pdtw = e.data;
 			//Transform t = pdtw->get_transform();
-			Transform2D t = e.base_transform;
+			//Transform2D t = e.base_transform;
 
 			//_prop_mesher->add_tiled_wall_simple(pdtw->get_width(), pdtw->get_heigth(), t, pdtw->get_data(), _material_cache);
-		}
+		//}
 
 		if (_prop_mesher->get_vertex_count() == 0) {
 			//reset_meshes();
@@ -448,7 +449,7 @@ Array Prop2DInstanceProp2DJob::merge_mesh_array(Array arr) const {
 
 	return arr;
 }
-Array Prop2DInstanceProp2DJob::bake_mesh_array_uv(Array arr, Ref<Texture> tex, const float mul_color) const {
+Array Prop2DInstanceProp2DJob::bake_mesh_array_uv(Array arr, Ref<Texture2D> tex, const float mul_color) const {
 	ERR_FAIL_COND_V(arr.size() != RenderingServer::ARRAY_MAX, arr);
 	ERR_FAIL_COND_V(!tex.is_valid(), arr);
 

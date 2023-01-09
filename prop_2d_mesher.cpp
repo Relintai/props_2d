@@ -518,7 +518,7 @@ _FORCE_INLINE_ Vector2 Prop2DMesher::transform_uv(const Vector2 &uv, const Rect2
 
 #ifdef MESH_DATA_RESOURCE_PRESENT
 void Prop2DMesher::add_mesh_data_resource(Ref<MeshDataResource> mesh, const Vector3 position, const Vector3 rotation, const Vector3 scale, const Rect2 uv_rect) {
-	Transform transform = Transform(Basis(rotation).scaled(scale), position);
+	Transform3D transform = Transform3D(Basis::from_euler(rotation).scaled(scale), position);
 
 	add_mesh_data_resource_transform(mesh, transform, uv_rect);
 }
@@ -529,10 +529,10 @@ void Prop2DMesher::add_mesh_data_resource_transform(Ref<MeshDataResource> mesh, 
 
 	const Array &arr = mesh->get_array();
 
-	PoolVector2Array vertices = arr[Mesh::ARRAY_VERTEX];
-	PoolVector2Array uvs = arr[Mesh::ARRAY_TEX_UV];
-	PoolColorArray colors = arr[Mesh::ARRAY_COLOR];
-	PoolIntArray indices = arr[Mesh::ARRAY_INDEX];
+	PackedVector2Array vertices = arr[Mesh::ARRAY_VERTEX];
+	PackedVector2Array uvs = arr[Mesh::ARRAY_TEX_UV];
+	PackedColorArray colors = arr[Mesh::ARRAY_COLOR];
+	PackedInt32Array indices = arr[Mesh::ARRAY_INDEX];
 
 	if (vertices.size() == 0)
 		return;
@@ -563,15 +563,15 @@ void Prop2DMesher::add_mesh_data_resource_transform(Ref<MeshDataResource> mesh, 
 	}
 }
 
-void Prop2DMesher::add_mesh_data_resource_transform_colored(Ref<MeshDataResource> mesh, const Transform transform, const PoolColorArray &colors, const Rect2 uv_rect) {
+void Prop2DMesher::add_mesh_data_resource_transform_colored(Ref<MeshDataResource> mesh, const Transform transform, const PackedColorArray &colors, const Rect2 uv_rect) {
 	if (mesh->get_array().size() == 0)
 		return;
 
 	const Array &arr = mesh->get_array();
 
-	PoolVector2Array vertices = arr[Mesh::ARRAY_VERTEX];
-	PoolVector2Array uvs = arr[Mesh::ARRAY_TEX_UV];
-	PoolIntArray indices = arr[Mesh::ARRAY_INDEX];
+	PackedVector2Array vertices = arr[Mesh::ARRAY_VERTEX];
+	PackedVector2Array uvs = arr[Mesh::ARRAY_TEX_UV];
+	PackedInt32Array indices = arr[Mesh::ARRAY_INDEX];
 
 	if (vertices.size() == 0)
 		return;
@@ -858,7 +858,7 @@ void Prop2DMesher::bake_colors_lights() {
 }
 
 #ifdef TERRAMAN_2D_PRESENT
-void Prop2DMesher::bake_lights(MeshInstance *node, Vector<Ref<Terrain2DLight>> &lights) {
+void Prop2DMesher::bake_lights(MeshInstance3D *node, Vector<Ref<Terrain2DLight>> &lights) {
 	/*
 	ERR_FAIL_COND(node == NULL);
 

@@ -62,16 +62,16 @@ public:
 	int get_margin() const;
 	void set_margin(const int margin);
 
-	Ref<AtlasTexture> texture_get_atlas_tex(const Ref<Texture> &texture);
-	Rect2 texture_get_uv_rect(const Ref<Texture> &texture);
+	Ref<AtlasTexture> texture_get_atlas_tex(const Ref<Texture2D> &texture);
+	Rect2 texture_get_uv_rect(const Ref<Texture2D> &texture);
 
-	Ref<Texture> texture_get_merged();
+	Ref<Texture2D> texture_get_merged();
 
 	void refresh_rects();
 
 	void initial_setup_default();
 
-	void _setup_material_albedo(Ref<Texture> texture);
+	void _setup_material_albedo(Ref<Texture2D> texture);
 
 	Prop2DMaterialCachePCM();
 	~Prop2DMaterialCachePCM();
@@ -80,7 +80,7 @@ protected:
 	static void _bind_methods();
 
 	Ref<TexturePacker> _packer;
-	Ref<Texture> _merged_texture;
+	Ref<Texture2D> _merged_texture;
 };
 
 #endif

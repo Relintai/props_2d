@@ -34,7 +34,7 @@ SOFTWARE.
 #include "scene/3d/room_manager.h"
 #endif
 
-#include "scene/3d/mesh_instance.h"
+#include "scene/3d/mesh_instance_3d.h"
 
 #if MESH_DATA_RESOURCE_PRESENT
 #include "../../mesh_data_resource/nodes/mesh_data_instance.h"
@@ -148,7 +148,7 @@ void Prop2DUtils::swap_processors(const int index1, const int index2) {
 void Prop2DUtils::remove_processor(const int index) {
 	ERR_FAIL_INDEX(index, Prop2DUtils::_processors.size());
 
-	Prop2DUtils::_processors.remove(index);
+	Prop2DUtils::_processors.remove_at(index);
 }
 int Prop2DUtils::get_processor_count() {
 	return Prop2DUtils::_processors.size();

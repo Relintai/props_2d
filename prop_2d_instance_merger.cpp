@@ -48,6 +48,8 @@ typedef class RenderingServer VS;
 #include "material_cache/prop_2d_material_cache.h"
 #include "scene/3d/camera_3d.h"
 
+#include "scene/resources/world_2d.h"
+
 #if TEXTURE_PACKER_PRESENT
 #include "./singleton/prop_2d_cache.h"
 #endif
@@ -203,12 +205,12 @@ void Prop2DInstanceMerger::colliders_set(const Vector<Variant> &colliders) {
 
 void Prop2DInstanceMerger::debug_mesh_allocate() {
 	if (_debug_mesh_rid == RID()) {
-		_debug_mesh_rid = VisualServer::get_singleton()->mesh_create();
+		_debug_mesh_rid = RenderingServer::get_singleton()->mesh_create();
 	}
 }
 void Prop2DInstanceMerger::debug_mesh_free() {
 	if (_debug_mesh_rid != RID()) {
-		VisualServer::get_singleton()->free(_debug_mesh_rid);
+		RenderingServer::get_singleton()->free(_debug_mesh_rid);
 	}
 }
 bool Prop2DInstanceMerger::debug_mesh_has() {
@@ -216,13 +218,13 @@ bool Prop2DInstanceMerger::debug_mesh_has() {
 }
 void Prop2DInstanceMerger::debug_mesh_clear() {
 	if (_debug_mesh_rid != RID()) {
-		VisualServer::get_singleton()->mesh_clear(_debug_mesh_rid);
+		RenderingServer::get_singleton()->mesh_clear(_debug_mesh_rid);
 	}
 }
 void Prop2DInstanceMerger::debug_mesh_array_clear() {
 	_debug_mesh_array.resize(0);
 }
-void Prop2DInstanceMerger::debug_mesh_add_vertices_to(const PoolVector2Array &arr) {
+void Prop2DInstanceMerger::debug_mesh_add_vertices_to(const PackedVector2Array &arr) {
 	_debug_mesh_array.append_array(arr);
 
 	if (_debug_mesh_array.size() % 2 == 1) {
@@ -236,13 +238,13 @@ void Prop2DInstanceMerger::debug_mesh_send() {
 	if (_debug_mesh_array.size() == 0)
 		return;
 
-	SceneTree *st = SceneTree::get_singleton();
+	//SceneTree *st = SceneTree::get_singleton();
 
 	Array arr;
-	arr.resize(VisualServer::ARRAY_MAX);
-	arr[VisualServer::ARRAY_VERTEX] = _debug_mesh_array;
+	arr.resize(RenderingServer::ARRAY_MAX);
+	arr[RenderingServer::ARRAY_VERTEX] = _debug_mesh_array;
 
-	VisualServer::get_singleton()->mesh_add_surface_from_arrays(_debug_mesh_rid, VisualServer::PRIMITIVE_LINES, arr);
+	RenderingServer::get_singleton()->mesh_add_surface_from_arrays(_debug_mesh_rid, RenderingServer::PRIMITIVE_LINES, arr);
 
 	debug_mesh_array_clear();
 }
@@ -261,9 +263,9 @@ void Prop2DInstanceMerger::draw_debug_mdr_colliders() {
 
 		Transform2D t = collider_local_transform_get(i);
 
-		VisualServer::get_singleton()->canvas_item_add_set_transform(get_canvas_item(), t);
+		RenderingServer::get_singleton()->canvas_item_add_set_transform(get_canvas_item(), t);
 		shape->draw(get_canvas_item(), Color(1, 1, 1, 1));
-		VisualServer::get_singleton()->canvas_item_add_set_transform(get_canvas_item(), Transform2D());
+		RenderingServer::get_singleton()->canvas_item_add_set_transform(get_canvas_item(), Transform2D());
 	}
 
 	debug_mesh_send();
@@ -287,7 +289,7 @@ void Prop2DInstanceMerger::free_colliders() {
 	for (int i = 0; i < _colliders.size(); ++i) {
 		ColliderBody &e = _colliders.write[i];
 
-		PhysicsServer::get_singleton()->free(e.body);
+		PhysicsServer3D::get_singleton()->free(e.body);
 
 		e.body = RID();
 
@@ -419,17 +421,17 @@ void Prop2DInstanceMerger::_prop_preprocess(Transform2D transform, const Ref<Pro
 			_job->add_tiled_wall(tiled_wall_data, t);
 
 			if (tiled_wall_data->get_collision()) {
-				Ref<BoxShape> tws;
+				Ref<BoxShape3D> tws;
 				tws.instantiate();
 
 				float hew = tiled_wall_data->get_width() / 2.0;
 				float heh = tiled_wall_data->get_heigth() / 2.0;
 
-				tws->set_extents(Vector3(hew, heh, 0.01));
+				tws->set_size(Vector3(hew, heh, 0.01));
 
 				Transform2D tt = t;
 				//tt.origin += Vector3(hew, heh, 0);
-				tt.translate(hew, heh);
+				tt.translate_local(hew, heh);
 
 				_job->add_collision_shape(tws, tt, true);
 			}
@@ -502,7 +504,7 @@ void Prop2DInstanceMerger::collision_layer_changed() {
 		const ColliderBody &c = _colliders[i];
 
 		if (c.body != RID()) {
-			PhysicsServer::get_singleton()->body_set_collision_layer(c.body, _collision_layer);
+			PhysicsServer3D::get_singleton()->body_set_collision_layer(c.body, _collision_layer);
 		}
 	}
 }
@@ -511,7 +513,7 @@ void Prop2DInstanceMerger::collision_mask_changed() {
 		const ColliderBody &c = _colliders[i];
 
 		if (c.body != RID()) {
-			PhysicsServer::get_singleton()->body_set_collision_mask(c.body, _collision_mask);
+			PhysicsServer3D::get_singleton()->body_set_collision_mask(c.body, _collision_mask);
 		}
 	}
 }

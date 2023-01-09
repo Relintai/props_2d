@@ -106,10 +106,10 @@ void Prop2DData::set_is_room(const bool value) {
 	_is_room = value;
 }
 
-PoolVector3Array Prop2DData::get_room_bounds() {
+PackedVector3Array Prop2DData::get_room_bounds() {
 	return _room_bounds;
 }
-void Prop2DData::set_room_bounds(const PoolVector3Array &bounds) {
+void Prop2DData::set_room_bounds(const PackedVector3Array &bounds) {
 	_room_bounds = bounds;
 }
 

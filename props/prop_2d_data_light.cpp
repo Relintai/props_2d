@@ -61,10 +61,10 @@ void Prop2DDataLight::set_energy(const float value) {
 	_energy = value;
 }
 
-Ref<Texture> Prop2DDataLight::get_texture() const {
+Ref<Texture2D> Prop2DDataLight::get_texture() const {
 	return _texture;
 }
-void Prop2DDataLight::set_texture(const Ref<Texture> value) {
+void Prop2DDataLight::set_texture(const Ref<Texture2D> value) {
 	_texture = value;
 }
 
@@ -89,7 +89,7 @@ void Prop2DDataLight::_processor_process(Ref<Prop2DData> prop_data, Node *node, 
 
 	l->set_light_color(i->get_color());
 
-	Ref<Texture> tex = i->get_texture();
+	Ref<Texture2D> tex;// = i->get_texture();
 
 	int w = 0;
 	int h = 0;
@@ -102,7 +102,7 @@ void Prop2DDataLight::_processor_process(Ref<Prop2DData> prop_data, Node *node, 
 	l->set_light_size_x(w);
 	l->set_light_size_y(h);
 
-	l->set_texture_scale(i->get_texture_scale());
+	//l->set_texture_scale(i->get_texture_scale());
 	l->set_energy(i->get_energy());
 	l->set_texture(tex);
 
@@ -120,9 +120,9 @@ Node *Prop2DDataLight::_processor_get_node_for(const Transform2D &transform, Nod
 
 	i->set_color(get_light_color());
 
-	i->set_texture_scale(get_texture_scale());
+	//i->set_texture_scale(get_texture_scale());
 	i->set_energy(get_energy());
-	i->set_texture(get_texture());
+	//i->set_texture(get_texture());
 
 	return Prop2DDataEntry::_processor_get_node_for(transform, i);
 }

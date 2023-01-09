@@ -94,13 +94,13 @@ void Prop2DMaterialCache::material_set(const Ref<Material> &value) {
 	_material = value;
 }
 
-void Prop2DMaterialCache::texture_add(const Ref<Texture> &texture) {
+void Prop2DMaterialCache::texture_add(const Ref<Texture2D> &texture) {
 	_textures.push_back(texture);
 }
-void Prop2DMaterialCache::texture_remove(const Ref<Texture> &texture) {
+void Prop2DMaterialCache::texture_remove(const Ref<Texture2D> &texture) {
 	for (int i = 0; i < _textures.size(); ++i) {
 		if (_textures[i] == texture) {
-			_textures.remove(i);
+			_textures.remove_at(i);
 			return;
 		}
 	}
@@ -116,8 +116,8 @@ void Prop2DMaterialCache::textures_clear() {
 int Prop2DMaterialCache::texture_count() {
 	return _textures.size();
 }
-Ref<Texture> Prop2DMaterialCache::texture_get(const int index) {
-	ERR_FAIL_INDEX_V(index, _textures.size(), Ref<Texture>());
+Ref<Texture2D> Prop2DMaterialCache::texture_get(const int index) {
+	ERR_FAIL_INDEX_V(index, _textures.size(), Ref<Texture2D>());
 
 	return _textures[index];
 }
@@ -126,10 +126,10 @@ Ref<AtlasTexture> Prop2DMaterialCache::texture_get_atlas(const int index) {
 
 	return texture_get_atlas_tex(_textures[index]);
 }
-Ref<AtlasTexture> Prop2DMaterialCache::texture_get_atlas_tex(const Ref<Texture> &texture) {
+Ref<AtlasTexture> Prop2DMaterialCache::texture_get_atlas_tex(const Ref<Texture2D> &texture) {
 	return Ref<AtlasTexture>();
 }
-Rect2 Prop2DMaterialCache::texture_get_rect(const Ref<Texture> &texture) {
+Rect2 Prop2DMaterialCache::texture_get_rect(const Ref<Texture2D> &texture) {
 	Ref<AtlasTexture> at = texture_get_atlas_tex(texture);
 
 	if (!at.is_valid()) {
@@ -138,12 +138,12 @@ Rect2 Prop2DMaterialCache::texture_get_rect(const Ref<Texture> &texture) {
 
 	return at->get_region();
 }
-Rect2 Prop2DMaterialCache::texture_get_uv_rect(const Ref<Texture> &texture) {
+Rect2 Prop2DMaterialCache::texture_get_uv_rect(const Ref<Texture2D> &texture) {
 	return Rect2(0, 0, 1, 1);
 }
 
-Ref<Texture> Prop2DMaterialCache::texture_get_merged() {
-	return Ref<Texture>();
+Ref<Texture2D> Prop2DMaterialCache::texture_get_merged() {
+	return Ref<Texture2D>();
 }
 
 void Prop2DMaterialCache::prop_add_textures(const Ref<Prop2DData> &prop) {
@@ -156,7 +156,7 @@ void Prop2DMaterialCache::prop_add_textures(const Ref<Prop2DData> &prop) {
 		Ref<Prop2DDataMeshData> pdm = prop->get_prop(i);
 
 		if (pdm.is_valid()) {
-			Ref<Texture> tex = pdm->get_texture();
+			Ref<Texture2D> tex = pdm->get_texture();
 
 			if (!tex.is_valid())
 				continue;
@@ -197,7 +197,7 @@ void Prop2DMaterialCache::prop_remove_textures(const Ref<Prop2DData> &prop) {
 		Ref<Prop2DDataMeshData> pdm = prop->get_prop(i);
 
 		if (pdm.is_valid()) {
-			Ref<Texture> tex = pdm->get_texture();
+			Ref<Texture2D> tex = pdm->get_texture();
 
 			if (!tex.is_valid())
 				continue;
@@ -215,7 +215,7 @@ void Prop2DMaterialCache::prop_remove_textures(const Ref<Prop2DData> &prop) {
 				continue;
 
 			for (int j = 0; j < twd->get_texture_count(); ++j) {
-				const Ref<Texture> &tex = twd->get_texture(j);
+				const Ref<Texture2D> &tex = twd->get_texture(j);
 
 				if (tex.is_valid()) {
 					texture_remove(tex);
@@ -223,7 +223,7 @@ void Prop2DMaterialCache::prop_remove_textures(const Ref<Prop2DData> &prop) {
 			}
 
 			for (int j = 0; j < twd->get_flavour_texture_count(); ++j) {
-				const Ref<Texture> &tex = twd->get_flavour_texture(j);
+				const Ref<Texture2D> &tex = twd->get_flavour_texture(j);
 
 				if (tex.is_valid()) {
 					texture_remove(tex);
@@ -263,7 +263,7 @@ void Prop2DMaterialCache::initial_setup_default() {
 	}
 }
 
-void Prop2DMaterialCache::setup_material_albedo(Ref<Texture> texture) {
+void Prop2DMaterialCache::setup_material_albedo(Ref<Texture2D> texture) {
 	if (has_method("_setup_material_albedo"))
 		call("_setup_material_albedo", texture);
 }

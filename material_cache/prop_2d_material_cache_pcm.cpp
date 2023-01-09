@@ -61,14 +61,14 @@ void Prop2DMaterialCachePCM::set_margin(const int margin) {
 	_packer->set_margin(margin);
 }
 
-Ref<AtlasTexture> Prop2DMaterialCachePCM::texture_get_atlas_tex(const Ref<Texture> &texture) {
+Ref<AtlasTexture> Prop2DMaterialCachePCM::texture_get_atlas_tex(const Ref<Texture2D> &texture) {
 	if (!_packer->contains_texture(texture)) {
 		return Ref<AtlasTexture>();
 	}
 
 	return _packer->get_texture(texture);
 }
-Rect2 Prop2DMaterialCachePCM::texture_get_uv_rect(const Ref<Texture> &texture) {
+Rect2 Prop2DMaterialCachePCM::texture_get_uv_rect(const Ref<Texture2D> &texture) {
 	if (!texture.is_valid()) {
 		return Rect2(0, 0, 1, 1);
 	}
@@ -81,13 +81,13 @@ Rect2 Prop2DMaterialCachePCM::texture_get_uv_rect(const Ref<Texture> &texture) {
 
 	Rect2 region = at->get_region();
 
-	Ref<Texture> tex = at->get_atlas();
+	Ref<Texture2D> tex = at->get_atlas();
 
 	if (!tex.is_valid()) {
 		return Rect2(0, 0, 1, 1);
 	}
 
-	Ref<Image> image = tex->get_data();
+	Ref<Image> image = tex->get_image();
 
 	if (!image.is_valid()) {
 		return Rect2(0, 0, 1, 1);
@@ -102,7 +102,7 @@ Rect2 Prop2DMaterialCachePCM::texture_get_uv_rect(const Ref<Texture> &texture) {
 	return region;
 }
 
-Ref<Texture> Prop2DMaterialCachePCM::texture_get_merged() {
+Ref<Texture2D> Prop2DMaterialCachePCM::texture_get_merged() {
 	return _merged_texture;
 }
 
@@ -110,7 +110,7 @@ void Prop2DMaterialCachePCM::refresh_rects() {
 	bool texture_added = false;
 
 	for (int i = 0; i < _textures.size(); i++) {
-		Ref<Texture> tex = _textures.get(i);
+		Ref<Texture2D> tex = _textures.get(i);
 
 		ERR_CONTINUE(!tex.is_valid());
 
@@ -145,7 +145,7 @@ void Prop2DMaterialCachePCM::initial_setup_default() {
 	set_margin(pc->get_margin());
 }
 
-void Prop2DMaterialCachePCM::_setup_material_albedo(Ref<Texture> texture) {
+void Prop2DMaterialCachePCM::_setup_material_albedo(Ref<Texture2D> texture) {
 	Ref<Material> m = material_get();
 
 	Ref<ShaderMaterial> shmat = m;
@@ -158,12 +158,9 @@ void Prop2DMaterialCachePCM::_setup_material_albedo(Ref<Texture> texture) {
 Prop2DMaterialCachePCM::Prop2DMaterialCachePCM() {
 	_packer.instantiate();
 
-#if GODOT4
 #warning implement
-#else
-	_packer->set_texture_flags(Texture::FLAG_MIPMAPS | Texture::FLAG_FILTER);
-#endif
-
+	//_packer->set_texture_flags(Texture::FLAG_MIPMAPS | Texture::FLAG_FILTER);
+	
 	_packer->set_max_atlas_size(1024);
 	_packer->set_keep_original_atlases(false);
 	_packer->set_margin(0);
